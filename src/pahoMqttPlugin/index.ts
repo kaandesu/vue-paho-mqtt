@@ -4,6 +4,7 @@ import {
   MqttState,
   MqttMode,
   MainOptions,
+  MqttInstance,
 } from "./types";
 import type { App } from "vue";
 import type { SweetAlertOptions } from "sweetalert2";
@@ -45,7 +46,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
      * @param {SweetAlertOptions} swalSettings - used to set the settings for the notification
      * @param {boolean} [enable=true] - used to enable or disable the notification (default: true)
      */
-    const SwalFire = (
+    const SweetAlert = (
       swalSettings: SweetAlertOptions,
       enable: boolean = true
     ) => {
@@ -57,7 +58,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         `%c mqtt connected`,
         "color:green;font-weight:bold;font-size:15px"
       );
-      SwalFire({
+      SweetAlert({
         title: "Connected",
         text: "Mqtt Connected",
         icon: "success",
@@ -79,7 +80,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         );
       } catch (err: any) {
         console.error(err);
-        SwalFire({ title: "Error", text: err.message, icon: "error" });
+        SweetAlert({ title: "Error", text: err.message, icon: "error" });
       }
     };
     /**
@@ -91,7 +92,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         client.connect({ onSuccess: onConnect });
       } catch (err: any) {
         console.error(err);
-        SwalFire({ title: "Error", text: err.message, icon: "error" });
+        SweetAlert({ title: "Error", text: err.message, icon: "error" });
       }
     };
     /**
@@ -160,7 +161,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
           `%c mqtt disconnected`,
           "color:red;font-weight:bold;font-size:15px"
         );
-        SwalFire({
+        SweetAlert({
           title: "Error",
           text: "MQTT connection lost",
           icon: "error",
@@ -194,11 +195,13 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     if (PluginOptions.autoConnect) connectClient();
 
     /* Global Functions */
-    app.config.globalProperties.$mqtt = {
+    const mqttInstance: MqttInstance = {
       connect: connectClient,
       disconnect: disconnectClient,
       subscribe,
       publish,
     };
+
+    app.config.globalProperties.$mqtt = mqttInstance;
   };
 };

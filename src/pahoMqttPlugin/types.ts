@@ -26,3 +26,19 @@ export interface MqttOptions {
   clientId: string;
   mainTopic?: string;
 }
+
+export interface MqttInstance {
+  connect: () => void;
+  disconnect: () => void;
+  subscribe: (
+    topic: string,
+    onMessage: () => any,
+    useMainTopic?: boolean
+  ) => void;
+  publish: (
+    topic: string,
+    payload: string,
+    mode: MqttMode,
+    useMainTopic?: boolean
+  ) => void;
+}
