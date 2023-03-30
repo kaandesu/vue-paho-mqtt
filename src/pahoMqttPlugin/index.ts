@@ -17,7 +17,6 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
   return (app: App) => {
     // Options
     let { PluginOptions, MqttOptions } = MainOptions;
-
     PluginOptions = defu(PluginOptions, {
       showNotifications: true,
       autoConnect: true,
@@ -40,7 +39,12 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         ret: true,
       },
     };
-    // Private Functions
+    /* Private Functions */
+    /**
+     * @description - used to show a notification using sweetalert2 package
+     * @param {SweetAlertOptions} swalSettings - used to set the settings for the notification
+     * @param {boolean} [enable=true] - used to enable or disable the notification (default: true)
+     */
     const SwalFire = (
       swalSettings: SweetAlertOptions,
       enable: boolean = true
@@ -62,7 +66,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       });
     };
 
-    // dissconnect from mqtt
+    /**
+     * @description Disconnect from the mqtt broker.
+     * Shows a dialog notification in case of error if the plugin is configured to do so.
+     */
     const disconnectClient = () => {
       try {
         client.disconnect();
@@ -75,7 +82,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         SwalFire({ title: "Error", text: err.message, icon: "error" });
       }
     };
-    // connect to mqtt
+    /**
+     * Connect to the mqtt broker
+     * Shows a dialog notification in case of error if the plugin is configured to do so.
+     */
     const connectClient = () => {
       try {
         client.connect({ onSuccess: onConnect });
@@ -84,7 +94,12 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         SwalFire({ title: "Error", text: err.message, icon: "error" });
       }
     };
-    // mqtt subscribe
+    /**
+     * @description used to subscribe to a topic
+     * @param topic mqtt topic
+     * @param onMessage function to be called when a message is received
+     * @param useMainTopic if true, MqttOptions.mainTopic will be prepended to the topic (default: true)
+     */
     const subscribe = (
       topic: string,
       onMessage: () => any,
@@ -105,7 +120,14 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         console.error(err.message);
       }
     };
-    // mqtt publish
+    /**
+     * @description used to unsubscribe from a topic
+     * @param topic mqtt topic
+     * @param payload payload to be sent
+     * @param mode  "B" - for best effort (at most once delivery)
+     *              "F" - for at least once delivery
+     * @param useMainTopic if true, MqttOptions.mainTopic will be prepended to the topic (default: true)
+     */
     const publish = (
       topic: string,
       payload: string,
@@ -127,6 +149,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       }
     };
 
+    /**
+     * @description fires when the mqtt connection is lost
+     * @param responseObject contains the error code of the disconnection
+     */
     const onConnectionLost = (responseObject: { errorCode: number }) => {
       //TODO try after 5 seconds, if not try harder, i see a "reconnect" function in the thing maybe that works
       if (responseObject.errorCode !== 0) {
@@ -155,19 +181,19 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         console.warn("Unhandled topic!", topic, payload);
       }
     };
-    // set mqtt client
+    /* Mqtt Client */
     const client = new Paho.Client(
       MqttOptions.host,
       MqttOptions.port,
       MqttOptions.clientId
     );
-    // set callback handlers
+    /* Callback handlers */
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
-    // check for auto connect
+    /* Check Auto Connect */
     if (PluginOptions.autoConnect) connectClient();
 
-    // Global Functions
+    /* Global Functions */
     app.config.globalProperties.$mqtt = {
       connect: connectClient,
       disconnect: disconnectClient,
