@@ -1,3 +1,13 @@
 import { MsgHandler } from "./types";
 
-export const msgHandlers: MsgHandler = {};
+export let msgHandlers: MsgHandler = {};
+
+export const clearMsgHandlers = () => {
+  msgHandlers = {};
+};
+
+export let queueMsgHandler: MsgHandler = {};
+
+export const clearQueueMsgHandler = () => {
+  queueMsgHandler = {};
+};

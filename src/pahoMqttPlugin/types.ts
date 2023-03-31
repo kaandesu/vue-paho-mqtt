@@ -41,4 +41,8 @@ export interface MqttInstance {
     mode: MqttMode,
     useMainTopic?: boolean
   ) => void;
+  host: (host: string) => void;
+  port: (port: number) => void;
+  clientId: (clientId: string) => void;
+  mainTopic: (mainTopic: string) => void;
 }

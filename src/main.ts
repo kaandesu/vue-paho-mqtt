@@ -2,11 +2,13 @@ import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import { createPahoMqttPlugin } from "./pahoMqttPlugin";
+
 createApp(App)
   .use(
     createPahoMqttPlugin({
       PluginOptions: {
-        autoConnect: true,
+        autoConnect: false,
+        showNotifications: true,
       },
       MqttOptions: {
         host: "localhost",
