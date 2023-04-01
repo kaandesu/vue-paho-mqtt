@@ -287,17 +287,21 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     /* Check Auto Connect */
     if (PluginOptions.autoConnect) connectClient();
 
-    const port = (e: number = 9001) => {
-      MqttOptions.port = e;
+    const port = (e?: number) => {
+      if (e !== undefined) return (MqttOptions.port = e);
+      return MqttOptions.port;
     };
-    const host = (e: string = "localhost") => {
-      MqttOptions.host = e;
+    const host = (e?: string) => {
+      if (e !== undefined) return (MqttOptions.host = e);
+      return MqttOptions.host;
     };
-    const clientId = (e: string = "myClientId") => {
-      MqttOptions.clientId = e;
+    const clientId = (e?: string) => {
+      if (e !== undefined) return (MqttOptions.clientId = e);
+      return MqttOptions.clientId;
     };
-    const mainTopic = (e: string = "MAIN/") => {
-      MqttOptions.mainTopic = e;
+    const mainTopic = (e?: string) => {
+      if (e !== undefined) return (MqttOptions.mainTopic = e);
+      return MqttOptions.mainTopic;
     };
 
     /* Global Functions */

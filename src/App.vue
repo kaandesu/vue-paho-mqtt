@@ -20,7 +20,7 @@
     <input id="mainTopic" placeholder="MainTopic" v-model="mainTopic" />
     <button @click="changeSettings()"> Change Settings</button>
 
-    <h3>status: {{ $status }}</h3>
+    <h3>status: {{ $status }} {{ $mqtt.host() }}</h3>
     <button @click="showClient()"> Log Client</button>
   </div>
 
@@ -37,6 +37,7 @@ const mainTopic = ref('ADT');
 const clientId = ref('zort');
 
 onMounted(() => {
+  console.log($mqtt.host());
   $mqtt.subscribe('arm', (data:any) => {
     console.log(data,'it worked!??')
   },false);

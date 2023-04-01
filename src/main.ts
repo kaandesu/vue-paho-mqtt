@@ -8,7 +8,7 @@ createApp(App)
     createPahoMqttPlugin({
       PluginOptions: {
         autoConnect: false,
-        showNotifications: true,
+        showNotifications: false,
       },
       MqttOptions: {
         host: "localhost",
