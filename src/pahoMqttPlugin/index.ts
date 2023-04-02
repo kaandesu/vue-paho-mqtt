@@ -5,6 +5,7 @@ import {
   MqttMode,
   MainOptions,
   MqttInstance,
+  MqttStatus,
 } from "./types";
 import { App, ref } from "vue";
 import type { SweetAlertOptions } from "sweetalert2";
@@ -47,9 +48,8 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         ret: true,
       },
     };
-    // TODO instead of a boolean, use a string to show the status of the connection
-    //? 'connected', 'disconnected', 'connecting', 'error'
-    const mqttStatus = ref<boolean>(false);
+
+    const mqttStatus = ref<MqttStatus | null>(null);
     const connectWatchdog = ref<NodeJS.Timeout | null>(null);
     const stayConnected = ref<boolean>(false);
 
@@ -72,7 +72,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       swal.fire(swalSettings);
     };
     const onFailureCallback = () => {
-      mqttStatus.value = false;
+      mqttStatus.value = "error";
       console.log(
         `%c mqtt failed to connect`,
         "color:red;font-weight:bold;font-size:15px"
@@ -85,7 +85,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     };
     const onConnectCallback = () => {
       clearTimeout(connectWatchdog.value as NodeJS.Timeout);
-      mqttStatus.value = true;
+      mqttStatus.value = "connected";
       stayConnected.value = true;
       console.log(
         `%c mqtt connected`,
@@ -125,6 +125,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         client.disconnect();
       } catch (err: any) {
         console.error(err);
+        mqttStatus.value = "error";
         SweetAlert({ title: "Error", text: err.message, icon: "error" });
       }
     };
@@ -147,7 +148,9 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         destinationName: string;
       }) => any;
     } = {}) => {
+      mqttStatus.value = "connecting";
       connectWatchdog.value = setTimeout(() => {
+        mqttStatus.value = "error";
         disconnectClient();
         SweetAlert({
           title: "Mqtt Error",
@@ -186,6 +189,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         });
       } catch (err: any) {
         console.error(err);
+        mqttStatus.value = "error";
         SweetAlert({ title: "Error", text: err.message, icon: "error" });
         clearTimeout(connectWatchdog.value as NodeJS.Timeout);
       }
@@ -255,7 +259,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     const onConnectionLostCallback = (responseObject: {
       errorCode: number;
     }) => {
-      mqttStatus.value = false;
+      mqttStatus.value = "disconnected";
 
       for (const topic of Object.keys(msgHandlers)) {
         if (!queueMsgHandlers[topic]) {
@@ -350,7 +354,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       if (e !== undefined) return (MqttOptions.mainTopic = e);
       return MqttOptions.mainTopic;
     };
-    const status = (e?: boolean) => {
+    const status = (e?: MqttStatus) => {
       if (e !== undefined) return (mqttStatus.value = e);
       return mqttStatus.value;
     };

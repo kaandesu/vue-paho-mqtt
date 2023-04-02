@@ -10,6 +10,13 @@ export interface MainOptions {
 
 export type MqttMode = "B" | "F";
 
+export type MqttStatus =
+  | "connected"
+  | "disconnected"
+  | "connecting"
+  | "error"
+  | "lost"
+  | null;
 export interface MqttState {
   [key: string]: {
     qos: Qos;
@@ -49,5 +56,5 @@ export interface MqttInstance {
   mainTopic: (mainTopic?: string) => void;
   unsubscribe: (topic: string, useMainTopic?: boolean) => void;
   unsubscribeAll: () => void;
-  status: () => boolean;
+  status: () => MqttStatus;
 }
