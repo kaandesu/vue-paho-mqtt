@@ -73,10 +73,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     };
     const onFailureCallback = () => {
       mqttStatus.value = "error";
-      console.log(
-        `%c mqtt failed to connect`,
-        "color:red;font-weight:bold;font-size:15px"
-      );
+      console.log(`%c mqtt failed to connect`, "color:red");
       SweetAlert({
         title: "Mqtt Error",
         text: "MQTT failed to connect",
@@ -87,10 +84,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       clearTimeout(connectWatchdog.value as NodeJS.Timeout);
       mqttStatus.value = "connected";
       stayConnected.value = true;
-      console.log(
-        `%c mqtt connected`,
-        "color:green;font-weight:bold;font-size:15px"
-      );
+      console.log(`%c mqtt connected`, "color:green");
 
       for (const topic of Object.keys(queueMsgHandlers)) {
         if (!msgHandlers[topic]) {
@@ -195,7 +189,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       }
     };
     /**
-     * @description used to subscribe to a topic
+     * @description used to subscribe to the topic specified
      * @param topic mqtt topic
      * @param onMessage function to be called when a message is received
      * @param useMainTopic if true, MqttOptions.mainTopic will be prepended to the topic (default: true)
@@ -224,7 +218,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       }
     };
     /**
-     * @description used to publish string data to a topic
+     * @description used to publish string data to the topic specified
      * @param topic mqtt topic
      * @param payload payload to be sent
      * @param mode  "B" - for best effort (at most once delivery)
@@ -260,7 +254,6 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       errorCode: number;
     }) => {
       mqttStatus.value = "disconnected";
-
       for (const topic of Object.keys(msgHandlers)) {
         if (!queueMsgHandlers[topic]) {
           queueMsgHandlers[topic] = [];
@@ -274,18 +267,15 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       clearMsgHandlers();
 
       if (responseObject.errorCode !== 0) {
-        console.warn(
-          `%c mqtt disconnected`,
-          "color:red;font-weight:bold;font-size:15px"
-        );
         SweetAlert({
           title: "Error",
           text: "MQTT connection lost",
           icon: "error",
         });
       }
-      console.log("onConnectionLost:" + stayConnected.value);
+      console.log(`%c mqtt disconnected`, "color:red;");
       if (stayConnected.value) {
+        console.warn(`%c mqtt connection lost`, "color:red;");
         setTimeout(() => {
           if (!client || !client.isConnected()) {
             connectClient();
@@ -308,27 +298,29 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         console.warn("Unhandled topic!", topic, payload);
       }
     };
-    // TODO rename / test
+
     const unsubscribe = (topic: string, useMainTopic: boolean = true) => {
       topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
-      console.log("unsubscribing from", topic);
       if (msgHandlers[topic]) delete msgHandlers[topic];
       if (queueMsgHandlers[topic]) delete queueMsgHandlers[topic];
       if (client && client.isConnected()) {
         client.unsubscribe(topic);
       }
     };
-    //? Unsubscribe from all
+
     const unsubscribeAll = () => {
-      console.log("unsubscribing from all topics");
       let subscribedTopics = {
         ...Object.keys(queueMsgHandlers),
         ...Object.keys(msgHandlers),
       };
-      console.log(subscribedTopics);
+
       for (let i in Object.keys(subscribedTopics)) {
         if (client && client.isConnected()) {
-          client.unsubscribe(subscribedTopics[i]);
+          try {
+            client.unsubscribe(subscribedTopics[i]);
+          } catch (err: any) {
+            console.error(err.message);
+          }
         }
       }
       clearMsgHandlers();
