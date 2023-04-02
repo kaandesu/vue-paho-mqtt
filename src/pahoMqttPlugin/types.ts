@@ -25,6 +25,8 @@ export interface MqttOptions {
   port: number;
   clientId: string;
   mainTopic?: string;
+  watchdogTimeout?: number;
+  reconnectTimeout?: number;
 }
 
 export interface MqttInstance {
@@ -45,4 +47,7 @@ export interface MqttInstance {
   port: (port?: number) => void;
   clientId: (clientId?: string) => void;
   mainTopic: (mainTopic?: string) => void;
+  unsubscribe: (topic: string, useMainTopic?: boolean) => void;
+  unsubscribeAll: () => void;
+  status: () => boolean;
 }

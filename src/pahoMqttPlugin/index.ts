@@ -5,7 +5,6 @@ import {
   MqttMode,
   MainOptions,
   MqttInstance,
-  MsgHandler,
 } from "./types";
 import { App, ref } from "vue";
 import type { SweetAlertOptions } from "sweetalert2";
@@ -16,8 +15,8 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import {
   msgHandlers,
   clearMsgHandlers,
-  queueMsgHandler,
-  clearQueueMsgHandler,
+  queueMsgHandlers,
+  clearQueueMsgHandlers,
 } from "./msgHandlers";
 
 export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
@@ -33,7 +32,9 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       host: "localhost",
       port: 9001,
       clientId: `ClientID-${Math.random() * 9999}}`,
-      mainTopic: "MAIN/",
+      mainTopic: "MAIN",
+      watchdogTimeout: 2000,
+      reconnectTimeout: 5000,
     } as MqttOptions);
 
     const MQTT_STATE: MqttState = {
@@ -46,8 +47,11 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         ret: true,
       },
     };
-
-    const status = ref<boolean>(false);
+    // TODO instead of a boolean, use a string to show the status of the connection
+    //? 'connected', 'disconnected', 'connecting', 'error'
+    const mqttStatus = ref<boolean>(false);
+    const connectWatchdog = ref<NodeJS.Timeout | null>(null);
+    const stayConnected = ref<boolean>(false);
 
     let client: Client = new Paho.Client(
       MqttOptions.host,
@@ -68,7 +72,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       swal.fire(swalSettings);
     };
     const onFailureCallback = () => {
-      status.value = false;
+      mqttStatus.value = false;
       console.log(
         `%c mqtt failed to connect`,
         "color:red;font-weight:bold;font-size:15px"
@@ -80,25 +84,27 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       });
     };
     const onConnectCallback = () => {
-      status.value = true;
+      clearTimeout(connectWatchdog.value as NodeJS.Timeout);
+      mqttStatus.value = true;
+      stayConnected.value = true;
       console.log(
         `%c mqtt connected`,
         "color:green;font-weight:bold;font-size:15px"
       );
 
-      for (const topic of Object.keys(queueMsgHandler)) {
+      for (const topic of Object.keys(queueMsgHandlers)) {
         if (!msgHandlers[topic]) {
           msgHandlers[topic] = [];
         }
 
         client.subscribe(topic);
 
-        for (const handler of queueMsgHandler[topic]) {
+        for (const handler of queueMsgHandlers[topic]) {
           msgHandlers[topic].push(handler);
         }
       }
 
-      clearQueueMsgHandler();
+      clearQueueMsgHandlers();
 
       SweetAlert({
         title: "Connected",
@@ -114,12 +120,9 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
      * Shows a dialog notification in case of error if the plugin is configured to do so.
      */
     const disconnectClient = () => {
+      stayConnected.value = false;
       try {
         client.disconnect();
-        console.log(
-          `%c mqtt disconnected`,
-          "color:red;font-weight:bold;font-size:15px"
-        );
       } catch (err: any) {
         console.error(err);
         SweetAlert({ title: "Error", text: err.message, icon: "error" });
@@ -144,6 +147,14 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         destinationName: string;
       }) => any;
     } = {}) => {
+      connectWatchdog.value = setTimeout(() => {
+        disconnectClient();
+        SweetAlert({
+          title: "Mqtt Error",
+          text: "Broker connection timed out!",
+          icon: "error",
+        });
+      }, MqttOptions.watchdogTimeout);
       try {
         client = new Paho.Client(
           MqttOptions.host,
@@ -176,6 +187,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       } catch (err: any) {
         console.error(err);
         SweetAlert({ title: "Error", text: err.message, icon: "error" });
+        clearTimeout(connectWatchdog.value as NodeJS.Timeout);
       }
     };
     /**
@@ -189,7 +201,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       onMessage: () => any,
       useMainTopic: boolean = true
     ) => {
-      if (useMainTopic) topic = `${MqttOptions.mainTopic}${topic}`;
+      topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
       try {
         if (client && client.isConnected()) {
           if (!msgHandlers[topic]) {
@@ -198,17 +210,17 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
           msgHandlers[topic].push(onMessage);
           client.subscribe(topic);
         } else if (client && !client.isConnected()) {
-          if (!queueMsgHandler[topic]) {
-            queueMsgHandler[topic] = [];
+          if (!queueMsgHandlers[topic]) {
+            queueMsgHandlers[topic] = [];
           }
-          queueMsgHandler[topic].push(onMessage);
+          queueMsgHandlers[topic].push(onMessage);
         }
       } catch (err: any) {
         console.error(err.message);
       }
     };
     /**
-     * @description used to unsubscribe from a topic
+     * @description used to publish string data to a topic
      * @param topic mqtt topic
      * @param payload payload to be sent
      * @param mode  "B" - for best effort (at most once delivery)
@@ -222,7 +234,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       useMainTopic: boolean = true
     ) => {
       try {
-        if (useMainTopic) topic = `${MqttOptions.mainTopic}${topic}`;
+        topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
         if (client && client.isConnected()) {
           client.send(
             topic,
@@ -243,21 +255,20 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     const onConnectionLostCallback = (responseObject: {
       errorCode: number;
     }) => {
-      status.value = false;
+      mqttStatus.value = false;
 
       for (const topic of Object.keys(msgHandlers)) {
-        if (!queueMsgHandler[topic]) {
-          queueMsgHandler[topic] = [];
+        if (!queueMsgHandlers[topic]) {
+          queueMsgHandlers[topic] = [];
         }
 
         for (const handler of msgHandlers[topic]) {
-          queueMsgHandler[topic].push(handler);
+          queueMsgHandlers[topic].push(handler);
         }
       }
 
       clearMsgHandlers();
 
-      //TODO try after 5 seconds, if not try harder, i see a "reconnect" function in the thing maybe that works
       if (responseObject.errorCode !== 0) {
         console.warn(
           `%c mqtt disconnected`,
@@ -268,6 +279,15 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
           text: "MQTT connection lost",
           icon: "error",
         });
+      }
+      console.log("onConnectionLost:" + stayConnected.value);
+      if (stayConnected.value) {
+        setTimeout(() => {
+          if (!client || !client.isConnected()) {
+            connectClient();
+            console.timeEnd("reconnecting...");
+          }
+        }, MqttOptions.reconnectTimeout);
       }
     };
     const onMessageArrivedCallback = (message: {
@@ -284,6 +304,33 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         console.warn("Unhandled topic!", topic, payload);
       }
     };
+    // TODO rename / test
+    const unsubscribe = (topic: string, useMainTopic: boolean = true) => {
+      topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
+      console.log("unsubscribing from", topic);
+      if (msgHandlers[topic]) delete msgHandlers[topic];
+      if (queueMsgHandlers[topic]) delete queueMsgHandlers[topic];
+      if (client && client.isConnected()) {
+        client.unsubscribe(topic);
+      }
+    };
+    //? Unsubscribe from all
+    const unsubscribeAll = () => {
+      console.log("unsubscribing from all topics");
+      for (const topic of Object.keys(msgHandlers)) {
+        if (client && client.isConnected()) {
+          if (topic) client.unsubscribe(topic);
+        }
+      }
+      for (const topic of Object.keys(queueMsgHandlers)) {
+        if (client && client.isConnected()) {
+          if (topic) client.unsubscribe(topic);
+        }
+      }
+      clearMsgHandlers();
+      clearQueueMsgHandlers();
+    };
+
     /* Check Auto Connect */
     if (PluginOptions.autoConnect) connectClient();
 
@@ -303,6 +350,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       if (e !== undefined) return (MqttOptions.mainTopic = e);
       return MqttOptions.mainTopic;
     };
+    const status = (e?: boolean) => {
+      if (e !== undefined) return (mqttStatus.value = e);
+      return mqttStatus.value;
+    };
 
     /* Global Functions */
     const mqttInstance: MqttInstance = {
@@ -314,15 +365,19 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       port,
       clientId,
       mainTopic,
+      unsubscribe,
+      unsubscribeAll,
+      status,
     };
     const showClient = () => {
       console.log(
         `port: ${client.port}\n host: ${client.host}\n clientId: ${client.clientId}\n mainTopic: ${MqttOptions.mainTopic}`
       );
+      console.log("-------------------------");
+      console.log(msgHandlers, queueMsgHandlers);
     };
     // make mqttInstance a global variable
     app.config.globalProperties.$mqtt = mqttInstance;
-    app.config.globalProperties.$status = status;
     app.config.globalProperties.$showClient = showClient;
   };
 };

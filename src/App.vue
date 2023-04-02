@@ -1,9 +1,10 @@
 
 <template>
-  <div>
+  <div :class="$mqtt.status() ? 'connected' : 'disconnected'">
     
     <button @click="connect()"> connect</button>
     <button @click="subscribe()"> subscribe to arm</button>
+    <button @click="unsubscribe('arm')"> Unsubscribe from all</button>
     <button @click="disconnect()"> disconnect</button>
     <button @click="publish()"> publish</button>    
     
@@ -18,10 +19,9 @@
 
     <label for="mainTopic">Main Topic</label>
     <input id="mainTopic" placeholder="MainTopic" v-model="mainTopic" />
-    <button @click="changeSettings()"> Change Settings</button>
-
-    <h3>status: {{ $status }} {{ $mqtt.host() }}</h3>
-    <button @click="showClient()"> Log Client</button>
+    <button @click="changeSettings()"> Change Settings</button>    
+    <h4>subData: {{ subData }}</h4>
+    <button @click="showClient()"> Log Client</button>    
   </div>
 
 </template>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { getCurrentInstance, onMounted, ref, inject } from 'vue';
 
-const { $mqtt, $status, $showClient }: any = getCurrentInstance()?.appContext.config.globalProperties;
+const { $mqtt, $showClient }: any = getCurrentInstance()?.appContext.config.globalProperties;
 
 const port = ref('9001');
 const host = ref('localhost');
@@ -40,12 +40,12 @@ onMounted(() => {
   console.log($mqtt.host());
   $mqtt.subscribe('arm', (data:any) => {
     console.log(data,'it worked!??')
-  },false);
+  });
 
   $mqtt.subscribe('mob', (data:any) => {
     console.log(data,'MOBDATA')
-  },false);
- console.log($status);
+  });
+ console.log($mqtt.status());
 });
 
 const connect = () => {  
@@ -58,10 +58,17 @@ const connect = () => {
     },
   });  
 };
-
+const unsubscribe = (topic: string) => {
+  $mqtt.unsubscribeAll();
+}
+const subData = ref('no data yet');
 const subscribe = () => {
   $mqtt.subscribe('arm', (data:any) => {
-    console.log(data,'it worked!??')
+    console.log(data,'ARMDATA2')
+    subData.value = data;
+  });
+  $mqtt.subscribe('mob', (data:any) => {
+    console.log(data,'MOBDATA2')
   });
 };
 
@@ -113,6 +120,8 @@ div{
   justify-content: center;
   gap:1rem;
   height: 100vh;  
+  width:100vw;
+  overflow: hidden;
 }
 
 .logo {
@@ -126,5 +135,14 @@ div{
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+.connected{
+  background-color: rgba(0, 224, 0, 0.82);
+}
+.disconnected{
+  background-color: rgba(255, 0, 0, 0.522);
+}
+label, h4{  
+  margin: -.5rem 0;
 }
 </style>
