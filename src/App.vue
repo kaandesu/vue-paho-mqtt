@@ -1,7 +1,7 @@
 
 <template>
-  <div :class="$mqtt.status() ? 'connected' : 'disconnected'">
-    
+  <div :class="$mqtt.status()">
+    <label>mqtt status: {{ $mqtt.status() }}</label>    
     <button @click="connect()"> connect</button>
     <button @click="subscribe()"> subscribe to arm</button>
     <button @click="unsubscribe('arm')"> Unsubscribe from all</button>
@@ -20,7 +20,7 @@
     <label for="mainTopic">Main Topic</label>
     <input id="mainTopic" placeholder="MainTopic" v-model="mainTopic" />
     <button @click="changeSettings()"> Change Settings</button>    
-    <h4>subData: {{ subData }}</h4>
+    <h4>subData: {{ subData }}</h4>    
     <button @click="showClient()"> Log Client</button>    
   </div>
 
