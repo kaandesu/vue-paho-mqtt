@@ -317,14 +317,14 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     //? Unsubscribe from all
     const unsubscribeAll = () => {
       console.log("unsubscribing from all topics");
-      for (const topic of Object.keys(msgHandlers)) {
+      let subscribedTopics = {
+        ...Object.keys(queueMsgHandlers),
+        ...Object.keys(msgHandlers),
+      };
+      console.log(subscribedTopics);
+      for (let i in Object.keys(subscribedTopics)) {
         if (client && client.isConnected()) {
-          if (topic) client.unsubscribe(topic);
-        }
-      }
-      for (const topic of Object.keys(queueMsgHandlers)) {
-        if (client && client.isConnected()) {
-          if (topic) client.unsubscribe(topic);
+          client.unsubscribe(subscribedTopics[i]);
         }
       }
       clearMsgHandlers();
