@@ -60,3 +60,9 @@ export interface MqttInstance {
   unsubscribeAll: () => void;
   status: () => MqttStatus;
 }
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $mqtt: MqttInstance;
+  }
+}

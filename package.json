@@ -1,13 +1,50 @@
 {
   "name": "vue-paho-mqtt",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "types": "src/index.d.ts",
+  "author": "I Kaan Yilmaz <74111241+kaandesu@users.noreply.github.com> (https://github.com/kaandesu)",  
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Easy-to-use Paho MQTT client for Vue 3 with centralized subscribtion management, type support,and built-in optional alert notification library. ",
+  "contributors": [
+    {
+      "name": "I Kaan Yilmaz",
+      "email": "74111241+kaandesu@users.noreply.github.com"
+    },
+    {
+      "name": "Ege Onder",
+      "email": "40398628+EgeOnder@users.noreply.github.com"
+    }    
+  ],
+  "keywords": [
+    "vue",
+    "vue3",
+    "mqtt",
+    "paho",
+    "paho-mqtt",
+    "mqtt client"    
+  ],
+  "homepage": "https://github.com/kaandesu/vue-paho-mqtt",
+  "bugs": {
+    "url": "https://github.com/kaandesu/vue-paho-mqtt/issues"
+  },
+  "files":[  
+    "dist"
+  ],
+  "main": "dist/vue-paho-mqtt.umd.cjs",
+  "module": "dist/vue-paho-mqtt.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-paho-mqtt.js",
+      "require": "./dist/vue-paho-mqtt.umd.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "types": "./dist/types.d.ts",
+  "type": "module",    
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build && npm run generate:types",
+    "preview": "vite preview",
+    "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist"
   },
   "dependencies": {
     "paho-mqtt": "^1.1.0",
