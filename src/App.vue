@@ -51,10 +51,10 @@ onMounted(() => {
 const connect = () => {  
   $mqtt.connect({
     onConnect: () => {
-      console.log('zaaart');
+      console.log('Mqtt connected (custom callback))');
     },
     onFailure: () => {
-      console.log('zoooooooooooooooort');
+      console.log('Mqtt failed to connect (custom callback))');
     },
   });  
 };

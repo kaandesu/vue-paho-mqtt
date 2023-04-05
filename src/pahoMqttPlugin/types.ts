@@ -8,7 +8,7 @@ export interface MainOptions {
   MqttOptions: MqttOptions;
 }
 
-export type MqttMode = "B" | "F";
+export type MqttMode = "B" | "F" | "Q" | "Qr" | "Br" | "Fnr";
 
 export type MqttStatus =
   | "connected"
@@ -32,6 +32,7 @@ export interface MqttOptions {
   port: number;
   clientId: string;
   mainTopic?: string;
+  enableMainTopic?: boolean;
   watchdogTimeout?: number;
   reconnectTimeout?: number;
 }

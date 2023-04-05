@@ -6,6 +6,7 @@ import {
   MainOptions,
   MqttInstance,
   MqttStatus,
+  MsgHandler,
 } from "./types";
 import { App, ref } from "vue";
 import type { SweetAlertOptions } from "sweetalert2";
@@ -13,12 +14,6 @@ import Paho, { Client } from "paho-mqtt";
 import defu from "defu";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-import {
-  msgHandlers,
-  clearMsgHandlers,
-  queueMsgHandlers,
-  clearQueueMsgHandlers,
-} from "./msgHandlers";
 
 export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
   return (app: App) => {
@@ -34,6 +29,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       port: 9001,
       clientId: `ClientID-${Math.random() * 9999}}`,
       mainTopic: "MAIN",
+      enableMainTopic: true,
       watchdogTimeout: 2000,
       reconnectTimeout: 5000,
     } as MqttOptions);
@@ -43,10 +39,35 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
         qos: 0,
         ret: false,
       },
+      Br: {
+        qos: 0,
+        ret: true,
+      },
+      Q: {
+        qos: 1,
+        ret: false,
+      },
+      Qr: {
+        qos: 1,
+        ret: true,
+      },
       F: {
         qos: 2,
         ret: true,
       },
+      Fnr: {
+        qos: 2,
+        ret: false,
+      },
+    };
+    // Message Handlers
+    let msgHandlers: MsgHandler = {};
+    const clearMsgHandlers = () => {
+      msgHandlers = {};
+    };
+    let queueMsgHandlers: MsgHandler = {};
+    const clearQueueMsgHandlers = () => {
+      queueMsgHandlers = {};
     };
 
     const mqttStatus = ref<MqttStatus | null>(null);
@@ -199,7 +220,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       onMessage: () => any,
       useMainTopic: boolean = true
     ) => {
-      topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
+      topic =
+        useMainTopic && MqttOptions.enableMainTopic
+          ? `${MqttOptions.mainTopic}/${topic}`
+          : topic;
       try {
         if (client && client.isConnected()) {
           if (!msgHandlers[topic]) {
@@ -232,7 +256,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       useMainTopic: boolean = true
     ) => {
       try {
-        topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
+        topic =
+          useMainTopic && MqttOptions.enableMainTopic
+            ? `${MqttOptions.mainTopic}/${topic}`
+            : topic;
         if (client && client.isConnected()) {
           client.send(
             topic,
@@ -300,7 +327,10 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     };
 
     const unsubscribe = (topic: string, useMainTopic: boolean = true) => {
-      topic = useMainTopic ? `${MqttOptions.mainTopic}/${topic}` : topic;
+      topic =
+        useMainTopic && MqttOptions.enableMainTopic
+          ? `${MqttOptions.mainTopic}/${topic}`
+          : topic;
       if (msgHandlers[topic]) delete msgHandlers[topic];
       if (queueMsgHandlers[topic]) delete queueMsgHandlers[topic];
       if (client && client.isConnected()) {
