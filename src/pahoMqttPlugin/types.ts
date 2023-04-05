@@ -1,4 +1,5 @@
-import type { Qos } from "paho-mqtt";
+import type { Qos } from 'paho-mqtt';
+
 export interface PahoMqttPluginOptions {
   showNotifications?: boolean;
   autoConnect?: boolean;
@@ -8,14 +9,14 @@ export interface MainOptions {
   MqttOptions: MqttOptions;
 }
 
-export type MqttMode = "B" | "F" | "Q" | "Qr" | "Br" | "Fnr";
+export type MqttMode = 'B' | 'F' | 'Q' | 'Qr' | 'Br' | 'Fnr';
 
 export type MqttStatus =
-  | "connected"
-  | "disconnected"
-  | "connecting"
-  | "error"
-  | "lost"
+  | 'connected'
+  | 'disconnected'
+  | 'connecting'
+  | 'error'
+  | 'lost'
   | null;
 export interface MqttState {
   [key: string]: {
@@ -24,7 +25,7 @@ export interface MqttState {
   };
 }
 export interface MsgHandler {
-  [topic: string]: [((fnc: any) => any)?];
+  [topic: string]: [((payload: unknown) => unknown)?];
 }
 
 export interface MqttOptions {
@@ -42,14 +43,14 @@ export interface MqttInstance {
   disconnect: () => void;
   subscribe: (
     topic: string,
-    onMessage: () => any,
-    useMainTopic?: boolean
+    onMessage: () => unknown,
+    useMainTopic?: boolean,
   ) => void;
   publish: (
     topic: string,
     payload: string,
     mode: MqttMode,
-    useMainTopic?: boolean
+    useMainTopic?: boolean,
   ) => void;
   host: (host?: string) => void;
   port: (port?: number) => void;

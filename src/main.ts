@@ -1,7 +1,7 @@
-import { createApp } from "vue";
-import "./style.css";
-import App from "./App.vue";
-import { createPahoMqttPlugin } from "./pahoMqttPlugin";
+import { createApp } from 'vue';
+import './style.css';
+import App from './App.vue';
+import { createPahoMqttPlugin } from './pahoMqttPlugin';
 
 createApp(App)
   .use(
@@ -11,11 +11,11 @@ createApp(App)
         showNotifications: true,
       },
       MqttOptions: {
-        host: "localhost",
+        host: 'localhost',
         port: 9001,
         clientId: `SAWAGUI-${Math.random() * 9999}`,
-        mainTopic: "ADT2",
+        mainTopic: 'ADT2',
       },
-    })
+    }),
   )
-  .mount("#app");
+  .mount('#app');
