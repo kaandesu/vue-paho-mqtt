@@ -41,7 +41,7 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
 Install the package using npm:
 
 ```bash
-npm install vue-paho-mqtt
+npm install vue-paho-mqtt --save
 ```
 
 ---
@@ -322,25 +322,178 @@ $mqtt.publish("test/topic", "Hello, world!", "Qr");
 
 ## Host
 
+Get or set the host parameter from the [MQTT Options](#mqtt-options).
+
+```ts
+host: (host?: string) => void;
+```
+
+### Get Host
+
+```ts
+$mqtt.host(); // ie: "localhost"
+```
+
+### Set MQTT host
+
+```ts
+$mqtt.host("192.168.0.1");
+```
+
+#### Example usage
+
+```html
+<template>
+  <label>MQTT host: {{ $mqtt.host() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log($mqtt.host());
+});
+```
+
 ---
 
 ## Port
+
+Get or set the port parameter from the [MQTT Options](#mqtt-options).
+
+```ts
+port: (port?: number) => void;
+```
+
+### Get Port
+
+```ts
+$mqtt.port(); // ie: "9001"
+```
+
+### Set MQTT host
+
+```ts
+$mqtt.host(1234);
+```
+
+#### Example usage
+
+```html
+<template>
+  <label>MQTT port: {{ $mqtt.port() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log($mqtt.port());
+});
+```
 
 ---
 
 ## Client ID
 
+Get or set the clientId parameter from the [MQTT Options](#mqtt-options).
+
+```ts
+clientId: (clientId?: string) => void;
+```
+
+### Get clientId
+
+```ts
+$mqtt.clientId(); // ie: "MyID-234"
+```
+
+### Set clientId
+
+```ts
+$mqtt.clientId("MyNewClientId");
+```
+
+#### Example usage
+
+```html
+<template>
+  <label>MQTT client id: {{ $mqtt.clientId() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log($mqtt.clientId());
+});
+```
+
 ---
 
 ## Main Topic
+
+Get or set the mainTopic parameter from the [MQTT Options](#mqtt-options).
+
+```ts
+mainTopic: (mainTopic?: string) => void;
+```
+
+### Get mainTopic
+
+```ts
+$mqtt.mainTopic(); // ie: "MyID-234"
+```
+
+### Set MQTT mainTopic
+
+```ts
+$mqtt.mainTopic("MyNewClientId");
+```
+
+#### Example usage
+
+```html
+<template>
+  <label>MQTT mainTopic: {{ $mqtt.mainTopic() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log($mqtt.mainTopic());
+});
+```
 
 ---
 
 ## Unsubscribe
 
+Used to unsubscribe from the topic specified
+
+|     param      |   type    |                                           explenation                                            | default |
+| :------------: | :-------: | :----------------------------------------------------------------------------------------------: | :-----: |
+|    `topic`     | `string`  |                         MQTT topic to unsubscribe (ie: 'my/test/topic')                          |    -    |
+| `useMainTopic` | `boolean` | main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified | `true`  |
+
+#### Unsubscribe usage example
+
+```ts
+// if the enableMainTopic is true, unsubscribe from 'MAIN/my/topic'
+$mqtt.unsubscribe("test/topic");
+
+// even if the enableMainTopic is true, unsubscribe from 'my/topic'
+$mqtt.unsubscribe("test/topic", false);
+```
+
 ---
 
 ## Unsubscribe All
+
+Used to unsubscribe from **all** the topics subscribed previously.
+
+#### Usage
+
+```ts
+$mqtt.unsubscribeAll();
+```
 
 ---
 
