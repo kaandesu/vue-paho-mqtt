@@ -72,7 +72,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       queueMsgHandlers = {};
     };
 
-    const mqttStatus = ref<MqttStatus | null>(null);
+    const mqttStatus = ref<MqttStatus | string | null>(null);
     const connectWatchdog = ref<NodeJS.Timeout | null>(null);
     const stayConnected = ref<boolean>(false);
 
@@ -390,7 +390,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       if (e !== undefined) return (MqttOptions.mainTopic = e);
       return MqttOptions.mainTopic;
     };
-    const status = (e?: MqttStatus) => {
+    const status = (e?: MqttStatus | string) => {
       if (e !== undefined) return (mqttStatus.value = e);
       return mqttStatus.value;
     };
@@ -410,15 +410,6 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       status,
     };
 
-    const showClient = () => {
-      console.log(
-        `port: ${client.port}\n host: ${client.host}\n clientId: ${client.clientId}\n mainTopic: ${MqttOptions.mainTopic}`,
-      );
-      console.log('-------------------------');
-      console.log(msgHandlers, queueMsgHandlers);
-    };
-
     app.config.globalProperties.$mqtt = mqttInstance;
-    app.config.globalProperties.$showClient = showClient;
   };
 };
