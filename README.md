@@ -202,11 +202,7 @@ createPahoMqttPlugin({
 
 ---
 
----
-
 ## Global MQTT client instance: $mqtt
-
----
 
 ## Connect
 
@@ -267,7 +263,7 @@ $mqtt.disconnect();
 ## Subscribe
 
 It is used to subscribe to the topic specified, and to define the function to call when the specified topic recieves a message.
-| param | type | explenation | default |
+| param | type | explanation | default |
 | :-----: | :------: | :----: | :---: |
 | `topic` | `string` | MQTT topic to subscribe (ie: 'my/test/topic') | - |
 | `onMessage` | `function` | Arrow function with a parameter to be fired when a message arrives to the specified topic | - |
@@ -297,7 +293,7 @@ $mqtt.subscribe(
 
 Used to publish string data to the topic specified
 
-|     param      |    type    |                                                                                                                   explenation                                                                                                                   | default |
+|     param      |    type    |                                                                                                                   explanation                                                                                                                   | default |
 | :------------: | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----: |
 |    `topic`     |  `string`  |                                                                                                   MQTT topic to publish (ie: 'my/test/topic')                                                                                                   |    -    |
 |   `payload`    |  `string`  |                                                                                                             string payload to send                                                                                                              |    -    |
@@ -472,7 +468,7 @@ onMounted(() => {
 
 Used to unsubscribe from the topic specified
 
-|     param      |   type    |                                           explenation                                            | default |
+|     param      |   type    |                                           explanation                                            | default |
 | :------------: | :-------: | :----------------------------------------------------------------------------------------------: | :-----: |
 |    `topic`     | `string`  |                         MQTT topic to unsubscribe (ie: 'my/test/topic')                          |    -    |
 | `useMainTopic` | `boolean` | main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified | `true`  |
