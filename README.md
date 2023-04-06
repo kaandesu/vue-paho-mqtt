@@ -508,7 +508,7 @@ type MqttStatus =
   | 'lost'
   | null;
 
-status: (status?: string) => MqttStatus;
+status: (status?: MqttStatus | string) => unknown;
 ```
 
 ### Get MQTT Status
