@@ -10,9 +10,14 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true,    
+    "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src/pahoMqttPlugin/*.ts", "src/pahoMqttPlugin/*.d.ts", "src/pahoMqttPlugin/*.tsx", "src/pahoMqttPlugin/*.vue"],
+  "include": [
+    "src/pahoMqttPlugin/*.ts",
+    "src/pahoMqttPlugin/*.d.ts",
+    "src/pahoMqttPlugin/*.tsx",
+    "src/pahoMqttPlugin/*.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
