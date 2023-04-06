@@ -58,7 +58,7 @@ export interface MqttInstance {
   mainTopic: (mainTopic?: string) => void;
   unsubscribe: (topic: string, useMainTopic?: boolean) => void;
   unsubscribeAll: () => void;
-  status: () => MqttStatus;
+  status: (status?: MqttStatus | string) => unknown;
 }
 
 declare module 'vue' {
