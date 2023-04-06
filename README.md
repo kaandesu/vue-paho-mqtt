@@ -53,11 +53,11 @@ To use the plugin, you need to create an instance of it and pass it to the `use`
 ### Vite
 
 ```typescript
-import { createApp } from "vue";
-import App from "./App.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
 
-import "vue-paho-mqtt/style.css";
-import { createPahoMqttPlugin } from "vue-paho-mqtt";
+import 'vue-paho-mqtt/style.css';
+import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 createApp(App)
   .use(
@@ -68,23 +68,23 @@ createApp(App)
       },
 
       MqttOptions: {
-        host: "localhost",
+        host: 'localhost',
         port: 9001,
         clientId: `MyID-${Math.random() * 9999}`,
-        mainTopic: "MAIN",
+        mainTopic: 'MAIN',
       },
     })
   )
-  .mount("#app");
+  .mount('#app');
 ```
 
 Quasar Framework ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
 
 ```js
-import { boot } from "quasar/wrappers";
+import { boot } from 'quasar/wrappers';
 
-import "vue-paho-mqtt/style.css";
-import { createPahoMqttPlugin } from "vue-paho-mqtt";
+import 'vue-paho-mqtt/style.css';
+import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 export default boot(({ app }) => {
   app.use(
@@ -95,10 +95,10 @@ export default boot(({ app }) => {
       },
 
       MqttOptions: {
-        host: "localhost",
+        host: 'localhost',
         port: 9001,
         clientId: `MyID-${Math.random() * 9999}`,
-        mainTopic: "MAIN",
+        mainTopic: 'MAIN',
       },
     })
   );
@@ -167,7 +167,7 @@ The following are the MQTT QoS and retention options available for publishing me
 #### Example Usage with the $mqtt.publish
 
 ```ts
-$mqtt.publish("test/topic", "Hello, world!", "Fnr");
+$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
 ```
 
 ---
@@ -273,15 +273,15 @@ It is used to subscribe to the topic specified, and to define the function to ca
 
 ```ts
 // if the enableMainTopic is true, subscribe to 'MAIN/my/topic'
-$mqtt.subscribe("my/topic", (data: any) => {
-  console.log(data, "recieved");
+$mqtt.subscribe('my/topic', (data: any) => {
+  console.log(data, 'recieved');
 });
 
 // even if the enableMainTopic is true, subscribe to 'my/topic'
 $mqtt.subscribe(
-  "my/topic",
+  'my/topic',
   (data: any) => {
-    console.log(data, "recieved");
+    console.log(data, 'recieved');
   },
   false
 );
@@ -305,15 +305,15 @@ Used to publish string data to the topic specified
 ```ts
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Fnr' => Qos: 2 , retianed: false
-$mqtt.publish("test/topic", "Hello, world!", "Fnr");
+$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
 
 // even if the enableMainTopic is true, publish to 'my/topic'
 // 'B' => Qos: 0 , retianed: false
-$mqtt.publish("test/topic", "Hello, world!", "B", false);
+$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
 
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Qr' => Qos: 1 , retianed: true
-$mqtt.publish("test/topic", "Hello, world!", "Qr");
+$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 // payload: "Hello, world!"
 ```
@@ -337,7 +337,7 @@ $mqtt.host(); // ie: "localhost"
 ### Set MQTT host
 
 ```ts
-$mqtt.host("192.168.0.1");
+$mqtt.host('192.168.0.1');
 ```
 
 #### Example usage
@@ -409,7 +409,7 @@ $mqtt.clientId(); // ie: "MyID-234"
 ### Set clientId
 
 ```ts
-$mqtt.clientId("MyNewClientId");
+$mqtt.clientId('MyNewClientId');
 ```
 
 #### Example usage
@@ -445,7 +445,7 @@ $mqtt.mainTopic(); // ie: "MyID-234"
 ### Set MQTT mainTopic
 
 ```ts
-$mqtt.mainTopic("MyNewClientId");
+$mqtt.mainTopic('MyNewClientId');
 ```
 
 #### Example usage
@@ -477,10 +477,10 @@ Used to unsubscribe from the topic specified
 
 ```ts
 // if the enableMainTopic is true, unsubscribe from 'MAIN/my/topic'
-$mqtt.unsubscribe("test/topic");
+$mqtt.unsubscribe('test/topic');
 
 // even if the enableMainTopic is true, unsubscribe from 'my/topic'
-$mqtt.unsubscribe("test/topic", false);
+$mqtt.unsubscribe('test/topic', false);
 ```
 
 ---
@@ -501,14 +501,14 @@ $mqtt.unsubscribeAll();
 
 ```ts
 type MqttStatus =
-  | "connected"
-  | "disconnected"
-  | "connecting"
-  | "error"
-  | "lost"
+  | 'connected'
+  | 'disconnected'
+  | 'connecting'
+  | 'error'
+  | 'lost'
   | null;
 
-status: (status?: MqttStatus) => MqttStatus;
+status: (status?: string) => MqttStatus;
 ```
 
 ### Get MQTT Status
@@ -534,7 +534,7 @@ onMounted(() => {
 ### Set MQTT Status
 
 ```ts
-$mqtt.status("customStatus");
+$mqtt.status('customStatus');
 ```
 
 ---
