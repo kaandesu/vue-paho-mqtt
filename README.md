@@ -15,6 +15,18 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
   - [MQTT Options](#mqtt-options)
   - [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish)
 - [Notification Alerts](#notification-alerts)
+- [Global MQTT client instance: $mqtt](#global-mqtt-client-instance-mqtt)
+  - [$mqtt.connect()](#connect)
+  - [$mqtt.disconnect()](#disconnect)
+  - [$mqtt.subscribe()](#subscribe)
+  - [$mqtt.publish()](#publish)
+  - [$mqtt.host()](#host)
+  - [$mqtt.port()](#port)
+  - [$mqtt.clientId()](#client-id)
+  - [$mqtt.mainTopic()](#main-topic)
+  - [$mqtt.unsubscribe()](#unsubscribe)
+  - [$mqtt.unsubscribeAll()](#unsubscribe-all)
+  - [$mqtt.status()](#status)
 - [Usage Example](#usage-example)
   - [Vue Options API](#vue-options-api)
   - [Vue Composition API](#vue-composition-api)
@@ -29,7 +41,7 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
 Install the package using npm:
 
 ```bash
-npm install  vue-paho-mqtt
+npm install vue-paho-mqtt
 ```
 
 ---
@@ -43,6 +55,7 @@ To use the plugin, you need to create an instance of it and pass it to the `use`
 ```typescript
 import { createApp } from "vue";
 import App from "./App.vue";
+
 import "vue-paho-mqtt/style.css";
 import { createPahoMqttPlugin } from "vue-paho-mqtt";
 
@@ -69,8 +82,10 @@ Quasar Framework ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/
 
 ```js
 import { boot } from "quasar/wrappers";
+
 import "vue-paho-mqtt/style.css";
 import { createPahoMqttPlugin } from "vue-paho-mqtt";
+
 export default boot(({ app }) => {
   app.use(
     createPahoMqttPlugin({
@@ -180,6 +195,141 @@ createPahoMqttPlugin({
 |  Connection Lost   |  error  | "Mqtt Error" |    "MQTT connection lost"     |   -   |
 |  Disconnect Error  |  error  |   "Error"    | catch(error) => error.message |   -   |
 |   Connect Error    |  error  |   "Error"    | catch(error) => error.message |   -   |
+
+---
+
+---
+
+## Global MQTT client instance: $mqtt
+
+---
+
+## Connect
+
+### Usage
+
+```ts
+$mqtt.connect();
+```
+
+### Optional Custom Callbacks
+
+|      Callback      |                       When                        |                          Return                           |
+| :----------------: | :-----------------------------------------------: | :-------------------------------------------------------: |
+|    `onConnect`     |     successfully connected to the mqtt broker     |                             -                             |
+|    `onFailure`     |       failed to connect to the mqtt broker        |                             -                             |
+| `onConnectionLost` |    disconnected or connection lost connection     |            responseObject: {errorCode: number}            |
+| `onMessageArrived` | message arrived from one of the subscribed topics | message: {payloadString: string;destinationName: string;} |
+
+#### Custom Callback Usage example:
+
+```ts
+$mqtt.connect({
+  onConnect: () => {
+    console.log("Mqtt connected");
+  },
+  onFailure: () => {
+    console.log("Mqtt connection failed");
+  },
+  onConnectionLost: (error) => {
+    console.log('Error:',error.message)
+  }
+  onMessageArrived: (message: {
+        payloadString: string;
+        destinationName: string;
+      }) => {
+    console.log('Message Arrived:',message.payloadString, message.destinationName);
+  }
+});
+```
+
+---
+
+## Disconnect
+
+---
+
+## Subscribe
+
+---
+
+## Publish
+
+---
+
+## Host
+
+---
+
+## Port
+
+---
+
+## Client ID
+
+---
+
+## Main Topic
+
+---
+
+## Unsubscribe
+
+---
+
+## Unsubscribe All
+
+---
+
+## Status
+
+### MqttMode:
+
+```ts
+type MqttMode = "B" | "F";
+```
+
+## Mqtt Status:
+
+```ts
+type MqttStatus =
+  | "connected"
+  | "disconnected"
+  | "connecting"
+  | "error"
+  | "lost"
+  | null;
+
+status: (status?: MqttStatus) => MqttStatus;
+```
+
+### Get MQTT Status
+
+```ts
+$mqtt.status(); // 'connected', 'disconnected', 'connecting', 'error', 'lost', null
+```
+
+#### Example usage
+
+```html
+<template>
+  <label>MQTT Status: {{ $mqtt.status() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log($mqtt.status());
+});
+```
+
+### Set MQTT Status
+
+```ts
+$mqtt.status("customStatus");
+```
+
+---
 
 ## Usage Example
 
