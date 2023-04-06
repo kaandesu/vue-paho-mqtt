@@ -16,17 +16,17 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
   - [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish)
 - [Notification Alerts](#notification-alerts)
 - [Global MQTT client instance: $mqtt](#global-mqtt-client-instance-mqtt)
-  - [$mqtt.connect()](#connect)
-  - [$mqtt.disconnect()](#disconnect)
-  - [$mqtt.subscribe()](#subscribe)
-  - [$mqtt.publish()](#publish)
-  - [$mqtt.host()](#host)
-  - [$mqtt.port()](#port)
-  - [$mqtt.clientId()](#client-id)
-  - [$mqtt.mainTopic()](#main-topic)
-  - [$mqtt.unsubscribe()](#unsubscribe)
-  - [$mqtt.unsubscribeAll()](#unsubscribe-all)
-  - [$mqtt.status()](#status)
+  - [connect()](#connect)
+  - [disconnect()](#disconnect)
+  - [subscribe()](#subscribe)
+  - [publish()](#publish)
+  - [host()](#host)
+  - [port()](#port)
+  - [clientId()](#client-id)
+  - [mainTopic()](#main-topic)
+  - [unsubscribe()](#unsubscribe)
+  - [unsubscribeAll()](#unsubscribe-all)
+  - [status()](#status)
 - [Usage Example](#usage-example)
   - [Vue Options API](#vue-options-api)
   - [Vue Composition API](#vue-composition-api)
@@ -206,6 +206,8 @@ createPahoMqttPlugin({
 
 ## Connect
 
+Connect to the mqtt broker. Shows a dialog notification in case of error if the plugin is configured to do so.
+
 ### Usage
 
 ```ts
@@ -247,13 +249,74 @@ $mqtt.connect({
 
 ## Disconnect
 
+Disconnect from the mqtt broker.
+Shows a dialog notification in case of error if the plugin is configured to do so.
+
+### Usage
+
+```ts
+$mqtt.disconnect();
+```
+
 ---
 
 ## Subscribe
 
+It is used to subscribe to the topic specified, and to define the function to call when the specified topic recieves a message.
+| param | type | explenation | default |
+| :-----: | :------: | :----: | :---: |
+| `topic` | `string` | MQTT topic to subscribe (ie: 'my/test/topic') | - |
+| `onMessage` | `function` | Arrow function with a parameter to be fired when a message arrives to the specified topic | - |
+| `useMainTopic` | `boolean` | main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified | `true` |
+
+#### Subscribe usage example
+
+```ts
+// if the enableMainTopic is true, subscribe to 'MAIN/my/topic'
+$mqtt.subscribe("my/topic", (data: any) => {
+  console.log(data, "recieved");
+});
+
+// even if the enableMainTopic is true, subscribe to 'my/topic'
+$mqtt.subscribe(
+  "my/topic",
+  (data: any) => {
+    console.log(data, "recieved");
+  },
+  false
+);
+```
+
 ---
 
 ## Publish
+
+Used to publish string data to the topic specified
+
+|     param      |    type    |                                                                                                                   explenation                                                                                                                   | default |
+| :------------: | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----: |
+|    `topic`     |  `string`  |                                                                                                   MQTT topic to publish (ie: 'my/test/topic')                                                                                                   |    -    |
+|   `payload`    |  `string`  |                                                                                                             string payload to send                                                                                                              |    -    |
+|     `mode`     | `MqttMode` | See [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish) for detailed explanation for mqtt mode options.  [`"B"` \| `"F"` \| `"Q"` \| `"Qr"` \| `"Br"` \| `"Fnr"`] |    -    |
+| `useMainTopic` | `boolean`  |                                                                        main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified                                                                         | `true`  |
+
+#### Publish usage example
+
+```ts
+// if the enableMainTopic is true, publish to 'MAIN/my/topic'
+// 'Fnr' => Qos: 2 , retianed: false
+$mqtt.publish("test/topic", "Hello, world!", "Fnr");
+
+// even if the enableMainTopic is true, publish to 'my/topic'
+// 'B' => Qos: 0 , retianed: false
+$mqtt.publish("test/topic", "Hello, world!", "B", false);
+
+// if the enableMainTopic is true, publish to 'MAIN/my/topic'
+// 'Qr' => Qos: 1 , retianed: true
+$mqtt.publish("test/topic", "Hello, world!", "Qr");
+
+// payload: "Hello, world!"
+```
 
 ---
 
@@ -282,14 +345,6 @@ $mqtt.connect({
 ---
 
 ## Status
-
-### MqttMode:
-
-```ts
-type MqttMode = "B" | "F";
-```
-
-## Mqtt Status:
 
 ```ts
 type MqttStatus =
