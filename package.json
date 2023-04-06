@@ -1,6 +1,6 @@
 {
   "name": "vue-paho-mqtt",
-  "author": "I Kaan Yilmaz <kaandesu00@gmail.com> (https://github.com/kaandesu)",  
+  "author": "I Kaan Yilmaz <kaandesu00@gmail.com> (https://github.com/kaandesu)",
   "version": "0.0.1",
   "license": "MIT",
   "description": "Easy-to-use Paho MQTT client for Vue 3 with centralized subscribtion management, type support,and built-in optional alert notification library. ",
@@ -12,7 +12,7 @@
     {
       "name": "Ege Onder",
       "email": "40398628+EgeOnder@users.noreply.github.com"
-    }    
+    }
   ],
   "keywords": [
     "vue",
@@ -20,13 +20,13 @@
     "mqtt",
     "paho",
     "paho-mqtt",
-    "mqtt client"    
+    "mqtt client"
   ],
   "homepage": "https://github.com/kaandesu/vue-paho-mqtt",
   "bugs": {
     "url": "https://github.com/kaandesu/vue-paho-mqtt/issues"
   },
-  "files":[  
+  "files": [
     "dist"
   ],
   "main": "dist/vue-paho-mqtt.umd.cjs",
@@ -39,14 +39,18 @@
     "./style.css": "./dist/style.css"
   },
   "types": "./dist/types.d.ts",
-  "type": "module",    
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build && npm run generate:types",
     "preview": "vite preview",
-    "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist"
+    "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "paho-mqtt": "^1.1.0",
     "sweetalert2": "^11.7.3",
     "vue": "^3.2.47",
