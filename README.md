@@ -2,27 +2,27 @@
 
 The `vue-paho-mqtt` plugin provides a convenient way to use the [Eclipse Paho MQTT JavaScript client](https://www.eclipse.org/paho/clients/js/) with Vue 3.
 
-This plugin allows you to connect to a MQTT broker and subscribe to topics in your Vue app. It uses `paho-mqtt` to connect to the broker and provides several useful features such as auto-reconnect, message handlers, and error notifications.
+This plugin allows you to connect to a MQTT broker and subscribe to topics in your Vue app. It uses [paho-mqtt](https://www.npmjs.com/package/paho-mqtt) to connect to the broker and provides several useful features such as auto-reconnect, message handlers, and error notifications.
 
 [Live demo](https://kaandesu.github.io/vue-paho-mqtt)
 
 ## Table of contents
 
--   [Installation](#installation)
--   [Usage](#usage)
--   [Options](#options)
-    -   [Plugin Options](#plugin-options)
-    -   [MQTT Options](#mqtt-options)
-    -   [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish)
--   [Notification Alerts](#notification-alerts)
--   [Usage Example](#usage-example)
-    -   [Vue Options API](#vue-options-api)
-    -   [Vue Composition API](#vue-composition-api)
--   [Contributing](#contributing)
--   [License](#license)
--   [Credits](#credits)
-    -   [Contact](#contact)
--   [Changelog](#changelog)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Options](#options)
+  - [Plugin Options](#plugin-options)
+  - [MQTT Options](#mqtt-options)
+  - [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish)
+- [Notification Alerts](#notification-alerts)
+- [Usage Example](#usage-example)
+  - [Vue Options API](#vue-options-api)
+  - [Vue Composition API](#vue-composition-api)
+- [Contributing](#contributing)
+- [License](#license)
+- [Credits](#credits)
+  - [Contact](#contact)
+- [Changelog](#changelog)
 
 ## Installation
 
@@ -34,37 +34,60 @@ npm install  vue-paho-mqtt
 
 ---
 
-## Usage
+## Setup
 
 To use the plugin, you need to create an instance of it and pass it to the `use` function:
 
+### Vite
+
 ```typescript
-import { createApp } from 'vue';
-import './style.css';
-import App from './App.vue';
-import { createPahoMqttPlugin } from 'vue-paho-mqtt';
+import { createApp } from "vue";
+import App from "./App.vue";
+import "vue-paho-mqtt/style.css";
+import { createPahoMqttPlugin } from "vue-paho-mqtt";
 
 createApp(App)
-	.use(
-		createPahoMqttPlugin({
-			PluginOptions: {
-				autoConnect: true,
+  .use(
+    createPahoMqttPlugin({
+      PluginOptions: {
+        autoConnect: true,
+        showNotifications: true,
+      },
 
-				showNotifications: true,
-			},
+      MqttOptions: {
+        host: "localhost",
+        port: 9001,
+        clientId: `MyID-${Math.random() * 9999}`,
+        mainTopic: "MAIN",
+      },
+    })
+  )
+  .mount("#app");
+```
 
-			MqttOptions: {
-				host: 'localhost',
+Quasar Framework ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
 
-				port: 9001,
+```js
+import { boot } from "quasar/wrappers";
+import "vue-paho-mqtt/style.css";
+import { createPahoMqttPlugin } from "vue-paho-mqtt";
+export default boot(({ app }) => {
+  app.use(
+    createPahoMqttPlugin({
+      PluginOptions: {
+        autoConnect: true,
+        showNotifications: true,
+      },
 
-				clientId: `MyID-${Math.random() * 9999}`,
-
-				mainTopic: 'MAIN',
-			},
-		})
-	)
-	.mount('#app');
+      MqttOptions: {
+        host: "localhost",
+        port: 9001,
+        clientId: `MyID-${Math.random() * 9999}`,
+        mainTopic: "MAIN",
+      },
+    })
+  );
+});
 ```
 
 ---
@@ -75,25 +98,27 @@ createApp(App)
 
 You can configure the plugin by passing an object with the following options to `createPahoMqttPlugin`:
 
--   `showNotifications` (`boolean`, default: `true`) - Whether to show error and success notifications.
+- `showNotifications` (`boolean`, default: `true`) - Whether to show error and success notifications.
 
--   `autoConnect` (`boolean`, default: `true`) - Whether to automatically connect to the broker when the plugin is initialized.
+- `autoConnect` (`boolean`, default: `true`) - Whether to automatically connect to the broker when the plugin is initialized.
 
 ### MQTT Options
 
 You can configure the MQTT client by passing an object with the following options to `createPahoMqttPlugin`:
 
--   `host` (`string`, default: `"localhost"`) - The hostname or IP address of the MQTT broker.
+- `host` (`string`, default: `"localhost"`) - The hostname or IP address of the MQTT broker.
 
--   `port` (`number`, default: `9001`) - The port number of the MQTT broker.
+- `port` (`number`, default: `9001`) - The port number of the MQTT broker.
 
--   `clientId` (`string`, default: `"ClientID-${Math.random() * 9999}}"`) - The client identifier to use when connecting to the broker.
+- `clientId` (`string`, default: `"ClientID-${Math.random() * 9999}}"`) - The client identifier to use when connecting to the broker.
 
--   `mainTopic` (`string`, default: `"MAIN"`) - The main topic to subscribe to.
+- `mainTopic` (`string`, default: `"MAIN"`) - If enaled, the topic that will be prepended to the topic specified during the $mqtt.publish and $mqtt.subscribe _(can be manually disabled in $mqtt.publish and $mqtt.subscribe)_.
 
--   `watchdogTimeout` (`number`, default: `2000`) - The time in milliseconds to wait for a connection to the broker before timing out.
+- `enableMainTopic` (`boolean`, default: `true`) - Enables usage of the main topic.
 
--   `reconnectTimeout` (`number`, default: `5000`) - The time in milliseconds to wait before attempting to reconnect to the broker after a disconnection.
+- `watchdogTimeout` (`number`, default: `2000`) - The time in milliseconds to wait for a connection to the broker before timing out.
+
+- `reconnectTimeout` (`number`, default: `5000`) - The time in milliseconds to wait before attempting to reconnect to the broker after a disconnection.
 
 ---
 
@@ -112,40 +137,49 @@ The following are the MQTT QoS and retention options available for publishing me
 | string | F      |     2     |   true |
 | string | Fnr    |     2     |  false |
 
--   **B**: QoS 0, non-retained message. The message is delivered at most once, and the broker does not store the message for future subscribers.
+- **B**: QoS 0, non-retained message. The message is delivered at most once, and the broker does not store the message for future subscribers.
 
--   **Br**: QoS 0, retained message. The message is delivered at most once, and the broker stores the message for future subscribers.
+- **Br**: QoS 0, retained message. The message is delivered at most once, and the broker stores the message for future subscribers.
 
--   **Q**: QoS 1, non-retained message. The message is delivered at least once, and the broker stores it until the publisher receives an acknowledgment from the subscriber.
+- **Q**: QoS 1, non-retained message. The message is delivered at least once, and the broker stores it until the publisher receives an acknowledgment from the subscriber.
 
--   **Qr**: QoS 1, retained message. The message is delivered at least once, and the broker stores it until the publisher receives an acknowledgment from the subscriber. The broker also stores the message for future subscribers.
+- **Qr**: QoS 1, retained message. The message is delivered at least once, and the broker stores it until the publisher receives an acknowledgment from the subscriber. The broker also stores the message for future subscribers.
 
--   **F**: QoS 2, retained message. The message is delivered exactly once, and the broker stores it for future subscribers.
+- **F**: QoS 2, retained message. The message is delivered exactly once, and the broker stores it for future subscribers.
 
--   **Fnr**: QoS 2, non-retained message. The message is delivered exactly once, and the broker does not store it for future subscribers.
+- **Fnr**: QoS 2, non-retained message. The message is delivered exactly once, and the broker does not store it for future subscribers.
+
+#### Example Usage with the $mqtt.publish
+
+```ts
+$mqtt.publish("test/topic", "Hello, world!", "Fnr");
+```
 
 ---
 
 ## Notification Alerts
 
 The Vue Paho MQTT plugin comes with built-in notifications using [SweetAlert2](https://sweetalert2.github.io/) library to display the notification alerts. _This library is already installed with the plugin_. <br>
-There are three main usages of the notification:
 
-Use Case When does it show?
-SweetAlert When PluginOptions.showNotifications is true and enable is also true.
-onFailureCallback When mqtt failed to connect.
-onConnectCallback When mqtt is connected.
-disconnectClient When called. Shows a dialog notification in case of error if the plugin is configured to do so.
-connectClient When mqtt is connecting, connected, or connection timed out. Shows a dialog notification in case of error if the plugin is configured to do so.
------ WORK IN PROGRESS ------ TODO TABLE
-| On | Icon | Content |
-| :-----------------: | :---: | :-----: |
-| onConnectionSuccess | false | false |
-| 0 | true | true |
-| 1 | false | false |
-| 1 | true | true |
-| 2 | true | true |
-| 2 | false | false |
+- `PluginOptions.showNotifications` (`boolean`, default: `true`) - Whether to show error and success alert notifications.
+
+```ts
+createPahoMqttPlugin({
+      PluginOptions: {
+        showNotifications: true,
+        ...
+      }
+      ...
+```
+
+|         On         |  Icon   |    Title     |            Content            | Timer |
+| :----------------: | :-----: | :----------: | :---------------------------: | :---: |
+| Connection Success | success | "Connected"  |       "MQTT Connected"        | 1500  |
+| Connection Failure |  error  | "Mqtt Error" |   "MQTT failed to connect"    |   -   |
+| Connection Timeout |  error  | "Mqtt Error" | "Broker connection timed out" |   -   |
+|  Connection Lost   |  error  | "Mqtt Error" |    "MQTT connection lost"     |   -   |
+|  Disconnect Error  |  error  |   "Error"    | catch(error) => error.message |   -   |
+|   Connect Error    |  error  |   "Error"    | catch(error) => error.message |   -   |
 
 ## Usage Example
 
@@ -154,7 +188,7 @@ connectClient When mqtt is connecting, connected, or connection timed out. Shows
 ```typescript
 mounted() {
   // Connect to the mqtt broker
-  $mqtt.connect();
+  this.$mqtt.connect();
 
   // Subscribe to a topic
   this.$mqtt.subscribe("test/topic", (message) => {
