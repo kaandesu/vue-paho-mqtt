@@ -1,5 +1,8 @@
 # Vue-Paho-Mqtt Plugin
 
+<p align="center">
+  <img src="./pluginlogo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
+</p>
 The `vue-paho-mqtt` plugin provides a convenient way to use the [Eclipse Paho MQTT JavaScript client](https://www.eclipse.org/paho/clients/js/) with Vue 3.
 
 This plugin allows you to connect to a MQTT broker and subscribe to topics in your Vue app. It uses [paho-mqtt](https://www.npmjs.com/package/paho-mqtt) to connect to the broker and provides several useful features such as auto-reconnect, message handlers, and error notifications.
@@ -41,7 +44,7 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
 Install the package using npm:
 
 ```bash
-npm install vue-paho-mqtt --save
+npm install vue-paho-mqtt
 ```
 
 ---
