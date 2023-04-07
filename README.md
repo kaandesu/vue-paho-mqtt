@@ -57,7 +57,7 @@ To use the plugin, you need to create an instance of it and pass it to the `use`
 ### Vite
 
 ```typescript
-import { createApp } from 'vue';
+import './style.css';
 import App from './App.vue';
 
 import 'vue-paho-mqtt/style.css';
@@ -77,12 +77,12 @@ createApp(App)
         clientId: `MyID-${Math.random() * 9999}`,
         mainTopic: 'MAIN',
       },
-    })
+    }),
   )
   .mount('#app');
 ```
 
-Quasar Framework ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
+Quasar Framework (Vite) ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
 
 ```js
 import { boot } from 'quasar/wrappers';
@@ -104,7 +104,7 @@ export default boot(({ app }) => {
         clientId: `MyID-${Math.random() * 9999}`,
         mainTopic: 'MAIN',
       },
-    })
+    }),
   );
 });
 ```
@@ -287,7 +287,7 @@ $mqtt.subscribe(
   (data: any) => {
     console.log(data, 'recieved');
   },
-  false
+  false,
 );
 ```
 
