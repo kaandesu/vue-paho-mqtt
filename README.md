@@ -228,20 +228,24 @@ $mqtt.connect();
 ```ts
 $mqtt.connect({
   onConnect: () => {
-    console.log("Mqtt connected");
+    console.log('Mqtt connected');
   },
   onFailure: () => {
-    console.log("Mqtt connection failed");
+    console.log('Mqtt connection failed');
   },
-  onConnectionLost: (error) => {
-    console.log('Error:',error.message)
-  }
+  onConnectionLost: (error) => {
+    console.log('Error:', error.message);
+  },
   onMessageArrived: (message: {
-        payloadString: string;
-        destinationName: string;
-      }) => {
-    console.log('Message Arrived:',message.payloadString, message.destinationName);
-  }
+    payloadString: string;
+    destinationName: string;
+  }) => {
+    console.log(
+      'Message Arrived:',
+      message.payloadString,
+      message.destinationName,
+    );
+  },
 });
 ```
 
@@ -566,7 +570,7 @@ mounted() {
 <script setup lang="ts">
 
 import { getCurrentInstance, onMounted}  from  "vue";
-const { $mqtt }: any = getCurrentInstance()?.appContext.config.globalProperties;
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
 
 onMounted(() => {
   // Connect to the mqtt broker
