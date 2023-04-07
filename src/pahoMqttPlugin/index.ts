@@ -8,7 +8,7 @@ import {
   MqttStatus,
   MsgHandler,
 } from './types';
-import { App, ref } from 'vue';
+import { App, ref, reactive } from 'vue';
 import type { SweetAlertOptions } from 'sweetalert2';
 import Paho, { Client } from 'paho-mqtt';
 import swal from 'sweetalert2';
@@ -25,14 +25,16 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     };
 
     const defaultMqttOptions: Partial<MqttOptions> = {
+      host: 'localhost',
+      port: 9001,
+      clientId: `ClientId-${Math.random() * 9999}`,
       mainTopic: 'MAIN',
       enableMainTopic: true,
       watchdogTimeout: 2000,
       reconnectTimeout: 5000,
     };
-
     PluginOptions = { ...defaultPluginOptions, ...PluginOptions };
-    MqttOptions = { ...defaultMqttOptions, ...MqttOptions };
+    MqttOptions = reactive({ ...defaultMqttOptions, ...MqttOptions });
 
     const MQTT_STATE: MqttState = {
       B: {
@@ -375,23 +377,33 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
     if (PluginOptions.autoConnect) connectClient();
 
     const port = (e?: number) => {
-      if (e !== undefined) return (MqttOptions.port = e);
+      if (e !== undefined) {
+        return (MqttOptions.port = e);
+      }
       return MqttOptions.port;
     };
     const host = (e?: string) => {
-      if (e !== undefined) return (MqttOptions.host = e);
+      if (e !== undefined) {
+        return (MqttOptions.host = e);
+      }
       return MqttOptions.host;
     };
     const clientId = (e?: string) => {
-      if (e !== undefined) return (MqttOptions.clientId = e);
+      if (e !== undefined) {
+        return (MqttOptions.clientId = e);
+      }
       return MqttOptions.clientId;
     };
     const mainTopic = (e?: string) => {
-      if (e !== undefined) return (MqttOptions.mainTopic = e);
+      if (e !== undefined) {
+        return (MqttOptions.mainTopic = e);
+      }
       return MqttOptions.mainTopic;
     };
     const status = (e?: MqttStatus | string) => {
-      if (e !== undefined) return (mqttStatus.value = e);
+      if (e !== undefined && e !== null) {
+        return (mqttStatus.value = e);
+      }
       return mqttStatus.value;
     };
 

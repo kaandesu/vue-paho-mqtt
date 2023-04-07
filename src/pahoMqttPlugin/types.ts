@@ -43,7 +43,7 @@ export interface MqttInstance {
   disconnect: () => void;
   subscribe: (
     topic: string,
-    onMessage: () => unknown,
+    onMessage: (data?: any) => void,
     useMainTopic?: boolean,
   ) => void;
   publish: (
