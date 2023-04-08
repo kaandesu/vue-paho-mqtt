@@ -74,7 +74,7 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
       queueMsgHandlers = {};
     };
 
-    const mqttStatus = ref<MqttStatus | string | null>(null);
+    const mqttStatus = ref<MqttStatus | string | null>('disconnected');
     const connectWatchdog = ref<NodeJS.Timeout | null>(null);
     const stayConnected = ref<boolean>(false);
 

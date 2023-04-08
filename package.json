@@ -35,14 +35,14 @@
     ".": {
       "import": "./dist/vue-paho-mqtt.js",
       "require": "./dist/vue-paho-mqtt.umd.cjs"
-    },    
+    },
     "./style.css": "./dist/style.css"
   },
   "types": "./dist/types.d.ts",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run generate:types && npm run build:demo",    
+    "build": "vite build && npm run generate:types && npm run build:demo",
     "build:demo": "vite build --mode demo --outDir ./live-demo",
     "preview": "vite preview",
     "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist",
@@ -65,6 +65,7 @@
     "@vitejs/plugin-vue": "^4.1.0",
     "eslint": "^8.37.0",
     "eslint-plugin-vue": "^9.10.0",
+    "intro.js": "^7.0.1",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
     "vue-tsc": "^1.2.0"
