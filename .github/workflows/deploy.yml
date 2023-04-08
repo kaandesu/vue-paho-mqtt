@@ -11,10 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - name: Install Vite
-        run: npm install -g vite
       - name: Build live demo
-        run: npm run build:demo
+        run: npm run build
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
