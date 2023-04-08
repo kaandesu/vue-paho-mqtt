@@ -21,7 +21,7 @@
     "paho-mqtt",
     "mqtt client"
   ],
-  "homepage": "https://kaandesu.github.io/vue-paho-mqtt/",
+  "homepage": "https://kaandesu.github.io/",
   "bugs": {
     "url": "https://github.com/kaandesu/vue-paho-mqtt/issues"
   },
