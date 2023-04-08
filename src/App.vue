@@ -94,7 +94,6 @@ const options = ref([
       { text: 'F', value: 'F' },
       { text: 'Fnr', value: 'Fnr' }           
     ]);
-    
 const pubTopic = ref('');
 const pubData = ref('');
 const pubMode = ref('B');
