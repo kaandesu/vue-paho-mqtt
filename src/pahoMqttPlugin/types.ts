@@ -43,7 +43,7 @@ export interface MqttInstance {
   disconnect: () => void;
   subscribe: (
     topic: string,
-    onMessage: (data?: any) => void,
+    onMessage: (data?: unknown) => void,
     useMainTopic?: boolean,
   ) => void;
   publish: (
@@ -52,13 +52,13 @@ export interface MqttInstance {
     mode: MqttMode,
     useMainTopic?: boolean,
   ) => void;
-  host: (host?: string) => void;
-  port: (port?: number) => void;
-  clientId: (clientId?: string) => void;
-  mainTopic: (mainTopic?: string) => void;
+  host: (host?: string) => string;
+  port: (port?: number) => number;
+  clientId: (clientId?: string) => string;
+  mainTopic: (mainTopic?: string) => string | undefined;
   unsubscribe: (topic: string, useMainTopic?: boolean) => void;
   unsubscribeAll: () => void;
-  status: (status?: MqttStatus | string) => unknown;
+  status: (status?: MqttStatus | string) => string | null;
 }
 
 declare module 'vue' {

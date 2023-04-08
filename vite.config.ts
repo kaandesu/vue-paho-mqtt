@@ -11,6 +11,11 @@ export default defineConfig(({ mode }) => {
   } else {
     return {
       plugins: [vue()],
+      test: {
+        globals: true,
+        setupFiles: 'src/setupTests.ts',
+        includeSource: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
+      },
       build: {
         lib: {
           entry: resolve(__dirname, 'src/pahoMqttPlugin/index.ts'),
