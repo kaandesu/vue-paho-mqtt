@@ -44,6 +44,7 @@
     "build": "vite build && npm run generate:types && npm run build:demo",
     "build:demo": "vite build --mode demo --outDir ./live-demo",
     "preview": "vite preview",
+    "deploy": "gh-pages -d github",
     "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
     "changeset:version": "changeset version",
