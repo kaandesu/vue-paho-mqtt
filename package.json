@@ -17,8 +17,7 @@
   "keywords": [
     "vue",
     "vue3",
-    "mqtt",
-    "paho",
+    "mqtt",    
     "paho-mqtt",
     "mqtt client"
   ],
