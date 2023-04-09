@@ -37,7 +37,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
               );
             });
             done();
-          }, 100);
+          }, 0);
         }),
     );
   });
@@ -53,7 +53,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
           setTimeout(() => {
             UTILS.publish(topic, payload, mode);
             done();
-          }, 40);
+          }, 50);
         }),
     );
     test.concurrent('publish test message with Fnr mode', () => {
