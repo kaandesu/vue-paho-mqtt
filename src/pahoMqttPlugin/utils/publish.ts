@@ -3,6 +3,8 @@ import { MqttMode } from '../types';
 import { MQTT_STATE } from '../config/constants';
 import { getClient } from '../config/client';
 
+export type PublishFunction = typeof publish;
+
 /**
  * @description used to publish string data to the topic specified
  * @param topic mqtt topic
@@ -20,15 +22,15 @@ export const publish = (
   const MqttOptions = getMqttOptions();
   const client = getClient();
 
-  try {
-    topic =
-      useMainTopic && MqttOptions.enableMainTopic
-        ? `${MqttOptions.mainTopic}/${topic}`
-        : topic;
-    if (client && client.isConnected()) {
+  topic =
+    useMainTopic && MqttOptions.enableMainTopic
+      ? `${MqttOptions.mainTopic}/${topic}`
+      : topic;
+  if (client && client.isConnected()) {
+    try {
       client.send(topic, payload, MQTT_STATE[mode].qos, MQTT_STATE[mode].ret);
+    } catch (err: unknown) {
+      if (err instanceof Error) throw new Error(err.message);
     }
-  } catch (err: unknown) {
-    if (err instanceof Error) console.error(err.message);
   }
 };

@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => {
     return {
       base: '/vue-paho-mqtt/',
       plugins: [vue()],
+      test: {
+        globals: true,
+      },
     };
   } else {
     return {

@@ -1,9 +1,24 @@
 import type { Qos } from 'paho-mqtt';
 export * from './index';
+import type { SubscribeFunction } from './utils/subscribe';
+import type { PublishFunction } from './utils/publish';
+import { ConnectFunction } from './utils/connectClient';
+import { DisconnectFunction } from './utils/disconnectClient';
+import { UnsubscribeFunction } from './utils/unsubscribe';
+import { UnsubscribeAllFunction } from './utils/unsubscribeAll';
+import {
+  ClientIdFunction,
+  HostFunction,
+  MainTopicFunction,
+  PortFunction,
+  StatusFunction,
+} from './utils/mqttSettings';
+
 export interface PahoMqttPluginOptions {
   showNotifications?: boolean;
   autoConnect?: boolean;
 }
+
 export interface MainOptions {
   PluginOptions: PahoMqttPluginOptions;
   MqttOptions: MqttOptions;
@@ -18,6 +33,7 @@ export type MqttStatus =
   | 'error'
   | 'lost'
   | null;
+
 export interface MqttState {
   [key: string]: {
     qos: Qos;
@@ -25,7 +41,7 @@ export interface MqttState {
   };
 }
 export interface MsgHandler {
-  [topic: string]: [((payload: unknown) => unknown)?];
+  [topic: string]: [((payload: string) => void)?];
 }
 
 export interface MqttOptions {
@@ -39,26 +55,17 @@ export interface MqttOptions {
 }
 
 export interface MqttInstance {
-  connect: () => void;
-  disconnect: () => void;
-  subscribe: (
-    topic: string,
-    onMessage: (data?: unknown) => void,
-    useMainTopic?: boolean,
-  ) => void;
-  publish: (
-    topic: string,
-    payload: string,
-    mode: MqttMode,
-    useMainTopic?: boolean,
-  ) => void;
-  host: (host?: string) => string;
-  port: (port?: number) => number;
-  clientId: (clientId?: string) => string;
-  mainTopic: (mainTopic?: string) => string | undefined;
-  unsubscribe: (topic: string, useMainTopic?: boolean) => void;
-  unsubscribeAll: () => void;
-  status: (status?: MqttStatus | string) => string | null;
+  connect: ConnectFunction;
+  disconnect: DisconnectFunction;
+  subscribe: SubscribeFunction;
+  publish: PublishFunction;
+  host: HostFunction;
+  port: PortFunction;
+  clientId: ClientIdFunction;
+  mainTopic: MainTopicFunction;
+  unsubscribe: UnsubscribeFunction;
+  unsubscribeAll: UnsubscribeAllFunction;
+  status: StatusFunction;
 }
 
 declare module 'vue' {

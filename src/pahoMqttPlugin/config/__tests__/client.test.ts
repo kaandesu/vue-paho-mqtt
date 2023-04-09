@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { createClient, getClient } from '../client';
 import { mockClient } from '../../../setupTests';
 
+createClient(mockClient);
 describe('client', () => {
   it('should return client', () => {
     const client = getClient();

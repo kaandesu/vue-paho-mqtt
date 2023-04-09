@@ -11,12 +11,12 @@ import { unsubscribeAll } from './utils/unsubscribeAll';
 import { host, port, clientId, mainTopic, status } from './utils/mqttSettings';
 
 export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
-  return (app: App) => {
+  return async (app: App) => {
     const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
     setMqttOptions(MainOptions.MqttOptions);
 
     /* Check Auto Connect */
-    if (PluginOptions.autoConnect) connectClient();
+    if (PluginOptions.autoConnect) await connectClient();
 
     /* Global Functions */
     const mqttInstance: MqttInstance = {

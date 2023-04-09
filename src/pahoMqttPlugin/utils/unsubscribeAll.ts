@@ -6,6 +6,12 @@ import {
   queueMsgHandlers,
 } from './msgHandlers';
 
+export type UnsubscribeAllFunction = typeof unsubscribeAll;
+
+/**
+ * Unsubscribe all topics
+ * @returns {void}
+ */
 export const unsubscribeAll = () => {
   const subscribedTopics = {
     ...Object.keys(queueMsgHandlers),

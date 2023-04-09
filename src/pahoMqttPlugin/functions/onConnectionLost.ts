@@ -40,9 +40,9 @@ export const onConnectionLostCallback = (responseObject: {
   console.log('%cmqtt disconnected', 'color:red;');
   if (stayConnected.value) {
     console.warn('%cmqtt connection lost', 'color:red;');
-    setTimeout(() => {
+    setTimeout(async () => {
       if (!client || !client.isConnected()) {
-        connectClient();
+        await connectClient();
         console.timeEnd('reconnecting...');
       }
     }, getMqttOptions().reconnectTimeout);

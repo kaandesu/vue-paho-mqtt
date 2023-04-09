@@ -7,11 +7,6 @@ import { unsubscribeAll } from './pahoMqttPlugin/utils/unsubscribeAll';
 
 export const mockClient = { host: 'localhost', port: 9001, clientId: 'mock' };
 
-beforeAll(() => {
-  connectClient();
-});
+beforeAll(() => {});
 
-beforeEach(() => {
-  createClient(mockClient);
-  unsubscribeAll();
-});
+beforeEach(() => {});

@@ -2,6 +2,8 @@ import { getClient } from '../config/client';
 import { getMqttOptions } from '../config/options';
 import { msgHandlers, queueMsgHandlers } from './msgHandlers';
 
+export type SubscribeFunction = typeof subscribe;
+
 /**
  * @description used to subscribe to the topic specified
  * @param topic mqtt topic
@@ -10,7 +12,7 @@ import { msgHandlers, queueMsgHandlers } from './msgHandlers';
  */
 export const subscribe = (
   topic: string,
-  onMessage: () => unknown,
+  onMessage: (data: string) => unknown,
   useMainTopic = true,
 ) => {
   const MqttOptions = getMqttOptions();

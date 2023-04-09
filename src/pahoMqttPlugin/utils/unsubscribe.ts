@@ -2,6 +2,14 @@ import { getClient } from '../config/client';
 import { getMqttOptions } from '../config/options';
 import { msgHandlers, queueMsgHandlers } from './msgHandlers';
 
+export type UnsubscribeFunction = typeof unsubscribe;
+
+/**
+ * Unsubscribe from a topic
+ * @param topic The topic to unsubscribe from
+ * @param useMainTopic If true, the main topic will be prepended to the topic
+ * @returns void
+ */
 export const unsubscribe = (topic: string, useMainTopic = true) => {
   const MqttOptions = getMqttOptions();
   const client = getClient();
