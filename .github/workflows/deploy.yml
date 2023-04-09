@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
       - run: npm ci
       - name: Build live demo
-        run: npm run build:demo
+        run: npm run build:live-demo
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
