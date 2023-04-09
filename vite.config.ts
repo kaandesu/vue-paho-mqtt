@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  if (mode === 'demo') {
+  if (mode === 'live-demo') {
     return {
       base: '/vue-paho-mqtt/',
       plugins: [vue()],

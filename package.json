@@ -41,15 +41,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run generate:types && npm run build:demo",
-    "build:demo": "vite build --mode demo --outDir ./live-demo",
+    "build": "npm run test && vite build && npm run generate:types && npm run build:live-demo",
+    "build:live-demo": "vite build --mode live-demo --outDir ./live-demo",
     "preview": "vite preview",
     "deploy": "gh-pages -d github",
     "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
