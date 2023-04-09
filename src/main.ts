@@ -7,14 +7,14 @@ createApp(App)
   .use(
     createPahoMqttPlugin({
       PluginOptions: {
-        autoConnect: true,
+        autoConnect: false,
         showNotifications: true,
       },
       MqttOptions: {
         host: 'localhost',
         port: 9001,
-        clientId: `SAWAGUI-${Math.random() * 9999}`,
-        mainTopic: 'ADT2',
+        clientId: `ClientID-${Math.round(Math.random() * 9999)}`,
+        mainTopic: 'MAIN',
       },
     }),
   )

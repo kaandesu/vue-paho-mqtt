@@ -1,7 +1,7 @@
 # Vue-Paho-Mqtt Plugin
 
 <p align="center">
-  <img src="./pluginlogo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
+  <img src="./assets/logo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
 </p>
 
 The `vue-paho-mqtt` plugin provides a convenient way to use the [Eclipse Paho MQTT JavaScript client](https://www.eclipse.org/paho/clients/js/) with Vue 3.
