@@ -7,7 +7,7 @@
             data-step="1"
             data-intro="Step 1: Connect or disconnect to the MQTT broker! 🔗 "
           >
-            <button class="mqtt-button connect" @click=" $mqtt.connect()">
+            <button class="mqtt-button connect" @click="$mqtt.connect()">
               CONNECT
             </button>
             <button class="mqtt-button disconnect" @click="$mqtt.disconnect()">
