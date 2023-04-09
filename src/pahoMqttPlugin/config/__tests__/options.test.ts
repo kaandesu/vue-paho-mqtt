@@ -6,17 +6,17 @@ import {
   setPluginOptions,
 } from '../options';
 import { MqttOptions, PahoMqttPluginOptions } from '../../types';
-
+import { defaultMqttOptions, defaultPluginOptions } from '../constants';
 describe('options', () => {
   const mockMqttOptions: MqttOptions = {
-    host: 'testing',
-    port: 1337,
-    clientId: 'mock',
+    host: `${defaultMqttOptions.host}-testing}`,
+    port: 9999 - defaultMqttOptions.port,
+    clientId: `${defaultMqttOptions.clientId}-testing}`,
   };
 
   const mockPluginOptions: PahoMqttPluginOptions = {
-    autoConnect: true,
-    showNotifications: true,
+    autoConnect: !defaultPluginOptions.autoConnect,
+    showNotifications: !defaultPluginOptions.showNotifications,
   };
 
   it('should set mqttOptions', () => {
@@ -32,8 +32,10 @@ describe('options', () => {
     const PluginOptions = setPluginOptions(mockPluginOptions);
 
     expect(PluginOptions).toBeDefined();
-    expect(PluginOptions.autoConnect).toEqual(true);
-    expect(PluginOptions.showNotifications).toEqual(true);
+    expect(PluginOptions.autoConnect).toEqual(mockPluginOptions.autoConnect);
+    expect(PluginOptions.showNotifications).toEqual(
+      mockPluginOptions.showNotifications,
+    );
   });
 
   it('should get mqttOptions', () => {
