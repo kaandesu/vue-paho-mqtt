@@ -11,10 +11,7 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,    
-    "types": ["node","vitest/globals"],
-    "paths": {
-      "@/*": ["./*"]
-    } 
+    "types": ["node","vitest/globals"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

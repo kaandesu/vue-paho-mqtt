@@ -3,6 +3,26 @@
 <p align="center">
   <img src="./assets/logo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
 </p>
+<p align="center">
+    <a href="https://www.npmjs.com/package/vue-paho-mqtt">
+      <img src="https://img.shields.io/npm/v/vue-paho-mqtt?style=for-the-badge" alt="npm version">
+    </a>        
+    <a href="https://github.com/kaandesu/vue-paho-mqtt/actions/workflows/build.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/kaandesu/vue-paho-mqtt/build.yml?style=for-the-badge" alt="build status">
+    </a>
+    <a href="https://github.com/kaandesu/vue-paho-mqtt/graphs/contributors">
+      <img src="https://img.shields.io/github/contributors/kaandesu/vue-paho-mqtt?style=for-the-badge" alt="contributors">
+    </a>
+    <a href="https://github.com/kaandesu/vue-paho-mqtt/issues">
+      <img src="https://img.shields.io/github/issues/kaandesu/vue-paho-mqtt?style=for-the-badge" alt="issues">
+    </a>
+    <a href="https://github.com/kaandesu/vue-paho-mqtt/pulls">
+      <img src="https://img.shields.io/github/issues-pr/kaandesu/vue-paho-mqtt?style=for-the-badge" alt="pr">
+    </a>    
+    <a href="https://github.com/kaandesu/vue-paho-mqtt/commits/master" alt="Commit Activity">
+      <img src="https://img.shields.io/github/commit-activity/m/kaandesu/vue-paho-mqtt?style=for-the-badge" />
+    </a>    
+</p>
 
 The `vue-paho-mqtt` plugin provides a convenient way to use the [Eclipse Paho MQTT JavaScript client](https://www.eclipse.org/paho/clients/js/) with Vue 3.
 
@@ -57,9 +77,9 @@ To use the plugin, you need to create an instance of it and pass it to the `use`
 ### Vite
 
 ```typescript
-import { createApp } from 'vue';
+import './style.css';
 import App from './App.vue';
-
+import { createApp } from 'vue';
 import 'vue-paho-mqtt/style.css';
 import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
@@ -77,12 +97,12 @@ createApp(App)
         clientId: `MyID-${Math.random() * 9999}`,
         mainTopic: 'MAIN',
       },
-    })
+    }),
   )
   .mount('#app');
 ```
 
-Quasar Framework ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
+Quasar Framework (Vite) ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
 
 ```js
 import { boot } from 'quasar/wrappers';
@@ -104,7 +124,7 @@ export default boot(({ app }) => {
         clientId: `MyID-${Math.random() * 9999}`,
         mainTopic: 'MAIN',
       },
-    })
+    }),
   );
 });
 ```
@@ -168,6 +188,10 @@ The following are the MQTT QoS and retention options available for publishing me
 
 - **Fnr**: QoS 2, non-retained message. The message is delivered exactly once, and the broker does not store it for future subscribers.
 
+```ts
+type MqttMode = 'B' | 'F' | 'Q' | 'Qr' | 'Br' | 'Fnr';
+```
+
 #### Example Usage with the $mqtt.publish
 
 ```ts
@@ -206,12 +230,47 @@ createPahoMqttPlugin({
 
 ## Connect
 
-Connect to the mqtt broker. Shows a dialog notification in case of error if the plugin is configured to do so.
+Connect to the MQTT broker. Shows a dialog notification in case of error if the plugin is configured to do so.
+Custom callbacks can be passed to the connect function. Such as `onConnect`, `onFailure`, `onConnectionLost`, `onMessageArrived`.
+
+- `onConnect()`: resolves the promise to `true` if the connection was successful.
+- `onFailure()`: rejects the promise to `false` if the connection was unsuccessful.
+- `onConnectionLost()`: returns an response object with the following properties:
+  - `errorCode`: the error code.
+- `onMessageArrived()`:
+ returns a message object with the following properties:
+  - `payloadString`: the message payload as a string.
+  - `destinationName`: the name of the topic that the message was published to.
+
+Note: Inside the 'subscribe' function a function is passed to the 'onMessageArrived' callback. 
+This function is used to parse the message payload and return the parsed message inside the subscribe 
+function where it is called.
+You don't really need to handle arriving messages in the 'onMessageArrived' callback.
+### Type Definition
+
+```ts
+type ConnectFunction = ({ onConnect, onFailure, onConnectionLost, onMessageArrived, }?: {
+    onConnect?: (() => unknown) | undefined;
+    onFailure?: (() => unknown) | undefined;
+    onConnectionLost?: ((responseObject: {
+        errorCode: number;
+    }) => unknown) | undefined;
+    onMessageArrived?: ((message: {
+        payloadString: string;
+        destinationName: string;
+    }) => void) | undefined;
+}) => Promise<unknown>;
+```
 
 ### Usage
 
 ```ts
 $mqtt.connect();
+
+// or use it with async/await
+
+const result = await $mqtt.connect();
+// result will return "true" if the connection was successful
 ```
 
 ### Optional Custom Callbacks
@@ -253,13 +312,23 @@ $mqtt.connect({
 
 ## Disconnect
 
-Disconnect from the mqtt broker.
-Shows a dialog notification in case of error if the plugin is configured to do so.
+Disconnect from the mqtt broker. Shows a dialog notification in case of error if the plugin is configured to do so.
+
+### Type Definition
+
+```ts
+type DisconnectFunction = () => Promise<unknown>
+```
 
 ### Usage
 
 ```ts
 $mqtt.disconnect();
+
+// or use it with async/await
+
+const result = await $mqtt.disconnect();
+// result will return "true" if the disconnection was successful
 ```
 
 ---
@@ -273,21 +342,32 @@ It is used to subscribe to the topic specified, and to define the function to ca
 | `onMessage` | `function` | Arrow function with a parameter to be fired when a message arrives to the specified topic | - |
 | `useMainTopic` | `boolean` | main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified | `true` |
 
-#### Subscribe usage example
+
+### Type Definition
+
+```ts
+type SubscribeFunction = (
+  topic: string,
+  onMessage: (data: string) => unknown,
+  useMainTopic?: boolean
+) => void;
+```
+
+### Subscribe usage example
 
 ```ts
 // if the enableMainTopic is true, subscribe to 'MAIN/my/topic'
-$mqtt.subscribe('my/topic', (data: any) => {
+$mqtt.subscribe('my/topic', (data: string) => {
   console.log(data, 'recieved');
 });
 
 // even if the enableMainTopic is true, subscribe to 'my/topic'
 $mqtt.subscribe(
   'my/topic',
-  (data: any) => {
+  (data: string) => {
     console.log(data, 'recieved');
   },
-  false
+  false,
 );
 ```
 
@@ -295,7 +375,18 @@ $mqtt.subscribe(
 
 ## Publish
 
-Used to publish string data to the topic specified
+Used to publish string data to the topic specified.
+
+### Type Definition
+
+```ts
+type PublishFunction = (
+  topic: string,
+  payload: string,
+  mode: MqttMode,
+  useMainTopic?: boolean
+) => void;
+```
 
 |     param      |    type    |                                                                                                                   explanation                                                                                                                   | default |
 | :------------: | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----: |
@@ -304,7 +395,7 @@ Used to publish string data to the topic specified
 |     `mode`     | `MqttMode` | See [MQTT Quality of Service (QoS) and Retention Options for Publish](#mqtt-quality-of-service-qos-and-retention-options-for-publish) for detailed explanation for mqtt mode options.  [`"B"` \| `"F"` \| `"Q"` \| `"Qr"` \| `"Br"` \| `"Fnr"`] |    -    |
 | `useMainTopic` | `boolean`  |                                                                        main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified                                                                         | `true`  |
 
-#### Publish usage example
+### Publish usage example
 
 ```ts
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
@@ -321,15 +412,21 @@ $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 // payload: "Hello, world!"
 ```
-
+### Composition API
+```ts
+import { getCurrentInstance, onMounted}  from  "vue";
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
+```
 ---
 
 ## Host
 
 Get or set the host parameter from the [MQTT Options](#mqtt-options).
 
+### Type Definition
 ```ts
-host: (host?: string) => void;
+type HostFunction = (e?: string) => string
 ```
 
 ### Get Host
@@ -344,7 +441,7 @@ $mqtt.host(); // ie: "localhost"
 $mqtt.host('192.168.0.1');
 ```
 
-#### Example usage
+### Example usage
 
 ```html
 <template>
@@ -357,30 +454,39 @@ onMounted(() => {
   console.log($mqtt.host());
 });
 ```
-
+### Composition API
+```ts
+import { getCurrentInstance, onMounted}  from  "vue";
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+onMounted(() => {
+  console.log($mqtt.host());
+});
+```
 ---
 
 ## Port
 
 Get or set the port parameter from the [MQTT Options](#mqtt-options).
 
+### Type Definition
+
 ```ts
-port: (port?: number) => void;
+type PortFunction = (e?: number) => number
 ```
 
 ### Get Port
 
 ```ts
-$mqtt.port(); // ie: "9001"
+$mqtt.port(); // ie: 9001
 ```
 
-### Set MQTT host
+### Set MQTT port
 
 ```ts
-$mqtt.host(1234);
+$mqtt.port(1234);
 ```
 
-#### Example usage
+### Example usage
 
 ```html
 <template>
@@ -388,7 +494,17 @@ $mqtt.host(1234);
 </template>
 ```
 
+
 ```ts
+onMounted(() => {
+  console.log($mqtt.port());
+});
+```
+
+### Composition API
+```ts
+import { getCurrentInstance, onMounted}  from  "vue";
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
 onMounted(() => {
   console.log($mqtt.port());
 });
@@ -400,8 +516,9 @@ onMounted(() => {
 
 Get or set the clientId parameter from the [MQTT Options](#mqtt-options).
 
+### Type Definition
 ```ts
-clientId: (clientId?: string) => void;
+type ClientIdFunction = (e?: string) => string
 ```
 
 ### Get clientId
@@ -416,7 +533,7 @@ $mqtt.clientId(); // ie: "MyID-234"
 $mqtt.clientId('MyNewClientId');
 ```
 
-#### Example usage
+### Example usage
 
 ```html
 <template>
@@ -429,15 +546,22 @@ onMounted(() => {
   console.log($mqtt.clientId());
 });
 ```
-
+### Composition API
+```ts
+import { getCurrentInstance, onMounted}  from  "vue";
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+onMounted(() => {
+  console.log($mqtt.clientId());
+});
+```
 ---
 
 ## Main Topic
 
 Get or set the mainTopic parameter from the [MQTT Options](#mqtt-options).
-
+### Type Definition
 ```ts
-mainTopic: (mainTopic?: string) => void;
+type MainTopicFunction = (e?: string) => string | undefined
 ```
 
 ### Get mainTopic
@@ -452,7 +576,7 @@ $mqtt.mainTopic(); // ie: "MyID-234"
 $mqtt.mainTopic('MyNewClientId');
 ```
 
-#### Example usage
+### Example usage
 
 ```html
 <template>
@@ -465,19 +589,35 @@ onMounted(() => {
   console.log($mqtt.mainTopic());
 });
 ```
-
+### Composition API
+```ts
+import { getCurrentInstance, onMounted}  from  "vue";
+const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+onMounted(() => {
+  console.log($mqtt.mainTopic());
+});
+```
 ---
 
 ## Unsubscribe
 
 Used to unsubscribe from the topic specified
 
+### Type Definition
+
+```ts
+type UnsubscribeFunction = (
+  topic: string,
+  useMainTopic?: boolean
+) => void
+```
+
 |     param      |   type    |                                           explanation                                            | default |
 | :------------: | :-------: | :----------------------------------------------------------------------------------------------: | :-----: |
 |    `topic`     | `string`  |                         MQTT topic to unsubscribe (ie: 'my/test/topic')                          |    -    |
 | `useMainTopic` | `boolean` | main topic defined in the [MQTT Options](#mqtt-options) will be prepended to the topic specified | `true`  |
 
-#### Unsubscribe usage example
+### Unsubscribe usage example
 
 ```ts
 // if the enableMainTopic is true, unsubscribe from 'MAIN/my/topic'
@@ -493,7 +633,12 @@ $mqtt.unsubscribe('test/topic', false);
 
 Used to unsubscribe from **all** the topics subscribed previously.
 
-#### Usage
+### Type Definition
+
+```ts
+type UnsubscribeAllFunction = () => void
+```
+### Usage
 
 ```ts
 $mqtt.unsubscribeAll();
@@ -502,6 +647,9 @@ $mqtt.unsubscribeAll();
 ---
 
 ## Status
+
+Used to get the status of the mqtt connection.
+### Type Definition
 
 ```ts
 type MqttStatus =
@@ -512,16 +660,16 @@ type MqttStatus =
   | 'lost'
   | null;
 
-status: (status?: MqttStatus | string) => unknown;
+type StatusFunction = () => MqttStatus;
 ```
 
 ### Get MQTT Status
 
 ```ts
-$mqtt.status(); // 'connected', 'disconnected', 'connecting', 'error', 'lost', null
+$mqtt.status(); // ie: "connected"
 ```
 
-#### Example usage
+### Example usage
 
 ```html
 <template>
@@ -533,12 +681,6 @@ $mqtt.status(); // 'connected', 'disconnected', 'connecting', 'error', 'lost', n
 onMounted(() => {
   console.log($mqtt.status());
 });
-```
-
-### Set MQTT Status
-
-```ts
-$mqtt.status('customStatus');
 ```
 
 ---
@@ -553,12 +695,13 @@ mounted() {
   this.$mqtt.connect();
 
   // Subscribe to a topic
-  this.$mqtt.subscribe("test/topic", (message) => {
+  this.$mqtt.subscribe("test/topic", (message: string) => {
     console.log("Received message:",  message);
   });
 
   // Publish a message
   this.$mqtt.publish("test/topic",  "Hello, world!",  "F");
+
   // Disconnect from the broker
   this.$mqtt.disconnect();
 }
@@ -577,7 +720,7 @@ onMounted(() => {
   $mqtt.connect();
 
   // Subscribe to a topic
-  $mqtt.subscribe("test/topic", (message) => {
+  $mqtt.subscribe("test/topic", (message: string) => {
     console.log("Received message:",  message);
   });
 
