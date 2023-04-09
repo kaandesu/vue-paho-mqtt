@@ -1,10 +1,6 @@
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { App } from 'vue';
-import {
-  getPluginOptions,
-  setMqttOptions,
-  setPluginOptions,
-} from './config/options';
+import { setMqttOptions, setPluginOptions } from './config/options';
 import { MainOptions, MqttInstance } from './types';
 import { connectClient } from './utils/connectClient';
 import { disconnectClient } from './utils/disconnectClient';
@@ -16,9 +12,7 @@ import { host, port, clientId, mainTopic, status } from './utils/mqttSettings';
 
 export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
   return (app: App) => {
-    const PluginOptions = getPluginOptions();
-
-    setPluginOptions(MainOptions.PluginOptions);
+    const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
     setMqttOptions(MainOptions.MqttOptions);
 
     /* Check Auto Connect */
