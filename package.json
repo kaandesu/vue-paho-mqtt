@@ -17,7 +17,7 @@
   "keywords": [
     "vue",
     "vue3",
-    "mqtt",    
+    "mqtt",
     "paho-mqtt",
     "mqtt client"
   ],
@@ -41,33 +41,44 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run generate:types && npm run build:demo",
-    "build:demo": "vite build --mode demo --outDir ./live-demo",
+    "build": "npm run test && vite build --mode prod && npm run generate:types && npm run build:live-demo",
+    "build:live-demo": "vite build --mode live-demo --outDir ./live-demo",
     "preview": "vite preview",
     "deploy": "gh-pages -d github",
-    "generate:types": "vue-tsc  --declaration --emitDeclarationOnly true --outdir ./dist",
+    "generate:types": "vue-tsc -p tsconfig-build.json --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "changeset:publish": "changeset publish"
+    "changeset:publish": "changeset publish",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:utils": "vitest run --mode broker",
+    "test:utils:watch": "vitest --mode broker",
+    "test:coverage": "vitest run --mode broker --coverage"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.1",
     "paho-mqtt": "^1.1.0",
     "sweetalert2": "^11.7.3",
     "vue": "^3.2.47",
-    "vue-sweetalert2": "^5.0.5"
+    "vue-sweetalert2": "^5.0.5",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
+    "@types/intro.js": "^5.1.1",
     "@types/node": "^18.15.11",
     "@types/paho-mqtt": "^1.0.6",
+    "@types/ws": "^8.5.4",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vitest/coverage-c8": "^0.30.0",
     "eslint": "^8.37.0",
     "eslint-plugin-vue": "^9.10.0",
     "intro.js": "^7.0.1",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
+    "vitest": "^0.30.0",
+    "vue-eslint-parser": "^9.1.1",
     "vue-tsc": "^1.2.0"
   }
 }

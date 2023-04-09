@@ -13,5 +13,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 
+coverage
 dist
 live-demo
