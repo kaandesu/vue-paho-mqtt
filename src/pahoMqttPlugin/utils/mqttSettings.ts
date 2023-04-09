@@ -44,9 +44,6 @@ export const mainTopic = (e?: string) => {
 
 export type StatusFunction = typeof status;
 
-export const status = (e?: MqttStatus | string) => {
-  if (e !== undefined && e !== null) {
-    return (mqttStatus.value = e);
-  }
+export const status = () => {
   return mqttStatus.value;
 };
