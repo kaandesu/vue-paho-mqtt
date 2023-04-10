@@ -74,13 +74,12 @@ npm install vue-paho-mqtt
 
 To use the plugin, you need to create an instance of it and pass it to the `use` function:
 
-### Vite
+### Vite / VueCLI
 
 ```typescript
-import './style.css';
+// src/main.ts
 import App from './App.vue';
 import { createApp } from 'vue';
-import 'vue-paho-mqtt/style.css';
 import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 createApp(App)
@@ -102,12 +101,10 @@ createApp(App)
   .mount('#app');
 ```
 
-Quasar Framework (Vite) ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
+### Quasar Framework ([quasar boot](https://quasar.dev/quasar-cli-vite/boot-files/))
 
 ```js
 import { boot } from 'quasar/wrappers';
-
-import 'vue-paho-mqtt/style.css';
 import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 export default boot(({ app }) => {
@@ -734,7 +731,9 @@ onMounted(() => {
 
 ## Contributing
 
-Contributions to the project is highly appreciated. If you have any suggestions/questions/requests please consider [opening an issue]([repository-url]/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
+Contributions to the project is highly appreciated. 
+If you have any suggestions/questions/requests please consider 
+[opening an issue](https://github.com/kaandesu/vue-paho-mqtt/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
 
 ## License
 
