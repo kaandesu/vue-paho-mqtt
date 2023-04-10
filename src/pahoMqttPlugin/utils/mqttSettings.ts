@@ -1,5 +1,4 @@
 import { getMqttOptions } from '../config/options';
-import { MqttStatus } from '../types';
 import { mqttStatus } from './refs';
 
 export type PortFunction = typeof port;
