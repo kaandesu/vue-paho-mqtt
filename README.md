@@ -74,13 +74,12 @@ npm install vue-paho-mqtt
 
 To use the plugin, you need to create an instance of it and pass it to the `use` function:
 
-### Vite
+### Vite / VueCLI
 
 ```typescript
-import './style.css';
+// src/main.ts
 import App from './App.vue';
 import { createApp } from 'vue';
-import 'vue-paho-mqtt/style.css';
 import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 createApp(App)
@@ -102,12 +101,10 @@ createApp(App)
   .mount('#app');
 ```
 
-Quasar Framework (Vite) ([boot-files](https://quasar.dev/quasar-cli-webpack/boot-files/))
+### Quasar Framework ([quasar boot](https://quasar.dev/quasar-cli-vite/boot-files/))
 
 ```js
 import { boot } from 'quasar/wrappers';
-
-import 'vue-paho-mqtt/style.css';
 import { createPahoMqttPlugin } from 'vue-paho-mqtt';
 
 export default boot(({ app }) => {
@@ -265,10 +262,14 @@ type ConnectFunction = ({ onConnect, onFailure, onConnectionLost, onMessageArriv
 ### Usage
 
 ```ts
+// Composition API
+import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.connect();
 
-// or use it with async/await
+// Options API
+this.$mqtt.connect();
 
+// or use it with async/await
 const result = await $mqtt.connect();
 // result will return "true" if the connection was successful
 ```
@@ -323,10 +324,14 @@ type DisconnectFunction = () => Promise<unknown>
 ### Usage
 
 ```ts
+// Composition API
+import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.disconnect();
 
-// or use it with async/await
+// Options API
+this.$mqtt.disconnect();
 
+// or use it with async/await
 const result = await $mqtt.disconnect();
 // result will return "true" if the disconnection was successful
 ```
@@ -357,12 +362,12 @@ type SubscribeFunction = (
 
 ```ts
 // if the enableMainTopic is true, subscribe to 'MAIN/my/topic'
-$mqtt.subscribe('my/topic', (data: string) => {
+this.$mqtt.subscribe('my/topic', (data: string) => {
   console.log(data, 'recieved');
 });
 
 // even if the enableMainTopic is true, subscribe to 'my/topic'
-$mqtt.subscribe(
+this.$mqtt.subscribe(
   'my/topic',
   (data: string) => {
     console.log(data, 'recieved');
@@ -371,6 +376,13 @@ $mqtt.subscribe(
 );
 ```
 
+### Composition API
+```ts
+import { $mqtt } from 'vue-paho-mqtt';
+$mqtt.subscribe('my/topic', (data: string) => {
+  console.log(data, 'recieved');
+});
+```
 ---
 
 ## Publish
@@ -400,21 +412,20 @@ type PublishFunction = (
 ```ts
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Fnr' => Qos: 2 , retianed: false
-$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
+this.$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
 
 // even if the enableMainTopic is true, publish to 'my/topic'
 // 'B' => Qos: 0 , retianed: false
-$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
+this.$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
 
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Qr' => Qos: 1 , retianed: true
-$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
+this.$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 // payload: "Hello, world!"
 ```
 ### Composition API
 ```ts
-import { onMounted }  from  "vue";
 import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 ```
@@ -451,7 +462,7 @@ $mqtt.host('192.168.0.1');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.host());
+  console.log(this.$mqtt.host());
 });
 ```
 ### Composition API
@@ -497,7 +508,7 @@ $mqtt.port(1234);
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.port());
+  console.log(this.$mqtt.port());
 });
 ```
 
@@ -543,7 +554,7 @@ $mqtt.clientId('MyNewClientId');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.clientId());
+  console.log(this.$mqtt.clientId());
 });
 ```
 ### Composition API
@@ -586,7 +597,7 @@ $mqtt.mainTopic('MyNewClientId');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.mainTopic());
+  console.log(this.$mqtt.mainTopic());
 });
 ```
 ### Composition API
@@ -725,7 +736,10 @@ onMounted(() => {
   });
 
   // Publish a message
-  this.$mqtt.publish("test/topic",  "Hello, world!",  "F");
+  $mqtt.publish("test/topic",  "Hello, world!",  "F");
+
+   // Disconnect from the broker
+  $mqtt.disconnect();
 });
 
 </script>
@@ -734,7 +748,9 @@ onMounted(() => {
 
 ## Contributing
 
-Contributions to the project is highly appreciated. If you have any suggestions/questions/requests please consider [opening an issue]([repository-url]/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
+Contributions to the project is highly appreciated. 
+If you have any suggestions/questions/requests please consider 
+[opening an issue](https://github.com/kaandesu/vue-paho-mqtt/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
 
 ## License
 
