@@ -262,10 +262,14 @@ type ConnectFunction = ({ onConnect, onFailure, onConnectionLost, onMessageArriv
 ### Usage
 
 ```ts
+// Composition API
+import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.connect();
 
-// or use it with async/await
+// Options API
+this.$mqtt.connect();
 
+// or use it with async/await
 const result = await $mqtt.connect();
 // result will return "true" if the connection was successful
 ```
@@ -320,10 +324,14 @@ type DisconnectFunction = () => Promise<unknown>
 ### Usage
 
 ```ts
+// Composition API
+import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.disconnect();
 
-// or use it with async/await
+// Options API
+this.$mqtt.disconnect();
 
+// or use it with async/await
 const result = await $mqtt.disconnect();
 // result will return "true" if the disconnection was successful
 ```
@@ -354,12 +362,12 @@ type SubscribeFunction = (
 
 ```ts
 // if the enableMainTopic is true, subscribe to 'MAIN/my/topic'
-$mqtt.subscribe('my/topic', (data: string) => {
+this.$mqtt.subscribe('my/topic', (data: string) => {
   console.log(data, 'recieved');
 });
 
 // even if the enableMainTopic is true, subscribe to 'my/topic'
-$mqtt.subscribe(
+this.$mqtt.subscribe(
   'my/topic',
   (data: string) => {
     console.log(data, 'recieved');
@@ -368,6 +376,13 @@ $mqtt.subscribe(
 );
 ```
 
+### Composition API
+```ts
+import { $mqtt } from 'vue-paho-mqtt';
+$mqtt.subscribe('my/topic', (data: string) => {
+  console.log(data, 'recieved');
+});
+```
 ---
 
 ## Publish
@@ -397,21 +412,20 @@ type PublishFunction = (
 ```ts
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Fnr' => Qos: 2 , retianed: false
-$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
+this.$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
 
 // even if the enableMainTopic is true, publish to 'my/topic'
 // 'B' => Qos: 0 , retianed: false
-$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
+this.$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
 
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
 // 'Qr' => Qos: 1 , retianed: true
-$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
+this.$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 // payload: "Hello, world!"
 ```
 ### Composition API
 ```ts
-import { onMounted }  from  "vue";
 import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 ```
@@ -448,7 +462,7 @@ $mqtt.host('192.168.0.1');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.host());
+  console.log(this.$mqtt.host());
 });
 ```
 ### Composition API
@@ -494,7 +508,7 @@ $mqtt.port(1234);
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.port());
+  console.log(this.$mqtt.port());
 });
 ```
 
@@ -540,7 +554,7 @@ $mqtt.clientId('MyNewClientId');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.clientId());
+  console.log(this.$mqtt.clientId());
 });
 ```
 ### Composition API
@@ -583,7 +597,7 @@ $mqtt.mainTopic('MyNewClientId');
 
 ```ts
 onMounted(() => {
-  console.log($mqtt.mainTopic());
+  console.log(this.$mqtt.mainTopic());
 });
 ```
 ### Composition API
@@ -722,7 +736,10 @@ onMounted(() => {
   });
 
   // Publish a message
-  this.$mqtt.publish("test/topic",  "Hello, world!",  "F");
+  $mqtt.publish("test/topic",  "Hello, world!",  "F");
+
+   // Disconnect from the broker
+  $mqtt.disconnect();
 });
 
 </script>
