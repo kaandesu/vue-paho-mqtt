@@ -1,7 +1,7 @@
 {
   "name": "vue-paho-mqtt",
   "author": "I Kaan Yilmaz <kaandesu00@gmail.com> (https://github.com/kaandesu)",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "description": "Easy-to-use Paho MQTT client for Vue 3 with centralized subscription management, type support, and built-in optional alert notification library.",
   "contributors": [
@@ -23,7 +23,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaandesu/vue-paho-mqtt.git"},
+    "url": "https://github.com/kaandesu/vue-paho-mqtt.git"
+  },
   "homepage": "https://kaandesu.github.io/vue-paho-mqtt/",
   "bugs": {
     "url": "https://github.com/kaandesu/vue-paho-mqtt/issues"

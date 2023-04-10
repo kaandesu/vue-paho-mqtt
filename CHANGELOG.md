@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.1
+
+### Patch Changes
+
+- 88e5a7a: fixed npm page
+
 ## 0.2.0
 
 ### Minor Changes
