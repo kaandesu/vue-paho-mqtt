@@ -1,7 +1,7 @@
 # Vue-Paho-Mqtt Plugin
 
 <p align="center">
-  <img src="./assets/logo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
+  <img src="https://github.com/kaandesu/vue-paho-mqtt/raw/master/assets/logo.png" height="100" alt="Vue-Paho-Mqtt-Logo" />
 </p>
 <p align="center">
     <a href="https://www.npmjs.com/package/vue-paho-mqtt">
