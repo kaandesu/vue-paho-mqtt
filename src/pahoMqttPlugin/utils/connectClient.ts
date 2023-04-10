@@ -1,6 +1,6 @@
 import { SweetAlert } from './SweetAlert';
 import { disconnectClient } from './disconnectClient';
-import { connectWatchdog, mqttStatus } from './refs';
+import { connectWatchdog, mqttStatus, stayConnected } from './refs';
 import { getMqttOptions } from '../config/options';
 import { onFailureCallback } from '../functions/onFailure';
 import { onConnectCallback } from '../functions/onConnect';
@@ -29,8 +29,10 @@ export const connectClient = ({
   }) => void;
 } = {}) => {
   const MqttOptions = getMqttOptions();
-  mqttStatus.value = 'connecting';
 
+  if (mqttStatus.value === 'connected') disconnectClient();
+
+  mqttStatus.value = 'connecting';
   connectWatchdog.value = setTimeout(async () => {
     mqttStatus.value = 'error';
     await disconnectClient();
