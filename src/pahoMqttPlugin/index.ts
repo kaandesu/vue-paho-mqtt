@@ -10,30 +10,6 @@ import { publish } from './utils/publish';
 import { unsubscribeAll } from './utils/unsubscribeAll';
 import { host, port, clientId, mainTopic, status } from './utils/mqttSettings';
 
-export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
-  return async (app: App) => {
-    const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
-    setMqttOptions(MainOptions.MqttOptions);
-
-    /* Check Auto Connect */
-    if (PluginOptions.autoConnect) await connectClient();
-
-    const $mqtt: MqttInstance = {
-      connect: connectClient,
-      disconnect: disconnectClient,
-      subscribe,
-      publish,
-      host,
-      port,
-      clientId,
-      mainTopic,
-      unsubscribe,
-      unsubscribeAll,
-      status,
-    };
-    app.config.globalProperties.$mqtt = $mqtt;
-  };
-};
 export const $mqtt: MqttInstance = {
   connect: connectClient,
   disconnect: disconnectClient,
@@ -46,4 +22,16 @@ export const $mqtt: MqttInstance = {
   unsubscribe,
   unsubscribeAll,
   status,
+};
+
+export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
+  return (app: App) => {
+    const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
+    setMqttOptions(MainOptions.MqttOptions);
+
+    /* Check Auto Connect */
+    if (PluginOptions.autoConnect) connectClient();
+
+    app.config.globalProperties.$mqtt = $mqtt;
+  };
 };
