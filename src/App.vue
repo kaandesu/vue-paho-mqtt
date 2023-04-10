@@ -147,11 +147,11 @@
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { MqttMode } from './pahoMqttPlugin/types';
 import introJs from 'intro.js/intro';
 import 'intro.js/introjs.css';
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { $mqtt } from './pahoMqttPlugin';
 const host = ref<string>('');
 const port = ref<string>('0');
 const clientId = ref<string>('');
@@ -175,9 +175,6 @@ const subList = ref([
   { topic: '', subData: '---' },
 ]);
 
-if (!$mqtt) {
-  throw new Error('Plugin not installed');
-}
 
 const subscribe = (topic: string, index: number) => {
   $mqtt.subscribe(topic, (data) => {

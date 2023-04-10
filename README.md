@@ -414,8 +414,8 @@ $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 ```
 ### Composition API
 ```ts
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 ```
 ---
@@ -456,8 +456,8 @@ onMounted(() => {
 ```
 ### Composition API
 ```ts
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 onMounted(() => {
   console.log($mqtt.host());
 });
@@ -503,8 +503,8 @@ onMounted(() => {
 
 ### Composition API
 ```ts
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 onMounted(() => {
   console.log($mqtt.port());
 });
@@ -548,8 +548,8 @@ onMounted(() => {
 ```
 ### Composition API
 ```ts
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 onMounted(() => {
   console.log($mqtt.clientId());
 });
@@ -591,8 +591,8 @@ onMounted(() => {
 ```
 ### Composition API
 ```ts
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 onMounted(() => {
   console.log($mqtt.mainTopic());
 });
@@ -712,8 +712,8 @@ mounted() {
 ```typescript
 <script setup lang="ts">
 
-import { getCurrentInstance, onMounted}  from  "vue";
-const $mqtt = getCurrentInstance()?.appContext.config.globalProperties.$mqtt;
+import { onMounted }  from  "vue";
+import { $mqtt } from 'vue-paho-mqtt';
 
 onMounted(() => {
   // Connect to the mqtt broker

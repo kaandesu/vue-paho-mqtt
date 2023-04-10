@@ -17,22 +17,18 @@ export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
 
     /* Check Auto Connect */
     if (PluginOptions.autoConnect) await connectClient();
-
-    /* Global Functions */
-    const mqttInstance: MqttInstance = {
-      connect: connectClient,
-      disconnect: disconnectClient,
-      subscribe,
-      publish,
-      host,
-      port,
-      clientId,
-      mainTopic,
-      unsubscribe,
-      unsubscribeAll,
-      status,
-    };
-
-    app.config.globalProperties.$mqtt = mqttInstance;
   };
+};
+export const $mqtt: MqttInstance = {
+  connect: connectClient,
+  disconnect: disconnectClient,
+  subscribe,
+  publish,
+  host,
+  port,
+  clientId,
+  mainTopic,
+  unsubscribe,
+  unsubscribeAll,
+  status,
 };
