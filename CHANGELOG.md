@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.4
+
+### Patch Changes
+
+- 7deec53: added $mqtt global instance and fixed readme Options/Composition api example usage
+
 ## 0.2.2
 
 ### Patch Changes
