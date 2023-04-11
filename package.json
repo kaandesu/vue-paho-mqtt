@@ -51,8 +51,6 @@
     "deploy": "gh-pages -d github",
     "generate:types": "vue-tsc -p tsconfig-build.json --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
-    "changeset:version": "changeset version",
-    "changeset:publish": "changeset publish",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:utils": "vitest run --mode broker",
@@ -60,14 +58,12 @@
     "test:coverage": "vitest run --mode broker --coverage"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.1",
     "paho-mqtt": "^1.1.0",
     "sweetalert2": "^11.7.3",
-    "vue": "^3.2.47",
-    "vue-sweetalert2": "^5.0.5",
-    "ws": "^8.13.0"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@types/intro.js": "^5.1.1",
     "@types/node": "^18.15.11",
     "@types/paho-mqtt": "^1.0.6",
@@ -83,6 +79,7 @@
     "vite": "^4.2.0",
     "vitest": "^0.30.0",
     "vue-eslint-parser": "^9.1.1",
-    "vue-tsc": "^1.2.0"
+    "vue-tsc": "^1.2.0",
+    "ws": "^8.13.0"
   }
 }
