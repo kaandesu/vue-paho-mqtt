@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.4
+
+### Patch Changes
+
+- da48f75: Removed unnecessary packages from `package.json`, added a security policy, added scripts to contribution guidelines.
+
 ## 0.2.3
 
 ### Patch Changes
