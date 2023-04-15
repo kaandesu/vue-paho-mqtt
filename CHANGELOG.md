@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.6
+
+### Patch Changes
+
+- 4c9a20a: fixed an issue that disabled changing the default mqtt options
+
 ## 0.2.5
 
 ### Patch Changes
