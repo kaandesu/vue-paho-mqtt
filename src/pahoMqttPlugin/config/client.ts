@@ -1,6 +1,6 @@
 import { Client } from 'paho-mqtt';
 import { getMqttOptions } from './options';
-
+import { MqttOptions } from '../types';
 const MqttOptions = getMqttOptions();
 
 let client = new Client(
@@ -10,11 +10,17 @@ let client = new Client(
 );
 
 export const getClient = () => client;
-export const createClient = ({
-  host = MqttOptions.host,
-  port = MqttOptions.port,
-  clientId = MqttOptions.clientId,
-}) => {
-  client = new Client(host, port, clientId);
+export const createClient = (
+  options: MqttOptions = {
+    host: MqttOptions.host,
+    port: MqttOptions.port,
+    clientId: MqttOptions.clientId,
+  },
+) => {
+  client = new Client(
+    (MqttOptions.host = options.host),
+    (MqttOptions.port = options.port),
+    (MqttOptions.clientId = options.clientId),
+  );
   return client;
 };

@@ -14,7 +14,7 @@ createApp(App)
         host: 'localhost',
         port: 9001,
         clientId: `ClientID-${Math.round(Math.random() * 9999)}`,
-        mainTopic: 'MAIN',
+        mainTopic: 'vue-paho-mqtt-test',
       },
     }),
   )

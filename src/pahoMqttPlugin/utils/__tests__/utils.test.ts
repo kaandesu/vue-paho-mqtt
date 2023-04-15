@@ -3,12 +3,29 @@ import * as UTILS from '..';
 import { MQTT_STATE, defaultMqttOptions } from '../../config/constants';
 import { MqttMode } from '../../types';
 import { getMqttOptions } from '../../config/options';
+import { utilClient } from '../../../setupTests';
+import { createClient } from '../../config/client';
 
 describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   test('if status is set right before connection', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
-
+  describe('Client', () => {
+    createClient({
+      host: utilClient.host,
+      port: utilClient.port,
+      clientId: utilClient.clientId,
+    });
+    test('if host set correctly', () => {
+      expect(UTILS.host()).toBe(utilClient.host);
+    });
+    test('if port set correctly', () => {
+      expect(UTILS.port()).toBe(utilClient.port);
+    });
+    test('if clientId set correctly', () => {
+      expect(UTILS.clientId()).toBe(utilClient.clientId);
+    });
+  });
   test(`if connects to the broker in ${defaultMqttOptions.watchdogTimeout}ms `, async () => {
     await expect(UTILS.connectClient()).resolves.toBe(true);
   });
@@ -53,7 +70,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
           setTimeout(() => {
             UTILS.publish(topic, payload, mode);
             done();
-          }, 50);
+          }, 200);
         }),
     );
     test.concurrent('publish test message with Fnr mode', () => {
