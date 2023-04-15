@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.5
+
+### Patch Changes
+
+- 14258c9: included utility broker tests to the build, fixed client unit test
+
 ## 0.2.4
 
 ### Patch Changes
