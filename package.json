@@ -45,16 +45,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run test && vite build --mode prod && npm run generate:types && npm run build:live-demo",
+    "build": "npm run test && vite build --mode production && npm run generate:types && npm run build:live-demo",
     "build:live-demo": "vite build --mode live-demo --outDir ./live-demo",
     "preview": "vite preview",
     "deploy": "gh-pages -d github",
     "generate:types": "vue-tsc -p tsconfig-build.json --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:utils": "vitest run --mode broker",
-    "test:utils:watch": "vitest --mode broker",
+    "test": "vitest run --mode broker",
+    "test:watch": "vitest --mode broker",
+    "test:no-broker": "vitest run",
+    "test:no-broker:watch": "vitest",
     "test:coverage": "vitest run --mode broker --coverage"
   },
   "dependencies": {

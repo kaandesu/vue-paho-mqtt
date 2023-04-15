@@ -43,11 +43,7 @@ export const connectClient = ({
     });
   }, MqttOptions.watchdogTimeout);
 
-  const client = createClient({
-    host: MqttOptions.host,
-    port: MqttOptions.port,
-    clientId: MqttOptions.clientId,
-  });
+  const client = createClient();
 
   client.onConnectionLost = (responseObject: { errorCode: number }) => {
     onConnectionLostCallback(responseObject);

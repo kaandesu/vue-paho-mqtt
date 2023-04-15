@@ -10,19 +10,19 @@
 
 These are the useful scripts that you can use while developing. You can find them in the `package.json` file. You can run them by using `npm run <script_name>`.
 
-| Script             | Description                                    |
-| ------------------ | ---------------------------------------------- |
-| `dev`              | Start the development environment              |
-| `build`            | Test and build the app and the `live-demo`     |
-| `build:live-demo`  | Only build the `live-demo`                     |
-| `preview`          | Run the app on _preview_ mode                  |
-| `generate:types`   | Generate all the types for the project         |
-| `changeset`        | Adds a changelog to the project after a change |
-| `test`             | Run the tests excluding the broker tests       |
-| `test:watch`       | Watch the tests excluding the broker tests     |
-| `test:utils`       | Run the tests including the broker tests       |
-| `test:utils:watch` | Watch the tests including the broker tests     |
-| `test:coverage`    | Create a coverage report for the tests         |
+| Script                 | Description                                    |
+| ---------------------- | ---------------------------------------------- |
+| `dev`                  | Start the development environment              |
+| `build`                | Test and build the app and the `live-demo`     |
+| `build:live-demo`      | Only build the `live-demo`                     |
+| `preview`              | Run the app on _preview_ mode                  |
+| `generate:types`       | Generate all the types for the project         |
+| `changeset`            | Adds a changelog to the project after a change |
+| `test`                 | Run the tests once                             |
+| `test:watch`           | Watch the tests                                |
+| `test:no-broker`       | Run the tests excluding the broker tests       |
+| `test:no-broker:watch` | Watch the tests excluding the broker tests     |
+| `test:coverage`        | Create a coverage report for the tests         |
 
 When pushing your changes, always include a **changeset** file. You can do this by running the `changeset` script. It will ask you a few questions and then create a file for you. You can read more about it [here](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).
 
