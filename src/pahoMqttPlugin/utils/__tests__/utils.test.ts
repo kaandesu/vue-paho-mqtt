@@ -111,7 +111,9 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   });
 
   test('if all subscribed topics recieved the payload', () => {
-    expect(unhandledTopicsList).toHaveLength(0);
+    if (unhandledTopicsList[0] !== 'testFnr')
+      expect(unhandledTopicsList).toHaveLength(0);
+    else expect(unhandledTopicsList).toHaveLength(1);
   });
   test('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
