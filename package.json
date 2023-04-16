@@ -45,7 +45,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode production",
+    "build": "npm run test && vite build --mode production && npm run generate:types && npm run build:live-demo",
     "build:live-demo": "vite build --mode live-demo --outDir ./live-demo",
     "preview": "vite preview",
     "deploy": "gh-pages -d github",
