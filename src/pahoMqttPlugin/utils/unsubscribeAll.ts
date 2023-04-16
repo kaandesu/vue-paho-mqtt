@@ -1,4 +1,4 @@
-import { getClient } from '../config/client';
+import { getClient } from '~/config/client';
 import {
   clearMsgHandlers,
   clearQueueMsgHandlers,
@@ -6,13 +6,11 @@ import {
   queueMsgHandlers,
 } from './msgHandlers';
 
-export type UnsubscribeAllFunction = typeof unsubscribeAll;
-
 /**
  * Unsubscribe all topics
  * @returns {void}
  */
-export const unsubscribeAll = () => {
+export const unsubscribeAll = (): void => {
   const subscribedTopics = {
     ...Object.keys(queueMsgHandlers),
     ...Object.keys(msgHandlers),

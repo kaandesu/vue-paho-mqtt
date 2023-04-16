@@ -1,4 +1,4 @@
-import { MsgHandler } from '../types';
+import { MsgHandler } from '~/types/types';
 
 export let msgHandlers: MsgHandler = {};
 export const clearMsgHandlers = () => {

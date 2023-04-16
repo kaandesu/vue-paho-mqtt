@@ -1,13 +1,13 @@
-import { getClient } from '../config/client';
-import { getMqttOptions } from '../config/options';
-import { SweetAlert } from '../utils/SweetAlert';
-import { connectClient } from '../utils/connectClient';
+import { getClient } from '~/config/client';
+import { getMqttOptions } from '~/config/options';
+import { SweetAlert } from '~/utils/SweetAlert';
+import { connectClient } from '~/utils/connectClient';
 import {
   clearMsgHandlers,
   msgHandlers,
   queueMsgHandlers,
-} from '../utils/msgHandlers';
-import { mqttStatus, stayConnected } from '../utils/refs';
+} from '~/utils/msgHandlers';
+import { mqttStatus, stayConnected } from '~/utils/refs';
 
 /**
  * @description fires when the mqtt connection is lost
@@ -15,7 +15,7 @@ import { mqttStatus, stayConnected } from '../utils/refs';
  */
 export const onConnectionLostCallback = (responseObject: {
   errorCode: number;
-}) => {
+}): void => {
   const client = getClient();
   mqttStatus.value = 'disconnected';
   for (const topic of Object.keys(msgHandlers)) {

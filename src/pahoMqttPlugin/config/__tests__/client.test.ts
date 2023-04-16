@@ -1,5 +1,5 @@
-import { createClient, getClient } from '../client';
-import { mockClient } from '../../../setupTests';
+import { mockClient } from '~/../setupTests';
+import { createClient, getClient } from '~/config/client';
 
 createClient(mockClient);
 describe('client', () => {
