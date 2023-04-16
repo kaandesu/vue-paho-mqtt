@@ -11,7 +11,11 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/pahoMqttPlugin/*"]
+    }
   },
   "include": [
     "src/pahoMqttPlugin/*.ts",
