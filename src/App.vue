@@ -148,7 +148,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { MqttMode } from './pahoMqttPlugin/types/types/types';
+import { MqttMode } from './pahoMqttPlugin/types/types';
 import introJs from 'intro.js/intro';
 import 'intro.js/introjs.css';
 import { $mqtt } from './pahoMqttPlugin';
