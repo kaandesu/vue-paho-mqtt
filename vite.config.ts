@@ -10,6 +10,11 @@ export default defineConfig(({ mode }) => {
       test: {
         globals: true,
       },
+      resolve: {
+        alias: {
+          '~': resolve(__dirname, 'src', 'pahoMqttPlugin'),
+        },
+      },
     };
   } else {
     return {
