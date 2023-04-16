@@ -1,18 +1,22 @@
+import { createClient } from '~/config/client';
+import { getMqttOptions } from '~/config/options';
+import { onConnectCallback } from '~/functions/onConnect';
+import { onConnectionLostCallback } from '~/functions/onConnectionLost';
+import { onFailureCallback } from '~/functions/onFailure';
+import { onMessageArrivedCallback } from '~/functions/onMessageArrived';
 import { SweetAlert } from './SweetAlert';
 import { disconnectClient } from './disconnectClient';
-import { connectWatchdog, mqttStatus, stayConnected } from './refs';
-import { getMqttOptions } from '../config/options';
-import { onFailureCallback } from '../functions/onFailure';
-import { onConnectCallback } from '../functions/onConnect';
-import { onMessageArrivedCallback } from '../functions/onMessageArrived';
-import { onConnectionLostCallback } from '../functions/onConnectionLost';
-import { createClient } from '../config/client';
-
-export type ConnectFunction = typeof connectClient;
+import { connectWatchdog, mqttStatus } from './refs';
 
 /**
  * Connect to the mqtt broker
  * Shows a dialog notification in case of error if the plugin is configured to do so.
+ * @param {object} [options={}] - options object
+ * @param {function} [options.onConnect] - function to be called when the client connects to the broker
+ * @param {function} [options.onFailure] - function to be called when the client fails to connect to the broker
+ * @param {function} [options.onConnectionLost] - function to be called when the client loses connection to the broker
+ * @param {function} [options.onMessageArrived] - function to be called when a message is received
+ * @returns {Promise<boolean>} - returns true if the client connects to the broker
  */
 export const connectClient = ({
   onConnect,
@@ -20,14 +24,20 @@ export const connectClient = ({
   onConnectionLost,
   onMessageArrived,
 }: {
-  onConnect?: () => unknown;
-  onFailure?: () => unknown;
-  onConnectionLost?: (responseObject: { errorCode: number }) => unknown;
-  onMessageArrived?: (message: {
-    payloadString: string;
-    destinationName: string;
-  }) => void;
-} = {}) => {
+  onConnect?: (...args: unknown[]) => unknown;
+  onFailure?: (...args: unknown[]) => unknown;
+  onConnectionLost?: (
+    responseObject: { errorCode: number },
+    ...args: unknown[]
+  ) => unknown;
+  onMessageArrived?: (
+    message: {
+      payloadString: string;
+      destinationName: string;
+    },
+    ...args: unknown[]
+  ) => unknown;
+} = {}): Promise<boolean> => {
   const MqttOptions = getMqttOptions();
 
   if (mqttStatus.value === 'connected') disconnectClient();

@@ -1,13 +1,13 @@
-import { getClient } from '../config/client';
-import { SweetAlert } from '../utils/SweetAlert';
+import { getClient } from '~/config/client';
+import { SweetAlert } from '~/utils/SweetAlert';
 import {
   clearQueueMsgHandlers,
   msgHandlers,
   queueMsgHandlers,
-} from '../utils/msgHandlers';
-import { connectWatchdog, mqttStatus, stayConnected } from '../utils/refs';
+} from '~/utils/msgHandlers';
+import { connectWatchdog, mqttStatus, stayConnected } from '~/utils/refs';
 
-export const onConnectCallback = () => {
+export const onConnectCallback = (): void => {
   clearTimeout(connectWatchdog.value as NodeJS.Timeout);
   const client = getClient();
   mqttStatus.value = 'connected';

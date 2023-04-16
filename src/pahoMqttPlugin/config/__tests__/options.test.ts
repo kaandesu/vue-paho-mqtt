@@ -1,11 +1,12 @@
+import { defaultMqttOptions, defaultPluginOptions } from '~/config/constants';
 import {
   getMqttOptions,
   getPluginOptions,
   setMqttOptions,
   setPluginOptions,
-} from '../options';
-import { MqttOptions, PahoMqttPluginOptions } from '../../types';
-import { defaultMqttOptions, defaultPluginOptions } from '../constants';
+} from '~/config/options';
+import { MqttOptions, PahoMqttPluginOptions } from '~/types/types';
+
 describe('options', () => {
   const mockMqttOptions: MqttOptions = {
     host: `${defaultMqttOptions.host}-testing}`,

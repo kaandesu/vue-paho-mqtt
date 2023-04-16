@@ -1,9 +1,7 @@
-import { getMqttOptions } from '../config/options';
-import { MqttMode } from '../types';
-import { MQTT_STATE } from '../config/constants';
-import { getClient } from '../config/client';
-
-export type PublishFunction = typeof publish;
+import { getClient } from '~/config/client';
+import { MQTT_STATE } from '~/config/constants';
+import { getMqttOptions } from '~/config/options';
+import { MqttMode } from '~/types/types';
 
 /**
  * @description used to publish string data to the topic specified
@@ -12,6 +10,7 @@ export type PublishFunction = typeof publish;
  * @param mode  "B" - for best effort (at most once delivery)
  *              "F" - for at least once delivery
  * @param useMainTopic if true, MqttOptions.mainTopic will be prepended to the topic (default: true)
+ * @throws {Error} if the client is not connected
  */
 export const publish = (
   topic: string,

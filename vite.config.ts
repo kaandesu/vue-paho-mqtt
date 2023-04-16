@@ -10,6 +10,11 @@ export default defineConfig(({ mode }) => {
       test: {
         globals: true,
       },
+      resolve: {
+        alias: {
+          '~': resolve(__dirname, 'src', 'pahoMqttPlugin'),
+        },
+      },
     };
   } else {
     return {
@@ -18,6 +23,11 @@ export default defineConfig(({ mode }) => {
         globals: true,
         setupFiles: 'src/setupTests.ts',
         includeSource: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
+      },
+      resolve: {
+        alias: {
+          '~': resolve(__dirname, 'src', 'pahoMqttPlugin'),
+        },
       },
       build: {
         lib: {

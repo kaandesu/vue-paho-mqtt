@@ -1,17 +1,19 @@
 import { reactive } from 'vue';
-import { MqttOptions, PahoMqttPluginOptions } from '../types';
+import { MqttOptions, PahoMqttPluginOptions } from '~/types/types';
 import { defaultMqttOptions, defaultPluginOptions } from './constants';
 
 let PluginOptions = defaultPluginOptions;
-export const setPluginOptions = (options: Partial<PahoMqttPluginOptions>) => {
+export const setPluginOptions = (
+  options: Partial<PahoMqttPluginOptions>,
+): PahoMqttPluginOptions => {
   PluginOptions = { ...PluginOptions, ...options };
   return PluginOptions;
 };
-export const getPluginOptions = () => PluginOptions;
+export const getPluginOptions = (): PahoMqttPluginOptions => PluginOptions;
 
-let MqttOptionsLocal = reactive(defaultMqttOptions);
-export const setMqttOptions = (options: Partial<MqttOptions>) => {
+let MqttOptionsLocal: MqttOptions = reactive(defaultMqttOptions);
+export const setMqttOptions = (options: Partial<MqttOptions>): MqttOptions => {
   MqttOptionsLocal = reactive({ ...MqttOptionsLocal, ...options });
   return MqttOptionsLocal;
 };
-export const getMqttOptions = () => MqttOptionsLocal;
+export const getMqttOptions = (): MqttOptions => MqttOptionsLocal;

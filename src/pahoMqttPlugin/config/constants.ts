@@ -1,4 +1,4 @@
-import { MqttOptions, MqttState, PahoMqttPluginOptions } from '../types';
+import { MqttOptions, MqttState, PahoMqttPluginOptions } from '~/types/types';
 
 export const MQTT_STATE: MqttState = {
   B: {

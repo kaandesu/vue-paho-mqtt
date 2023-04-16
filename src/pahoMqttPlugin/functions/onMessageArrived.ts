@@ -1,9 +1,9 @@
-import { msgHandlers } from '../utils/msgHandlers';
+import { msgHandlers } from '~/utils/msgHandlers';
 
 export const onMessageArrivedCallback = (message: {
   payloadString: string;
   destinationName: string;
-}) => {
+}): void => {
   const topic = message.destinationName;
   const payload = message.payloadString.replace(/\0.*$/g, '').trim();
   if (msgHandlers[topic]) {

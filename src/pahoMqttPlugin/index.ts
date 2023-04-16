@@ -1,7 +1,7 @@
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { App } from 'vue';
 import { setMqttOptions, setPluginOptions } from './config/options';
-import { MainOptions, MqttInstance } from './types';
+import { MainOptions } from './types/types';
 import { connectClient } from './utils/connectClient';
 import { disconnectClient } from './utils/disconnectClient';
 import { subscribe } from './utils/subscribe';
@@ -10,7 +10,9 @@ import { publish } from './utils/publish';
 import { unsubscribeAll } from './utils/unsubscribeAll';
 import { host, port, clientId, mainTopic, status } from './utils/mqttSettings';
 
-export const $mqtt: MqttInstance = {
+export type MqttInstance = typeof $mqtt;
+
+export const $mqtt = {
   connect: connectClient,
   disconnect: disconnectClient,
   subscribe,

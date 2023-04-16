@@ -1,20 +1,20 @@
-import { getClient } from '../config/client';
-import { getMqttOptions } from '../config/options';
+import { getClient } from '~/config/client';
+import { getMqttOptions } from '~/config/options';
 import { msgHandlers, queueMsgHandlers } from './msgHandlers';
-
-export type SubscribeFunction = typeof subscribe;
 
 /**
  * @description used to subscribe to the topic specified
  * @param topic mqtt topic
- * @param onMessage function to be called when a message is received
+ * @param onMessage callback function to be called when a message is received
  * @param useMainTopic if true, MqttOptions.mainTopic will be prepended to the topic (default: true)
+ * @throws {Error} if the client is not connected
+ * @returns {void} - returns void
  */
 export const subscribe = (
   topic: string,
-  onMessage: (data: string) => unknown,
+  onMessage: (data: string, ...args: unknown[]) => unknown,
   useMainTopic = true,
-) => {
+): void => {
   const MqttOptions = getMqttOptions();
   const client = getClient();
 

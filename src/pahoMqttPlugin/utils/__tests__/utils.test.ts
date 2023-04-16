@@ -1,10 +1,10 @@
 import { DoneCallback } from 'vitest';
-import * as UTILS from '..';
-import { MQTT_STATE, defaultMqttOptions } from '../../config/constants';
-import { MqttMode } from '../../types';
-import { getMqttOptions } from '../../config/options';
-import { utilClient } from '../../../setupTests';
-import { createClient } from '../../config/client';
+import { utilClient } from '~/../setupTests';
+import { createClient } from '~/config/client';
+import { MQTT_STATE, defaultMqttOptions } from '~/config/constants';
+import { getMqttOptions } from '~/config/options';
+import { MqttMode } from '~/types/types';
+import * as UTILS from '~/utils';
 
 describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   test('if status is set right before connection', () => {
@@ -40,7 +40,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   let unhandledTopicsList: string[] = [];
   describe.concurrent('multiple subscribers', () => {
     test.each(mqttModes)(
-      `should subscribe to '%s'`,
+      'should subscribe to "%s"',
       (mode: MqttMode) =>
         new Promise((done: DoneCallback) => {
           setTimeout(() => {
@@ -86,16 +86,16 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
       expect(Object.keys(UTILS.msgHandlers).length).toBe(0);
     });
     test('if subscribtion handler gets added succesfully', () => {
-      UTILS.subscribe('testtopic', (data) => {}, false);
-      UTILS.subscribe('testtopic2', (data) => {}, false);
+      UTILS.subscribe('testtopic', (data) => data, false);
+      UTILS.subscribe('testtopic2', (data) => data, false);
       expect(Object.keys(UTILS.msgHandlers)).toContain('testtopic');
       expect(Object.keys(UTILS.msgHandlers)).toContain('testtopic2');
     });
   });
   /* unsubscribe */
   test('if unsubscribe works correctly', () => {
-    UTILS.subscribe('testtopic', (data) => {});
-    UTILS.subscribe('testtopic2', (data) => {});
+    UTILS.subscribe('testtopic', (data) => data);
+    UTILS.subscribe('testtopic2', (data) => data);
     UTILS.unsubscribe('testtopic');
     expect(Object.keys(UTILS.msgHandlers)).not.toHaveProperty('testtopic');
   });
@@ -103,8 +103,8 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   /* unsubscribeAll */
   test('if unsubscribeAll works correctly', () => {
     UTILS.clearMsgHandlers();
-    UTILS.subscribe('testtopic', (data) => {});
-    UTILS.subscribe('testtopic2', (data) => {});
+    UTILS.subscribe('testtopic', (data) => data);
+    UTILS.subscribe('testtopic2', (data) => data);
     UTILS.unsubscribeAll();
     expect(Object.keys(UTILS.msgHandlers)).not.toHaveProperty('testtopic');
     expect(Object.keys(UTILS.msgHandlers)).not.toHaveProperty('testtopi2');

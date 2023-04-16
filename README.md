@@ -248,21 +248,27 @@ You don't really need to handle arriving messages in the 'onMessageArrived' call
 ### Type Definition
 
 ```ts
-type ConnectFunction = ({
-  onConnect,
-  onFailure,
-  onConnectionLost,
-  onMessageArrived,
-}?: {
-  onConnect?: (() => unknown) | undefined;
-  onFailure?: (() => unknown) | undefined;
+const connect: ({
+  onConnect?: ((...args: unknown[]) => unknown) | undefined;
+  onFailure?: ((...args: unknown[]) => unknown) | undefined;
   onConnectionLost?:
-    | ((responseObject: { errorCode: number }) => unknown)
+    | ((
+        responseObject: {
+          errorCode: number;
+        },
+        ...args: unknown[]
+      ) => unknown)
     | undefined;
   onMessageArrived?:
-    | ((message: { payloadString: string; destinationName: string }) => void)
+    | ((
+        message: {
+          payloadString: string;
+          destinationName: string;
+        },
+        ...args: unknown[]
+      ) => unknown)
     | undefined;
-}) => Promise<unknown>;
+}) => Promise<boolean>;
 ```
 
 ### Usage
@@ -299,7 +305,7 @@ $mqtt.connect({
   onFailure: () => {
     console.log('Mqtt connection failed');
   },
-  onConnectionLost: (error) => {
+  onConnectionLost: (error: any) => {
     console.log('Error:', error.message);
   },
   onMessageArrived: (message: {
@@ -324,7 +330,7 @@ Disconnect from the mqtt broker. Shows a dialog notification in case of error if
 ### Type Definition
 
 ```ts
-type DisconnectFunction = () => Promise<unknown>;
+const disconnect: () => Promise<boolean>;
 ```
 
 ### Usage
@@ -356,9 +362,9 @@ It is used to subscribe to the topic specified, and to define the function to ca
 ### Type Definition
 
 ```ts
-type SubscribeFunction = (
+const subscribe: (
   topic: string,
-  onMessage: (data: string) => unknown,
+  onMessage: (data: string, ...args: unknown[]) => unknown,
   useMainTopic?: boolean,
 ) => void;
 ```
@@ -385,6 +391,7 @@ this.$mqtt.subscribe(
 
 ```ts
 import { $mqtt } from 'vue-paho-mqtt';
+
 $mqtt.subscribe('my/topic', (data: string) => {
   console.log(data, 'recieved');
 });
@@ -399,7 +406,7 @@ Used to publish string data to the topic specified.
 ### Type Definition
 
 ```ts
-type PublishFunction = (
+const publish: (
   topic: string,
   payload: string,
   mode: MqttMode,
@@ -418,15 +425,15 @@ type PublishFunction = (
 
 ```ts
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
-// 'Fnr' => Qos: 2 , retianed: false
+// 'Fnr' => Qos: 2 , retained: false
 this.$mqtt.publish('test/topic', 'Hello, world!', 'Fnr');
 
 // even if the enableMainTopic is true, publish to 'my/topic'
-// 'B' => Qos: 0 , retianed: false
+// 'B' => Qos: 0 , retained: false
 this.$mqtt.publish('test/topic', 'Hello, world!', 'B', false);
 
 // if the enableMainTopic is true, publish to 'MAIN/my/topic'
-// 'Qr' => Qos: 1 , retianed: true
+// 'Qr' => Qos: 1 , retained: true
 this.$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 // payload: "Hello, world!"
@@ -436,6 +443,7 @@ this.$mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 
 ```ts
 import { $mqtt } from 'vue-paho-mqtt';
+
 $mqtt.publish('test/topic', 'Hello, world!', 'Qr');
 ```
 
@@ -448,7 +456,7 @@ Get or set the host parameter from the [MQTT Options](#mqtt-options).
 ### Type Definition
 
 ```ts
-type HostFunction = (e?: string) => string;
+const host: (e?: string) => string;
 ```
 
 ### Get Host
@@ -482,6 +490,7 @@ onMounted(() => {
 ```ts
 import { onMounted } from 'vue';
 import { $mqtt } from 'vue-paho-mqtt';
+
 onMounted(() => {
   console.log($mqtt.host());
 });
@@ -496,7 +505,7 @@ Get or set the port parameter from the [MQTT Options](#mqtt-options).
 ### Type Definition
 
 ```ts
-type PortFunction = (e?: number) => number;
+const port: (e?: number) => number;
 ```
 
 ### Get Port
@@ -544,7 +553,7 @@ Get or set the clientId parameter from the [MQTT Options](#mqtt-options).
 ### Type Definition
 
 ```ts
-type ClientIdFunction = (e?: string) => string;
+const clientId: (e?: string) => string;
 ```
 
 ### Get clientId
@@ -578,6 +587,7 @@ onMounted(() => {
 ```ts
 import { onMounted } from 'vue';
 import { $mqtt } from 'vue-paho-mqtt';
+
 onMounted(() => {
   console.log($mqtt.clientId());
 });
@@ -592,7 +602,7 @@ Get or set the mainTopic parameter from the [MQTT Options](#mqtt-options).
 ### Type Definition
 
 ```ts
-type MainTopicFunction = (e?: string) => string | undefined;
+const mainTopic: (e?: string) => string | undefined;
 ```
 
 ### Get mainTopic
@@ -626,6 +636,7 @@ onMounted(() => {
 ```ts
 import { onMounted } from 'vue';
 import { $mqtt } from 'vue-paho-mqtt';
+
 onMounted(() => {
   console.log($mqtt.mainTopic());
 });
@@ -640,7 +651,7 @@ Used to unsubscribe from the topic specified
 ### Type Definition
 
 ```ts
-type UnsubscribeFunction = (topic: string, useMainTopic?: boolean) => void;
+const unsubscribe: (topic: string, useMainTopic?: boolean) => void;
 ```
 
 |     param      |   type    |                                           explanation                                            | default |
@@ -667,7 +678,7 @@ Used to unsubscribe from **all** the topics subscribed previously.
 ### Type Definition
 
 ```ts
-type UnsubscribeAllFunction = () => void;
+const unsubscribeAll: () => void;
 ```
 
 ### Usage
@@ -693,7 +704,7 @@ type MqttStatus =
   | 'lost'
   | null;
 
-type StatusFunction = () => MqttStatus;
+const status: () => MqttStatus;
 ```
 
 ### Get MQTT Status
@@ -777,8 +788,6 @@ If you have any suggestions/questions/requests please consider
 ## License
 
 This project is licensed under `MIT License` if you want to see more, please check [LICENSE](LICENSE) for more information.
-
-[repository-url]: https://github.com/kaandesu/vue-paho-mqtt
 
 ## Credits
 
