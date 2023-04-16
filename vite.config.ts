@@ -19,6 +19,11 @@ export default defineConfig(({ mode }) => {
         setupFiles: 'src/setupTests.ts',
         includeSource: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
       },
+      resolve: {
+        alias: {
+          '~': resolve(__dirname, 'src', 'pahoMqttPlugin'),
+        },
+      },
       build: {
         lib: {
           entry: resolve(__dirname, 'src/pahoMqttPlugin/index.ts'),
