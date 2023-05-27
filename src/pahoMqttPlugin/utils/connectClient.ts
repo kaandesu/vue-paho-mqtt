@@ -71,6 +71,8 @@ export const connectClient = ({
   return new Promise((resolve, reject) => {
     try {
       client.connect({
+        userName: MqttOptions.username ?? '',
+        password: MqttOptions.password ?? '',
         onSuccess: () => {
           resolve(true);
           onConnectCallback();
