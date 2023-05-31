@@ -1,6 +1,7 @@
 import { utilClientAuth } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { defaultMqttOptions } from '~/config/constants';
+import { getMqttOptions } from '~/config/options';
 import * as UTILS from '~/utils';
 
 describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
@@ -17,6 +18,12 @@ describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
     });
     test('if clientId set correctly', () => {
       expect(UTILS.clientId()).toBe(utilClientAuth.clientId);
+    });
+    test('if username set correctly', () => {
+      expect(getMqttOptions().username).toBe(utilClientAuth.username);
+    });
+    test('if password set correctly', () => {
+      expect(getMqttOptions().password).toBe(utilClientAuth.password);
     });
   });
   test(`if connects to the broker in ${defaultMqttOptions.watchdogTimeout}ms `, async () => {
