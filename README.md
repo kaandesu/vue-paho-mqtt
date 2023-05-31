@@ -149,6 +149,10 @@ You can configure the MQTT client by passing an object with the following option
 
 - `clientId` (`string`, default: `"ClientID-${Math.random() * 9999}}"`) - The client identifier to use when connecting to the broker.
 
+- `username` (`string`, default: `""`) - The username to use when connecting to the broker.
+
+- `password` (`string`, default: `""`) - The password to use when connecting to the broker.
+
 - `mainTopic` (`string`, default: `"MAIN"`) - If enaled, the topic that will be prepended to the topic specified during the $mqtt.publish and $mqtt.subscribe _(can be manually disabled in $mqtt.publish and $mqtt.subscribe)_.
 
 - `enableMainTopic` (`boolean`, default: `true`) - Enables usage of the main topic.
