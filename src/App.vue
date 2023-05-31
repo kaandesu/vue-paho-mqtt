@@ -39,6 +39,20 @@
               <span>ClientID:</span>
               <input placeholder="enter mqtt client id" v-model="clientId" />
             </span>
+            <span class="field-row">
+              <span>Username:</span>
+              <input
+                placeholder="enter mqtt username (optional)"
+                v-model="username"
+              />
+            </span>
+            <span class="field-row">
+              <span>Password:</span>
+              <input
+                placeholder="enter mqtt password (optional)"
+                v-model="password"
+              />
+            </span>
             <button @click="updateAll()" class="update-btn">
               Update Settings
             </button>
@@ -156,6 +170,8 @@ const host = ref<string>('');
 const port = ref<string>('0');
 const clientId = ref<string>('');
 const mainTopic = ref<string>('');
+const username = ref<string>('');
+const password = ref<string>('');
 const options = ref([
   { text: 'B', value: 'B' },
   { text: 'Br', value: 'Br' },
@@ -187,6 +203,8 @@ const updateAll = () => {
   $mqtt.port(parseInt(port.value));
   $mqtt.clientId(clientId.value);
   $mqtt.mainTopic(mainTopic.value);
+  $mqtt.username(username.value);
+  $mqtt.password(password.value);
 };
 const unsubAll = () => {
   $mqtt.unsubscribeAll();
@@ -206,6 +224,8 @@ onMounted(() => {
   port.value = String($mqtt.port());
   mainTopic.value = $mqtt.mainTopic() ?? '';
   clientId.value = $mqtt.clientId();
+  username.value = $mqtt.username() ?? '';
+  password.value = $mqtt.password() ?? '';
 });
 </script>
 
