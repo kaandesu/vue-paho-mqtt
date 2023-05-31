@@ -15,12 +15,6 @@ describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
     test('if port set correctly', () => {
       expect(UTILS.port()).toBe(utilClientAuth.port);
     });
-    test('if username set correctly', () => {
-      expect(UTILS.username()).toBe(utilClientAuth.username);
-    });
-    test('if password set correctly', () => {
-      expect(UTILS.password()).toBe(utilClientAuth.password);
-    });
     test('if clientId set correctly', () => {
       expect(UTILS.clientId()).toBe(utilClientAuth.clientId);
     });
