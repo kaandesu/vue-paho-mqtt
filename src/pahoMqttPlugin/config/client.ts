@@ -15,8 +15,13 @@ export const createClient = (
     host: getMqttOptions().host,
     port: getMqttOptions().port,
     clientId: getMqttOptions().clientId,
+    username: getMqttOptions().username,
+    password: getMqttOptions().password,
   },
 ): Client => {
+  mqttOptions.username = options.username;
+  mqttOptions.password = options.password;
+
   client = new Client(
     (mqttOptions.host = options.host),
     (mqttOptions.port = options.port),

@@ -11,11 +11,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
   describe('Client', () => {
-    createClient({
-      host: utilClient.host,
-      port: utilClient.port,
-      clientId: utilClient.clientId,
-    });
+    createClient(utilClient);
     test('if host set correctly', () => {
       expect(UTILS.host()).toBe(utilClient.host);
     });
