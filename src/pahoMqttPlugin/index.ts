@@ -8,15 +8,7 @@ import { subscribe } from './utils/subscribe';
 import { unsubscribe } from './utils/unsubscribe';
 import { publish } from './utils/publish';
 import { unsubscribeAll } from './utils/unsubscribeAll';
-import {
-  host,
-  port,
-  clientId,
-  mainTopic,
-  status,
-  username,
-  password,
-} from './utils/mqttSettings';
+import { host, port, clientId, mainTopic, status } from './utils/mqttSettings';
 
 export type MqttInstance = typeof $mqtt;
 
@@ -27,8 +19,6 @@ export const $mqtt = {
   publish,
   host,
   port,
-  username,
-  password,
   clientId,
   mainTopic,
   unsubscribe,
