@@ -83,6 +83,10 @@ export const connectClient = ({
           onFailureCallback();
           if (onFailure) onFailure();
         },
+        uris: [
+          `ws://${MqttOptions.host}:${MqttOptions.port}`,
+          `wss://${MqttOptions.host}:${MqttOptions.port}`,
+        ],
       });
     } catch (err: unknown) {
       reject(err);
