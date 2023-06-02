@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.2.7
+
+### Patch Changes
+
+- 6b5d623: Added authentication support with `username` and `password`.
+
 ## 0.2.6
 
 ### Patch Changes
