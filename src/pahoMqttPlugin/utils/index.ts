@@ -34,8 +34,6 @@ export {
   mainTopic,
   port,
   useSSL,
-  username,
-  password,
   status,
   msgHandlers,
   clearMsgHandlers,

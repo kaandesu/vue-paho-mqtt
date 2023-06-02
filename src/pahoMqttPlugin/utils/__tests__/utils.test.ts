@@ -81,7 +81,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     test('if msgHandlers gets cleared', () => {
       expect(Object.keys(UTILS.msgHandlers).length).toBe(0);
     });
-    test('if subscribtion handler gets added succesfully', () => {
+    test('if subscription handler gets added succesfully', () => {
       UTILS.subscribe('testtopic', (data) => data, false);
       UTILS.subscribe('testtopic2', (data) => data, false);
       expect(Object.keys(UTILS.msgHandlers)).toContain('testtopic');
