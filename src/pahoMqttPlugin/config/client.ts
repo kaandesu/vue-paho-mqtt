@@ -17,10 +17,12 @@ export const createClient = (
     clientId: getMqttOptions().clientId,
     username: getMqttOptions().username,
     password: getMqttOptions().password,
+    useSSL: getMqttOptions().useSSL,
   },
 ): Client => {
   mqttOptions.username = options.username;
   mqttOptions.password = options.password;
+  mqttOptions.useSSL = options.useSSL;
 
   client = new Client(
     (mqttOptions.host = options.host),
