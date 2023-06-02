@@ -5,7 +5,7 @@ import { resolve } from 'path';
 export default defineConfig(({ mode }) => {
   if (mode === 'live-demo') {
     return {
-      base: '/vue-paho-mqtt/',
+      base: './',
       plugins: [vue()],
       test: {
         globals: true,

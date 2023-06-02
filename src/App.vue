@@ -3,26 +3,18 @@
     <div class="wrapper">
       <section class="mqtt-fields">
         <div class="field-view">
-          <div
-            data-step="1"
-            data-intro="Step 1: Connect or disconnect to the MQTT broker! 🔗 "
-          >
+          <div data-step="1" data-intro="Step 1: Connect or disconnect to the MQTT broker! 🔗 ">
             <button class="mqtt-button connect" @click="$mqtt.connect()">
               CONNECT
             </button>
             <button class="mqtt-button disconnect" @click="$mqtt.disconnect()">
               DISCONNECT
             </button>
-            <span
-              >MQTT status: <label> {{ $mqtt.status() }} </label></span
-            >
+            <span>MQTT status: <label> {{ $mqtt.status() }} </label></span>
           </div>
           <div class="hr" />
-          <div
-            class="settings"
-            data-step="2"
-            data-intro="Step 2: Configure & update the client settings! <i>(changes will apply on reconnect)</i> ⚙️"
-          >
+          <div class="settings" data-step="2"
+            data-intro="Step 2: Configure & update the client settings! <i>(changes will apply on reconnect)</i> ⚙️">
             <span class="field-row">
               <span>Host:</span>
               <input placeholder="enter mqtt host" v-model="host" />
@@ -33,7 +25,11 @@
             </span>
             <span class="field-row">
               <span>Use SSL:</span>
-              <input placeholder="true or false" v-model="useSSL" />
+              <select class="optionField" v-model="useSSL">
+                <option :key="index" v-for="(option, index) in sslOptions" :value="option">
+                  {{ option }}
+                </option>
+              </select>
             </span>
             <span class="field-row">
               <span>Main Topic:</span>
@@ -48,19 +44,14 @@
             </button>
           </div>
           <div class="hr" />
-          <div
-            class="settings"
-            data-step="4"
-            data-intro="Step 4: Enter the topic, payload,and select the QoS mode and click publish! 📦"
-          >
-            <div
-              style="
+          <div class="settings" data-step="4"
+            data-intro="Step 4: Enter the topic, payload,and select the QoS mode and click publish! 📦">
+            <div style="
                 font-weight: bold;
                 font-size: 20px;
                 margin-bottom: -15px;
                 margin-top: -15px;
-              "
-            >
+              ">
               Publish Data
             </div>
             <span>
@@ -70,19 +61,12 @@
             <span class="field-row">
               <span>Publish Mode: </span>
               <select style="margin: -15px 0" v-model="pubMode">
-                <option
-                  v-bind:key="option.value"
-                  v-for="option in options"
-                  v-bind:value="option.value"
-                >
+                <option v-bind:key="option.value" v-for="option in options" v-bind:value="option.value">
                   {{ option.text }}
                 </option>
               </select>
             </span>
-            <button
-              class="pub"
-              @click="$mqtt.publish(pubTopic, pubData, pubMode as MqttMode)"
-            >
+            <button class="pub" @click="$mqtt.publish(pubTopic, pubData, pubMode as MqttMode)">
               Publish
             </button>
           </div>
@@ -90,46 +74,26 @@
           <button class="unsub" @click="unsubAll()">Unsubscribe All</button>
           <div class="hr" />
           <span class="field-row">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-              height="25"
-              alt="github"
-            />
-            <a
-              href="https://github.com/kaandesu/vue-paho-mqtt/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style="font-size: 15px; font-weight: bold"
-              ><i>kaandesu/vue-paho-mqtt</i></a
-            >
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" height="25" alt="github" />
+            <a href="https://github.com/kaandesu/vue-paho-mqtt/" target="_blank" rel="noopener noreferrer"
+              style="font-size: 15px; font-weight: bold"><i>kaandesu/vue-paho-mqtt</i></a>
             <button class="help" @click="startIntro()">?</button>
           </span>
         </div>
       </section>
-      <section
-        class="subview"
-        data-step="3"
-        data-intro="Step 3: Enter a topic you want to subscribe to, and click subscribe! You can subscribe multiple topics at once! <i>On the bottom of the card you can see the data arrived!</i> 👀"
-      >
+      <section class="subview" data-step="3"
+        data-intro="Step 3: Enter a topic you want to subscribe to, and click subscribe! You can subscribe multiple topics at once! <i>On the bottom of the card you can see the data arrived!</i> 👀">
         <div v-for="(card, index) in subList" :key="index" class="sub-card">
           <input placeholder="enter topic name" v-model="card.topic" />
           <div class="button-section">
             <div class="row">
-              <button
-                :disabled="card.topic == ''"
-                @click="subscribe(card.topic, index)"
-                class="btn"
-              >
+              <button :disabled="card.topic == ''" @click="subscribe(card.topic, index)" class="btn">
                 Subscribe
               </button>
-              <button
-                :disabled="card.topic == ''"
-                @click="
-                  $mqtt.unsubscribe(card.topic);
-                  card.subData = '---';
-                "
-                class="btn"
-              >
+              <button :disabled="card.topic == ''" @click="
+                $mqtt.unsubscribe(card.topic);
+              card.subData = '---';
+              " class="btn">
                 Unsubscribe
               </button>
             </div>
@@ -139,12 +103,8 @@
       </section>
     </div>
     <div class="title">
-      <img
-        :class="$mqtt.status() === 'connected' ? '' : 'img-red'"
-        src="/assets/logo.png"
-        height="100"
-        alt="Vue-Paho-Mqtt-Logo"
-      />
+      <img :class="$mqtt.status() === 'connected' ? '' : 'img-red'" src="/assets/logo.png" height="100"
+        alt="Vue-Paho-Mqtt-Logo" />
       <h3>Vue Paho Mqtt Plugin - Live Demo</h3>
     </div>
   </main>
@@ -153,14 +113,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { MqttMode } from './pahoMqttPlugin/types/types';
+// @ts-ignore
 import introJs from 'intro.js/intro';
 import 'intro.js/introjs.css';
 import { $mqtt } from './pahoMqttPlugin';
 const host = ref<string>('');
 const port = ref<string>('0');
-const useSSL = ref<string>('false');
+const useSSL = ref<boolean>(false);
 const clientId = ref<string>('');
 const mainTopic = ref<string>('');
+const sslOptions = ref([true, false]);
 const options = ref([
   { text: 'B', value: 'B' },
   { text: 'Br', value: 'Br' },
@@ -190,7 +152,7 @@ const subscribe = (topic: string, index: number) => {
 const updateAll = () => {
   $mqtt.host(host.value);
   $mqtt.port(parseInt(port.value));
-  $mqtt.useSSL(useSSL.value === 'true');
+  $mqtt.useSSL(useSSL.value === true);
   $mqtt.clientId(clientId.value);
   $mqtt.mainTopic(mainTopic.value);
 };
@@ -210,7 +172,7 @@ onMounted(() => {
   startIntro();
   host.value = $mqtt.host();
   port.value = String($mqtt.port());
-  useSSL.value = String($mqtt.useSSL()) ?? 'false';
+  useSSL.value = $mqtt.useSSL() ?? false;
   mainTopic.value = $mqtt.mainTopic() ?? '';
   clientId.value = $mqtt.clientId();
 });
@@ -228,6 +190,7 @@ onMounted(() => {
   color: White;
   font-weight: bold;
 }
+
 .mqtt-fields input {
   width: 100%;
   border: 0;
@@ -238,6 +201,7 @@ onMounted(() => {
   margin-top: 0.25rem;
   font-size: 20px;
 }
+
 .settings {
   display: flex;
   flex-direction: column;
@@ -245,11 +209,13 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 .hr {
   width: 100%;
   height: 1px;
   background: #33485e;
 }
+
 .pub {
   width: 50%;
   height: 40px;
@@ -261,6 +227,7 @@ onMounted(() => {
   color: white;
   font-size: 20px;
 }
+
 .unsub {
   width: 70%;
   height: 30px;
@@ -272,10 +239,12 @@ onMounted(() => {
   color: white;
   font-size: 15px;
 }
+
 .mqtt-fields {
   display: block;
   flex-direction: column;
 }
+
 .field-view {
   overflow-x: hidden;
   overflow-y: scroll;
@@ -287,6 +256,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
 }
+
 .mqtt-button {
   width: 100%;
   height: 40px;
@@ -297,6 +267,7 @@ onMounted(() => {
   font-size: 20px;
   border-radius: 0.5rem;
 }
+
 .update-btn {
   background: #33485e;
   color: white;
@@ -304,25 +275,31 @@ onMounted(() => {
   height: 35px;
   border-radius: 0.5rem;
 }
+
 .mqtt-button.connect {
   background: #3fb884;
   color: white;
 }
+
 .mqtt-button.disconnect {
   background: #ff9a9a;
   color: white;
 }
+
 .mqtt-fields input::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   font-weight: 100;
   font-size: 15px;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
-span > label {
+
+span>label {
   font-size: 17px;
   font-weight: bold;
 }
+
 .title {
   position: absolute;
   z-index: -1;
@@ -333,9 +310,11 @@ span > label {
   gap: 1rem;
   align-items: center;
 }
+
 .subview {
   overflow: auto;
 }
+
 .sub-card {
   padding-top: 0.5rem;
   width: 100%;
@@ -362,6 +341,7 @@ span > label {
   color: white;
   margin-top: 0.25rem;
 }
+
 .sub-data {
   position: absolute;
   top: 100%;
@@ -375,6 +355,7 @@ span > label {
   z-index: -1;
   border-radius: 0px 0 0.5rem 0.5rem;
 }
+
 .sub-data::before {
   content: 'data:';
   position: absolute;
@@ -383,6 +364,7 @@ span > label {
   font-size: 10px;
   left: 0.5rem;
 }
+
 .sub-card:hover .sub-data {
   font-size: 20px;
 }
@@ -391,8 +373,10 @@ span > label {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   font-weight: bold;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
+
 .button-section {
   position: relative;
   display: flex;
@@ -408,6 +392,7 @@ span > label {
   border-bottom-right-radius: 0.5rem;
   z-index: -2;
 }
+
 .button-section::before {
   content: '';
   position: absolute;
@@ -419,6 +404,7 @@ span > label {
   z-index: -1;
   transform: translateY(calc(-100% + 0.2rem));
 }
+
 .row {
   width: 100%;
   height: 100%;
@@ -428,6 +414,7 @@ span > label {
   align-items: center;
   gap: 0.5rem;
 }
+
 .field-row {
   flex-flow: row, nowrap;
   display: flex;
@@ -435,6 +422,7 @@ span > label {
   align-items: center;
   gap: 0.1rem;
 }
+
 .button-section .btn {
   font-size: 0.8rem;
   border-radius: 8px;
@@ -443,12 +431,15 @@ span > label {
   height: 50%;
   overflow: hidden;
 }
+
 .button-section .btn:nth-child(1) {
   margin-left: 0.5rem;
 }
+
 .button-section .btn:nth-child(2) {
   margin-right: 0.5rem;
 }
+
 .wrapper {
   background: var(--wrapper-color);
   padding: 0.5rem;
@@ -460,6 +451,7 @@ span > label {
   display: flex;
   gap: 0.5rem;
 }
+
 section {
   padding: 0.5rem;
   background: var(--section-color);
@@ -471,8 +463,20 @@ section {
   justify-content: space-between;
   align-items: stretch;
 }
+
 .img-red {
   transition: all 0.5s ease;
   filter: hue-rotate(214deg);
+}
+
+.optionField {
+  margin: -15px 0;
+  background: #3fb884;
+  color: white;
+  text-align: center;
+  font-size: medium;
+  border: none;
+  width: 11rem;
+  height: 1.5rem;
 }
 </style>
