@@ -17,6 +17,14 @@ export const port = (e?: number) => {
   return MqttOptions.port;
 };
 
+export const useSSL = (e?: boolean) => {
+  const MqttOptions = getMqttOptions();
+  if (e !== undefined) {
+    return (MqttOptions.useSSL = e);
+  }
+  return MqttOptions.useSSL;
+};
+
 export const username = (e?: string) => {
   const MqttOptions = getMqttOptions();
   if (e !== undefined) {

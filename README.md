@@ -147,6 +147,8 @@ You can configure the MQTT client by passing an object with the following option
 
 - `port` (`number`, default: `9001`) - The port number of the MQTT broker.
 
+- `useSSL` (`boolean`, default: `false`) - Whether to use SSL when connecting to the broker.
+
 - `clientId` (`string`, default: `"ClientID-${Math.random() * 9999}}"`) - The client identifier to use when connecting to the broker.
 
 - `username` (`string`, default: `""`) - The username to use when connecting to the broker.

@@ -71,8 +71,9 @@ export const connectClient = ({
   return new Promise((resolve, reject) => {
     try {
       client.connect({
-        userName: MqttOptions.username ?? '',
-        password: MqttOptions.password ?? '',
+        userName: MqttOptions.username,
+        password: MqttOptions.password,
+        useSSL: MqttOptions.useSSL,
         onSuccess: () => {
           resolve(true);
           onConnectCallback();
@@ -83,10 +84,6 @@ export const connectClient = ({
           onFailureCallback();
           if (onFailure) onFailure();
         },
-        uris: [
-          `ws://${MqttOptions.host}:${MqttOptions.port}`,
-          `wss://${MqttOptions.host}:${MqttOptions.port}`,
-        ],
       });
     } catch (err: unknown) {
       reject(err);

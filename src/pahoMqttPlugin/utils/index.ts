@@ -8,6 +8,7 @@ import {
   password,
   port,
   status,
+  useSSL,
   username,
 } from './mqttSettings';
 import {
@@ -32,6 +33,7 @@ export {
   host,
   mainTopic,
   port,
+  useSSL,
   username,
   password,
   status,
