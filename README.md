@@ -34,6 +34,9 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
 
 - [Installation](#installation)
 - [Setup](#setup)
+  - [Vite / VueCLI](#vite--vuecli)
+  - [Quasar](#quasar-framework-quasar-boot)
+  - [Nuxt3](#nuxt3-nuxt-plugins)
 - [Options](#options)
   - [Plugin Options](#plugin-options)
   - [MQTT Options](#mqtt-options)
@@ -124,6 +127,37 @@ export default boot(({ app }) => {
       },
     }),
   );
+});
+```
+
+### Nuxt3 ([nuxt plugins](https://nuxt.com/docs/guide/directory-structure/plugins))
+
+```ts
+import { createPahoMqttPlugin } from 'vue-paho-mqtt';
+export default defineNuxtPlugin({
+  name: 'vue-paho-mqtt',
+  enforce: 'pre',
+  async setup(nuxtApp) {
+    nuxtApp.vueApp.use(
+      createPahoMqttPlugin({
+        PluginOptions: {
+          autoConnect: true,
+          showNotifications: true,
+        },
+        MqttOptions: {
+          host: 'localhost',
+          port: 9001,
+          clientId: `MyID-${Math.random() * 9999}`,
+          mainTopic: 'MAIN',
+        },
+      }),
+    );
+  },
+  hooks: {
+    'app:created'() {
+      const nuxtApp = useNuxtApp();
+    },
+  },
 });
 ```
 

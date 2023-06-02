@@ -5,11 +5,9 @@ import {
   clientId,
   host,
   mainTopic,
-  password,
   port,
   status,
   useSSL,
-  username,
 } from './mqttSettings';
 import {
   clearMsgHandlers,
