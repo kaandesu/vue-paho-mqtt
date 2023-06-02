@@ -25,22 +25,6 @@ export const useSSL = (e?: boolean) => {
   return MqttOptions.useSSL;
 };
 
-export const username = (e?: string) => {
-  const MqttOptions = getMqttOptions();
-  if (e !== undefined) {
-    return (MqttOptions.username = e);
-  }
-  return MqttOptions.username;
-};
-
-export const password = (e?: string) => {
-  const MqttOptions = getMqttOptions();
-  if (e !== undefined) {
-    return (MqttOptions.password = e);
-  }
-  return MqttOptions.password;
-};
-
 export const clientId = (e?: string) => {
   const MqttOptions = getMqttOptions();
   if (e !== undefined) {
