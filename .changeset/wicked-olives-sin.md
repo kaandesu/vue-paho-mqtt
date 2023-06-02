@@ -2,4 +2,4 @@
 'vue-paho-mqtt': minor
 ---
 
-Added authentication support with `username` and `password`.
+Added `wss` protocol support for connection to MQTT broker over SSL.
