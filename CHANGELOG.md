@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.3.0
+
+### Minor Changes
+
+- 5755878: Added `wss` protocol support for connection to MQTT broker over SSL.
+
 ## 0.2.7
 
 ### Patch Changes

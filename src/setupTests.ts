@@ -7,6 +7,13 @@ export const utilClient = {
   clientId: 'mock',
 };
 
+export const utilClientWss = {
+  host: 'test.mosquitto.org',
+  port: 8081,
+  clientId: 'mock',
+  useSSL: true,
+};
+
 export const utilClientAuth = {
   host: 'test.mosquitto.org',
   port: 8090,

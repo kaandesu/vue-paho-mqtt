@@ -29,6 +29,7 @@ export interface MqttOptions {
   host: string;
   port: number;
   clientId: string;
+  useSSL?: boolean;
   mainTopic?: string;
   enableMainTopic?: boolean;
   watchdogTimeout?: number;

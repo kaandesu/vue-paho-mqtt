@@ -35,6 +35,9 @@ export const defaultPluginOptions: PahoMqttPluginOptions = {
 export const defaultMqttOptions: MqttOptions = {
   host: 'localhost',
   port: 9001,
+  username: '',
+  password: '',
+  useSSL: false,
   clientId: `ClientId-${Math.random() * 9999}`,
   mainTopic: 'vue-paho-mqtt-test',
   enableMainTopic: true,

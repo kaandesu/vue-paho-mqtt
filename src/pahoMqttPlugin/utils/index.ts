@@ -1,7 +1,14 @@
 import { SweetAlert } from './SweetAlert';
 import { connectClient } from './connectClient';
 import { disconnectClient } from './disconnectClient';
-import { clientId, host, mainTopic, port, status } from './mqttSettings';
+import {
+  clientId,
+  host,
+  mainTopic,
+  port,
+  status,
+  useSSL,
+} from './mqttSettings';
 import {
   clearMsgHandlers,
   clearQueueMsgHandlers,
@@ -24,6 +31,7 @@ export {
   host,
   mainTopic,
   port,
+  useSSL,
   status,
   msgHandlers,
   clearMsgHandlers,
