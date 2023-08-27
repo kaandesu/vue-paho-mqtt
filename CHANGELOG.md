@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.4.0
+
+### Minor Changes
+
+- aa990ac: if useSSL is set to true, the wss:// protocol will be tried first, then the ws://
+
 ## 0.3.0
 
 ### Minor Changes
