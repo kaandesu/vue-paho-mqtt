@@ -1,5 +1,5 @@
 import 'sweetalert2/dist/sweetalert2.min.css';
-import { App } from 'vue';
+import type { App, Plugin } from 'vue';
 import { setMqttOptions, setPluginOptions } from './config/options';
 import { MainOptions } from './types/types';
 import { connectClient } from './utils/connectClient';
@@ -34,7 +34,7 @@ export const $mqtt = {
   status,
 };
 
-export const createPahoMqttPlugin = (MainOptions: MainOptions) => {
+export const createPahoMqttPlugin = (MainOptions: MainOptions): Plugin => {
   return (app: App) => {
     const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
     setMqttOptions(MainOptions.MqttOptions);

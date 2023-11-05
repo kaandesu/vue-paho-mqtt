@@ -1,5 +1,5 @@
 import type { Qos } from 'paho-mqtt';
-export * from '~/index';
+export * from './../index';
 
 export interface PahoMqttPluginOptions {
   showNotifications?: boolean;
