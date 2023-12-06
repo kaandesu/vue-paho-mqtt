@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.4.1
+
+### Patch Changes
+
+- 51b9f0b: Typing fixed, now usable with TypeScript.
+
 ## 0.4.0
 
 ### Minor Changes
