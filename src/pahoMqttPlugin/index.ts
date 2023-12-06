@@ -34,7 +34,7 @@ export const $mqtt = {
   status,
 };
 
-export const createPahoMqttPlugin = (MainOptions: MainOptions): Plugin => {
+export const createPahoMqttPlugin = (MainOptions: MainOptions): any => {
   return (app: App) => {
     const PluginOptions = setPluginOptions(MainOptions.PluginOptions);
     setMqttOptions(MainOptions.MqttOptions);
