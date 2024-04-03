@@ -49,6 +49,7 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
   - [publish()](#publish)
   - [host()](#host)
   - [port()](#port)
+  - [path()](#path)
   - [username()](#username)
   - [password()](#password)
   - [clientId()](#client-id)
