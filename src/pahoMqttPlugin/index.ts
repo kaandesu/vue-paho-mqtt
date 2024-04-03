@@ -11,6 +11,7 @@ import { unsubscribeAll } from './utils/unsubscribeAll';
 import {
   host,
   port,
+  path,
   useSSL,
   username,
   password,
@@ -28,6 +29,7 @@ export const $mqtt = {
   publish,
   host,
   port,
+  path,
   useSSL,
   username,
   password,

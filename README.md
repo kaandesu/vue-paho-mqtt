@@ -588,6 +588,55 @@ onMounted(() => {
 
 ---
 
+## Path
+
+Get or set the path parameter from the [MQTT Options](#mqtt-options).
+
+### Type Definition
+
+```ts
+const path: (e?: string) => string;
+```
+
+### Get Path
+
+```ts
+$mqtt.path(); // ie: "/mqtt"
+```
+
+### Set MQTT path
+
+```ts
+$mqtt.path('/ws/mqtt');
+```
+
+### Example usage
+
+```html
+<template>
+  <label>MQTT path: {{ $mqtt.path() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log(this.$mqtt.path());
+});
+```
+
+### Composition API
+
+```ts
+import { onMounted } from 'vue';
+import { $mqtt } from 'vue-paho-mqtt';
+
+onMounted(() => {
+  console.log($mqtt.path());
+});
+```
+
+---
+
 ## Username
 
 Get or set the username parameter from the [MQTT Options](#mqtt-options).

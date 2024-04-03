@@ -24,6 +24,10 @@
               <input placeholder="enter mqtt port" v-model="port" />
             </span>
             <span class="field-row">
+              <span>Path:</span>
+              <input placeholder="enter mqtt path" v-model="path" />
+            </span>
+            <span class="field-row">
               <span>Use SSL:</span>
               <select class="optionField" v-model="useSSL">
                 <option :key="index" v-for="(option, index) in sslOptions" :value="option">
@@ -127,6 +131,7 @@ import 'intro.js/introjs.css';
 import { $mqtt } from './pahoMqttPlugin';
 const host = ref<string>('');
 const port = ref<string>('0');
+const path = ref<string | undefined>(undefined);
 const useSSL = ref<boolean>(false);
 const clientId = ref<string>('');
 const username = ref<string>('');
@@ -162,6 +167,7 @@ const subscribe = (topic: string, index: number) => {
 const updateAll = () => {
   $mqtt.host(host.value);
   $mqtt.port(parseInt(port.value));
+  $mqtt.path(path.value);
   $mqtt.useSSL(useSSL.value === true);
   $mqtt.clientId(clientId.value);
   $mqtt.username(username.value);
@@ -184,6 +190,7 @@ onMounted(() => {
   startIntro();
   host.value = $mqtt.host();
   port.value = String($mqtt.port());
+  path.value = $mqtt.path() ?? '';
   useSSL.value = $mqtt.useSSL() ?? false;
   username.value = $mqtt.username() ?? '';
   password.value = $mqtt.password() ?? '';

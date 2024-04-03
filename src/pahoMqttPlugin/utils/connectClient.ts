@@ -74,8 +74,8 @@ export const connectClient = ({
         password: MqttOptions.password ?? '',
         useSSL: MqttOptions.useSSL ?? false,
         uris: [
-          `wss://${MqttOptions.host}:${MqttOptions.port}/mqtt`,
-          `ws://${MqttOptions.host}:${MqttOptions.port}/mqtt`,
+          `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path ?? '/mqtt'}`,
+          `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path ?? '/mqtt'}`,
         ],
         onSuccess: () => {
           resolve(true);
