@@ -32,6 +32,14 @@
               </select>
             </span>
             <span class="field-row">
+              <span>Username:</span>
+              <input placeholder="enter mqtt username" v-model="username" />
+            </span>
+            <span class="field-row">
+              <span>Password:</span>
+              <input placeholder="enter mqtt password" v-model="password" type="password"/>
+            </span>
+            <span class="field-row">
               <span>Main Topic:</span>
               <input placeholder="enter main mqtt topic" v-model="mainTopic" />
             </span>
@@ -121,6 +129,8 @@ const host = ref<string>('');
 const port = ref<string>('0');
 const useSSL = ref<boolean>(false);
 const clientId = ref<string>('');
+const username = ref<string>('');
+const password = ref<string>('');
 const mainTopic = ref<string>('');
 const sslOptions = ref([true, false]);
 const options = ref([
@@ -154,6 +164,8 @@ const updateAll = () => {
   $mqtt.port(parseInt(port.value));
   $mqtt.useSSL(useSSL.value === true);
   $mqtt.clientId(clientId.value);
+  $mqtt.username(username.value);
+  $mqtt.password(password.value);
   $mqtt.mainTopic(mainTopic.value);
 };
 const unsubAll = () => {
@@ -173,6 +185,8 @@ onMounted(() => {
   host.value = $mqtt.host();
   port.value = String($mqtt.port());
   useSSL.value = $mqtt.useSSL() ?? false;
+  username.value = $mqtt.username() ?? '';
+  password.value = $mqtt.password() ?? '';
   mainTopic.value = $mqtt.mainTopic() ?? '';
   clientId.value = $mqtt.clientId();
 });
