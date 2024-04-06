@@ -689,6 +689,9 @@ onMounted(() => {
 
 ## Password
 
+> [!CAUTION]
+> Exposing the password to the client can cause security issues if not used properly.
+
 Get or set the password parameter from the [MQTT Options](#mqtt-options).
 
 ### Type Definition
