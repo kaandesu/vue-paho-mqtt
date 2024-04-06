@@ -1,7 +1,7 @@
-import { utilClientAuth } from '~/../setupTests';
+import {utilClientAuth} from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { defaultMqttOptions } from '~/config/constants';
-import { getMqttOptions } from '~/config/options';
+import {getMqttOptions, setMqttOptions} from '~/config/options';
 import * as UTILS from '~/utils';
 
 describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
@@ -9,7 +9,8 @@ describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
   describe('Client', () => {
-    createClient(utilClientAuth);
+    setMqttOptions(utilClientAuth);
+    createClient(getMqttOptions());
     test('if host set correctly', () => {
       expect(UTILS.host()).toBe(utilClientAuth.host);
     });

@@ -2,7 +2,7 @@ import { DoneCallback } from 'vitest';
 import { utilClient } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { MQTT_STATE, defaultMqttOptions } from '~/config/constants';
-import { getMqttOptions } from '~/config/options';
+import {getMqttOptions, setMqttOptions} from '~/config/options';
 import { MqttMode } from '~/types/types';
 import * as UTILS from '~/utils';
 
@@ -11,7 +11,8 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
   describe('Client', () => {
-    createClient(utilClient);
+    setMqttOptions(utilClient)
+    createClient(getMqttOptions());
     test('if host set correctly', () => {
       expect(UTILS.host()).toBe(utilClient.host);
     });
@@ -107,9 +108,10 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   });
 
   test('if all subscribed topics recieved the payload', () => {
-    if (unhandledTopicsList[0] !== 'testFnr')
+    if (unhandledTopicsList[0] !== 'testFnr') {
+      console.log(unhandledTopicsList);
       expect(unhandledTopicsList).toHaveLength(0);
-    else expect(unhandledTopicsList).toHaveLength(1);
+    } else expect(unhandledTopicsList).toHaveLength(1);
   });
   test('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
