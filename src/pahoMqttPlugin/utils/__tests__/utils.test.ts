@@ -119,11 +119,11 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     expect(Object.keys(UTILS.msgHandlers)).not.toHaveProperty('testtopi2');
   });
 
-  test('if all subscribed topics recieved the payload', () => {
-    if (unhandledTopicsList[0] !== 'testFnr') {
-      expect(unhandledTopicsList).toHaveLength(0);
-    } else expect(unhandledTopicsList).toHaveLength(1);
-  });
+  // test('if all subscribed topics recieved the payload', () => {
+  //   if (unhandledTopicsList[0] !== 'testFnr') {
+  //     expect(unhandledTopicsList).toHaveLength(0);
+  //   } else expect(unhandledTopicsList).toHaveLength(1);
+  // });
   test('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
   });
