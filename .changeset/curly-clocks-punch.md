@@ -1,5 +1,5 @@
 ---
-"vue-paho-mqtt": patch
+'vue-paho-mqtt': patch
 ---
 
 - Added proper linting for maintainers.
