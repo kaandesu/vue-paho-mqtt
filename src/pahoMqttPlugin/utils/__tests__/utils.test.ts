@@ -5,29 +5,32 @@ import { MQTT_STATE, defaultMqttOptions } from '~/config/constants';
 import {getMqttOptions, setMqttOptions} from '~/config/options';
 import { MqttMode } from '~/types/types';
 import * as UTILS from '~/utils';
+import { expect } from 'vitest';
 
-describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
-  test('if status is set right before connection', () => {
+const isBroker = import.meta.env.MODE === 'broker';
+
+describe.runIf(isBroker)('utils', () => {
+  it('if status is set right before connection', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
   describe('Client', () => {
-    setMqttOptions(utilClient)
+    setMqttOptions(utilClient);
     createClient(getMqttOptions());
-    test('if host set correctly', () => {
+    it('if host set correctly', () => {
       expect(UTILS.host()).toBe(utilClient.host);
     });
-    test('if port set correctly', () => {
+    it('if port set correctly', () => {
       expect(UTILS.port()).toBe(utilClient.port);
     });
-    test('if clientId set correctly', () => {
+    it('if clientId set correctly', () => {
       expect(UTILS.clientId()).toBe(utilClient.clientId);
     });
   });
-  test(`if connects to the broker in ${defaultMqttOptions.watchdogTimeout}ms `, async () => {
+  it(`if connects to the broker in ${defaultMqttOptions.watchdogTimeout}ms `, async () => {
     await expect(UTILS.connectClient()).resolves.toBe(true);
   });
 
-  test.fails(
+  it.fails(
     `if fails to connect to the broker in ${defaultMqttOptions.watchdogTimeout}ms `,
     async () => await expect(UTILS.connectClient()).rejects.toBe(true),
   );
@@ -70,7 +73,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
           }, 200);
         }),
     );
-    test.concurrent('publish test message with Fnr mode', () => {
+    it.concurrent('publish test message with Fnr mode', () => {
       UTILS.publish('testFnr', 'testFnr', 'Fnr');
     });
   });
@@ -79,10 +82,10 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     beforeEach(() => {
       UTILS.clearMsgHandlers();
     });
-    test('if msgHandlers gets cleared', () => {
+    it('if msgHandlers gets cleared', () => {
       expect(Object.keys(UTILS.msgHandlers).length).toBe(0);
     });
-    test('if subscription handler gets added succesfully', () => {
+    it('if subscription handler gets added succesfully', () => {
       UTILS.subscribe('testtopic', (data) => data, false);
       UTILS.subscribe('testtopic2', (data) => data, false);
       expect(Object.keys(UTILS.msgHandlers)).toContain('testtopic');
@@ -90,7 +93,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     });
   });
   /* unsubscribe */
-  test('if unsubscribe works correctly', () => {
+  it('if unsubscribe works correctly', () => {
     UTILS.subscribe('testtopic', (data) => data);
     UTILS.subscribe('testtopic2', (data) => data);
     UTILS.unsubscribe('testtopic');
@@ -98,7 +101,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   });
 
   /* unsubscribeAll */
-  test('if unsubscribeAll works correctly', () => {
+  it('if unsubscribeAll works correctly', () => {
     UTILS.clearMsgHandlers();
     UTILS.subscribe('testtopic', (data) => data);
     UTILS.subscribe('testtopic2', (data) => data);
@@ -107,13 +110,13 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     expect(Object.keys(UTILS.msgHandlers)).not.toHaveProperty('testtopi2');
   });
 
-  test('if all subscribed topics recieved the payload', () => {
+  it('if all subscribed topics recieved the payload', () => {
     if (unhandledTopicsList[0] !== 'testFnr') {
       console.log(unhandledTopicsList);
       expect(unhandledTopicsList).toHaveLength(0);
     } else expect(unhandledTopicsList).toHaveLength(1);
   });
-  test('if disconnects from the broker and sets correct status', () => {
+  it('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
   });
 });
