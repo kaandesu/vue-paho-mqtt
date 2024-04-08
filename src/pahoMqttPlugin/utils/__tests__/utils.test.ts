@@ -60,7 +60,10 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     /* publish for each */
     it.concurrent.each(mqttModes)(
       `should publish publish to ${getMqttOptions().mainTopic}/test%s'`,
-      (mode: MqttMode) =>
+      async (mode: MqttMode) => {
+        UTILS.connectClient();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         new Promise((done: DoneCallback) => {
           const topic = `test${mode}`;
           const payload = `test${mode}`;
@@ -68,7 +71,8 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
             UTILS.publish(topic, payload, mode);
             done();
           }, 200);
-        }),
+        });
+      },
     );
     test.concurrent('publish test message with Fnr mode', () => {
       UTILS.publish('testFnr', 'testFnr', 'Fnr');
@@ -76,8 +80,16 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   });
   /* msgHandlers */
   describe('msgHandlers', () => {
+    beforeAll(async () => {
+      UTILS.connectClient();
+
+      // Sleep for a while to make sure the client is connected
+      const SLEEP_TIME = 1000; // in ms
+      await new Promise((resolve) => setTimeout(resolve, SLEEP_TIME));
+    });
     beforeEach(() => {
       UTILS.clearMsgHandlers();
+      UTILS.clearQueueMsgHandlers();
     });
     test('if msgHandlers gets cleared', () => {
       expect(Object.keys(UTILS.msgHandlers).length).toBe(0);
@@ -109,7 +121,6 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
 
   test('if all subscribed topics recieved the payload', () => {
     if (unhandledTopicsList[0] !== 'testFnr') {
-      console.log(unhandledTopicsList);
       expect(unhandledTopicsList).toHaveLength(0);
     } else expect(unhandledTopicsList).toHaveLength(1);
   });
