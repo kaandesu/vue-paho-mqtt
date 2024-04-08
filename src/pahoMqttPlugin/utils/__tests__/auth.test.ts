@@ -1,7 +1,7 @@
-import {utilClientAuth} from '~/../setupTests';
+import { utilClientAuth } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { defaultMqttOptions } from '~/config/constants';
-import {getMqttOptions, setMqttOptions} from '~/config/options';
+import { getMqttOptions, setMqttOptions } from '~/config/options';
 import * as UTILS from '~/utils';
 
 describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {

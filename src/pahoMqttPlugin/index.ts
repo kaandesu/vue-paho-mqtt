@@ -8,7 +8,7 @@ import {
   subscribe,
   unsubscribe,
   publish,
-  unsubscribeAll
+  unsubscribeAll,
 } from '~/utils';
 import {
   host,
@@ -42,6 +42,7 @@ export const $mqtt = {
   status,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createPahoMqttPlugin = (MainOptions: MainOptions): any => {
   return (app: App) => {
     const PluginOptions = setPluginOptions(MainOptions.PluginOptions);

@@ -1,0 +1,4 @@
+dist/
+coverage/
+live-demo/
+node-modules/
