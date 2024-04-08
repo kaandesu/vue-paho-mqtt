@@ -17,12 +17,36 @@ export const port = (e?: number) => {
   return MqttOptions.port;
 };
 
+export const path = (e?: string) => {
+  const MqttOptions = getMqttOptions();
+  if (e !== undefined) {
+    return (MqttOptions.path = e);
+  }
+  return MqttOptions.path;
+};
+
 export const useSSL = (e?: boolean) => {
   const MqttOptions = getMqttOptions();
   if (e !== undefined) {
     return (MqttOptions.useSSL = e);
   }
   return MqttOptions.useSSL;
+};
+
+export const username = (e?: string) => {
+  const MqttOptions = getMqttOptions();
+  if (e !== undefined) {
+    return (MqttOptions.username = e);
+  }
+  return MqttOptions.username;
+};
+
+export const password = (e?: string) => {
+  const MqttOptions = getMqttOptions();
+  if (e !== undefined) {
+    return (MqttOptions.password = e);
+  }
+  return MqttOptions.password;
 };
 
 export const clientId = (e?: string) => {

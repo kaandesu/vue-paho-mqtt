@@ -1,7 +1,7 @@
 {
   "name": "vue-paho-mqtt",
   "author": "I Kaan Yilmaz <kaandesu00@gmail.com> (https://github.com/kaandesu)",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "license": "MIT",
   "description": "Easy-to-use Paho MQTT client for Vue 3 with centralized subscription management, type support, and built-in optional alert notification library.",
   "contributors": [
@@ -37,15 +37,17 @@
   "exports": {
     ".": {
       "import": "./dist/vue-paho-mqtt.js",
-      "require": "./dist/vue-paho-mqtt.umd.cjs"
+      "require": "./dist/vue-paho-mqtt.umd.cjs",
+      "types": "./dist/types/types.d.ts"
     },
     "./style.css": "./dist/style.css"
   },
-  "types": "./dist/types.d.ts",
+  "types": "./dist/types/types.d.ts",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run test && vite build --mode production && npm run generate:types && npm run build:live-demo",
+    "build2": "vite build --mode production && npm run generate:types",
     "build:live-demo": "vite build --mode live-demo --outDir ./live-demo",
     "preview": "vite preview",
     "deploy": "gh-pages -d github",
@@ -60,7 +62,7 @@
   "dependencies": {
     "paho-mqtt": "^1.1.0",
     "sweetalert2": "^11.7.3",
-    "vue": "^3.2.47"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",

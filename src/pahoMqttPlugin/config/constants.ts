@@ -35,6 +35,7 @@ export const defaultPluginOptions: PahoMqttPluginOptions = {
 export const defaultMqttOptions: MqttOptions = {
   host: 'localhost',
   port: 9001,
+  path: '/mqtt',
   username: '',
   password: '',
   useSSL: false,

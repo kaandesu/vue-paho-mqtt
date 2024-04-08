@@ -49,6 +49,9 @@ This plugin allows you to connect to a MQTT broker and subscribe to topics in yo
   - [publish()](#publish)
   - [host()](#host)
   - [port()](#port)
+  - [path()](#path)
+  - [username()](#username)
+  - [password()](#password)
   - [clientId()](#client-id)
   - [mainTopic()](#main-topic)
   - [unsubscribe()](#unsubscribe)
@@ -581,6 +584,156 @@ import { onMounted } from 'vue';
 import { $mqtt } from 'vue-paho-mqtt';
 onMounted(() => {
   console.log($mqtt.port());
+});
+```
+
+---
+
+## Path
+
+Get or set the path parameter from the [MQTT Options](#mqtt-options).
+
+### Type Definition
+
+```ts
+const path: (e?: string) => string;
+```
+
+### Get Path
+
+```ts
+$mqtt.path(); // ie: "/mqtt"
+```
+
+### Set MQTT path
+
+```ts
+$mqtt.path('/ws/mqtt');
+```
+
+### Example usage
+
+```html
+<template>
+  <label>MQTT path: {{ $mqtt.path() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log(this.$mqtt.path());
+});
+```
+
+### Composition API
+
+```ts
+import { onMounted } from 'vue';
+import { $mqtt } from 'vue-paho-mqtt';
+
+onMounted(() => {
+  console.log($mqtt.path());
+});
+```
+
+---
+
+## Username
+
+Get or set the username parameter from the [MQTT Options](#mqtt-options).
+
+### Type Definition
+
+```ts
+const username: (e?: string) => string;
+```
+
+### Get Username
+
+```ts
+$mqtt.username(); // ie: ""
+```
+
+### Set MQTT username
+
+```ts
+$mqtt.username('testUsername');
+```
+
+### Example usage
+
+```html
+<template>
+  <label>MQTT username: {{ $mqtt.username() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log(this.$mqtt.username());
+});
+```
+
+### Composition API
+
+```ts
+import { onMounted } from 'vue';
+import { $mqtt } from 'vue-paho-mqtt';
+
+onMounted(() => {
+  console.log($mqtt.username());
+});
+```
+
+---
+
+## Password
+
+> [!CAUTION]
+> Exposing the password to the client can cause security issues if not used properly.
+
+Get or set the password parameter from the [MQTT Options](#mqtt-options).
+
+### Type Definition
+
+```ts
+const password: (e?: string) => string;
+```
+
+### Get Password
+
+```ts
+$mqtt.password(); // ie: ""
+```
+
+### Set MQTT password
+
+```ts
+$mqtt.password('secret');
+```
+
+### Example usage
+
+```html
+<template>
+  <label>MQTT password: {{ $mqtt.password() }}</label>
+</template>
+```
+
+```ts
+onMounted(() => {
+  console.log(this.$mqtt.password());
+});
+```
+
+### Composition API
+
+```ts
+import { onMounted } from 'vue';
+import { $mqtt } from 'vue-paho-mqtt';
+
+onMounted(() => {
+  console.log($mqtt.password());
 });
 ```
 

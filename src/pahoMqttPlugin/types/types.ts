@@ -1,5 +1,5 @@
 import type { Qos } from 'paho-mqtt';
-export * from '~/index';
+export * from './../index';
 
 export interface PahoMqttPluginOptions {
   showNotifications?: boolean;
@@ -28,6 +28,7 @@ export type MsgHandler = Record<string, ((payload: string) => unknown)[]>;
 export interface MqttOptions {
   host: string;
   port: number;
+  path?: string;
   clientId: string;
   useSSL?: boolean;
   mainTopic?: string;

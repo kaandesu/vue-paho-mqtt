@@ -1,5 +1,23 @@
 # vue-paho-mqtt
 
+## 0.5.0
+
+### Minor Changes
+
+- c3f9cea: Can change username and password when autoconnect is disable, and can change path in mqtt broker URI
+
+## 0.4.1
+
+### Patch Changes
+
+- 51b9f0b: Typing fixed, now usable with TypeScript.
+
+## 0.4.0
+
+### Minor Changes
+
+- aa990ac: if useSSL is set to true, the wss:// protocol will be tried first, then the ws://
+
 ## 0.3.0
 
 ### Minor Changes

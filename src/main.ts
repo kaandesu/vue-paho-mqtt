@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
-import { createPahoMqttPlugin } from './pahoMqttPlugin';
+import { createPahoMqttPlugin } from '~/index';
 
 createApp(App)
   .use(

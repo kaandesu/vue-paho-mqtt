@@ -2,13 +2,15 @@ import { utilClientWss } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { defaultMqttOptions } from '~/config/constants';
 import * as UTILS from '~/utils';
+import {getMqttOptions, setMqttOptions} from "~/config/options";
 
 describe.runIf(process.env.NODE_ENV === 'broker')('auth utils', () => {
   test('if status is set right before connection', () => {
     expect(UTILS.status()).toBe('disconnected');
   });
   describe('Client', () => {
-    createClient(utilClientWss);
+    setMqttOptions(utilClientWss);
+    createClient(getMqttOptions());
     test('if host set correctly', () => {
       expect(UTILS.host()).toBe(utilClientWss.host);
     });

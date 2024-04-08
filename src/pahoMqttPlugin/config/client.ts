@@ -14,6 +14,7 @@ export const createClient = (
   options: MqttOptions = {
     host: getMqttOptions().host,
     port: getMqttOptions().port,
+    path: getMqttOptions().path,
     clientId: getMqttOptions().clientId,
     username: getMqttOptions().username,
     password: getMqttOptions().password,

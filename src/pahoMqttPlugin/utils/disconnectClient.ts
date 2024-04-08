@@ -13,7 +13,9 @@ export const disconnectClient = (): Promise<boolean> => {
 
   return new Promise((resolve, reject) => {
     try {
-      client.disconnect();
+      if (client.isConnected()) {
+        client.disconnect();
+      }
       resolve(true);
     } catch (err: unknown) {
       reject(err);
