@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.5.0
+
+### Minor Changes
+
+- c3f9cea: Can change username and password when autoconnect is disable, and can change path in mqtt broker URI
+
 ## 0.4.1
 
 ### Patch Changes
