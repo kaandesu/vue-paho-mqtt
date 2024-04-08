@@ -60,10 +60,7 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
     /* publish for each */
     it.concurrent.each(mqttModes)(
       `should publish publish to ${getMqttOptions().mainTopic}/test%s'`,
-      async (mode: MqttMode) => {
-        UTILS.connectClient();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      (mode: MqttMode) => {
         new Promise((done: DoneCallback) => {
           const topic = `test${mode}`;
           const payload = `test${mode}`;
