@@ -24,12 +24,24 @@
               <input placeholder="enter mqtt port" v-model="port" />
             </span>
             <span class="field-row">
+              <span>Path:</span>
+              <input placeholder="enter mqtt path" v-model="path" />
+            </span>
+            <span class="field-row">
               <span>Use SSL:</span>
               <select class="optionField" v-model="useSSL">
                 <option :key="index" v-for="(option, index) in sslOptions" :value="option">
                   {{ option }}
                 </option>
               </select>
+            </span>
+            <span class="field-row">
+              <span>Username:</span>
+              <input placeholder="enter mqtt username" v-model="username" />
+            </span>
+            <span class="field-row">
+              <span>Password:</span>
+              <input placeholder="enter mqtt password" v-model="password" type="password"/>
             </span>
             <span class="field-row">
               <span>Main Topic:</span>
@@ -112,15 +124,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { MqttMode } from './pahoMqttPlugin/types/types';
+import { MqttMode } from '~/types/types';
 // @ts-ignore
 import introJs from 'intro.js/intro';
 import 'intro.js/introjs.css';
-import { $mqtt } from './pahoMqttPlugin';
+import { $mqtt } from '~/index';
 const host = ref<string>('');
 const port = ref<string>('0');
+const path = ref<string | undefined>(undefined);
 const useSSL = ref<boolean>(false);
 const clientId = ref<string>('');
+const username = ref<string>('');
+const password = ref<string>('');
 const mainTopic = ref<string>('');
 const sslOptions = ref([true, false]);
 const options = ref([
@@ -152,8 +167,11 @@ const subscribe = (topic: string, index: number) => {
 const updateAll = () => {
   $mqtt.host(host.value);
   $mqtt.port(parseInt(port.value));
+  $mqtt.path(path.value);
   $mqtt.useSSL(useSSL.value === true);
   $mqtt.clientId(clientId.value);
+  $mqtt.username(username.value);
+  $mqtt.password(password.value);
   $mqtt.mainTopic(mainTopic.value);
 };
 const unsubAll = () => {
@@ -172,7 +190,10 @@ onMounted(() => {
   startIntro();
   host.value = $mqtt.host();
   port.value = String($mqtt.port());
+  path.value = $mqtt.path() ?? '';
   useSSL.value = $mqtt.useSSL() ?? false;
+  username.value = $mqtt.username() ?? '';
+  password.value = $mqtt.password() ?? '';
   mainTopic.value = $mqtt.mainTopic() ?? '';
   clientId.value = $mqtt.clientId();
 });
