@@ -19,8 +19,6 @@ export const onMessageArrivedCallback = (message: {
 
     if (!found)
       possibleTopics.forEach((possibleTopic) => {
-        console.log('trying', possibleTopic);
-
         if (msgHandlers[possibleTopic]) {
           msgHandlers[possibleTopic].forEach((handler) => {
             if (handler) {
