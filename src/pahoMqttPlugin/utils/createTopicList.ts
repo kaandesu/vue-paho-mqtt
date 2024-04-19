@@ -8,7 +8,7 @@ export function createTopicList(topic: string): string[] {
 
   for (let i = 0; i < parts.length; i++) {
     let generatedTopic =
-      parts.slice(0, i).join('/') + '/#/' + parts.slice(i + 1).join('/');
+      parts.slice(0, i).join('/') + '/+/' + parts.slice(i + 1).join('/');
     if (generatedTopic.startsWith('/'))
       generatedTopic = generatedTopic.slice(1);
     if (generatedTopic.endsWith('/'))
@@ -18,7 +18,7 @@ export function createTopicList(topic: string): string[] {
 
   for (let i = 0; i < parts.length; i++) {
     const generatedTopic =
-      parts.slice(0, i + 1).join('/') + (i < parts.length - 1 ? '/+' : '');
+      parts.slice(0, i + 1).join('/') + (i < parts.length - 1 ? '/#' : '');
     result.push(generatedTopic);
   }
 
