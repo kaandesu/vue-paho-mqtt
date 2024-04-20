@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.6.0
+
+### Minor Changes
+
+- f8bab09: feat: added + and # wildcard support
+
 ## 0.5.0
 
 ### Minor Changes
