@@ -19,9 +19,11 @@ import { publish } from './publish';
 import { subscribe } from './subscribe';
 import { unsubscribe } from './unsubscribe';
 import { unsubscribeAll } from './unsubscribeAll';
+import { createTopicList } from './createTopicList';
 
 export {
   connectClient,
+  createTopicList,
   disconnectClient,
   publish,
   subscribe,
