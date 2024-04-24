@@ -2,7 +2,7 @@ import { utilClientWss } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { defaultMqttOptions } from '~/config/constants';
 import * as UTILS from '~/utils';
-import {getMqttOptions, setMqttOptions} from '~/config/options';
+import { getMqttOptions, setMqttOptions } from '~/config/options';
 
 const isBroker = import.meta.env.MODE === 'broker';
 

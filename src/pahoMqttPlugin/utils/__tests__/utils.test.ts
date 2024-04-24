@@ -2,7 +2,7 @@ import { DoneCallback } from 'vitest';
 import { utilClient } from '~/../setupTests';
 import { createClient } from '~/config/client';
 import { MQTT_STATE, defaultMqttOptions } from '~/config/constants';
-import {getMqttOptions, setMqttOptions} from '~/config/options';
+import { getMqttOptions, setMqttOptions } from '~/config/options';
 import { MqttMode } from '~/types/types';
 import * as UTILS from '~/utils';
 import { expect } from 'vitest';
@@ -118,5 +118,22 @@ describe.runIf(isBroker)('utils', () => {
   });
   it('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
+  });
+});
+
+describe('createTopicList', () => {
+  test('if creates a list of topics from a topic string', () => {
+    expect(UTILS.createTopicList('this/is/a/test/topic')).toEqual([
+      '+/is/a/test/topic',
+      'this/+/a/test/topic',
+      'this/is/+/test/topic',
+      'this/is/a/+/topic',
+      'this/is/a/test/+',
+      'this/#',
+      'this/is/#',
+      'this/is/a/#',
+      'this/is/a/test/#',
+      'this/is/a/test/topic',
+    ]);
   });
 });
