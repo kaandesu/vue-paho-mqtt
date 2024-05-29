@@ -6,7 +6,7 @@ import { onFailureCallback } from '~/functions/onFailure';
 import { onMessageArrivedCallback } from '~/functions/onMessageArrived';
 import { SweetAlert } from './SweetAlert';
 import { disconnectClient } from './disconnectClient';
-import { connectWatchdog, mqttStatus } from './refs';
+import { mqttStatus } from './refs';
 
 /**
  * Connect to the mqtt broker
@@ -43,15 +43,6 @@ export const connectClient = ({
   if (mqttStatus.value === 'connected') disconnectClient();
 
   mqttStatus.value = 'connecting';
-  connectWatchdog.value = setTimeout(async () => {
-    mqttStatus.value = 'error';
-    await disconnectClient();
-    SweetAlert({
-      title: 'Mqtt Error',
-      text: 'Broker connection timed out!',
-      icon: 'error',
-    });
-  }, MqttOptions.watchdogTimeout);
 
   const client = createClient();
 
@@ -73,7 +64,7 @@ export const connectClient = ({
         userName: MqttOptions.username,
         password: MqttOptions.password,
         useSSL: MqttOptions.useSSL,
-        timeout: MqttOptions.watchdogTimeout,
+        timeout: (MqttOptions.watchdogTimeout || 30) / 1000,
         uris: [
           `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
           `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
@@ -83,9 +74,9 @@ export const connectClient = ({
           onConnectCallback();
           if (onConnect) onConnect();
         },
-        onFailure: () => {
+        onFailure: async () => {
           reject();
-          onFailureCallback();
+          await onFailureCallback();
           if (onFailure) onFailure();
         },
       });
@@ -100,8 +91,6 @@ export const connectClient = ({
           text: err.message,
           icon: 'error',
         });
-
-      clearTimeout(connectWatchdog.value as NodeJS.Timeout);
     }
   });
 };
