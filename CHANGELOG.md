@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.6.2
+
+### Patch Changes
+
+- 5c771c2: Added timeout option to the connection parameters.
+
 ## 0.6.0
 
 ### Minor Changes
