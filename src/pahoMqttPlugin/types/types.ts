@@ -35,6 +35,8 @@ export interface MqttOptions {
   enableMainTopic?: boolean;
   watchdogTimeout?: number;
   reconnectTimeout?: number;
+  keepAliveInterval?: number;
   username?: string;
   password?: string;
+  cleanSession?: boolean;
 }

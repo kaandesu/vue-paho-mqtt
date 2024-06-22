@@ -1,5 +1,6 @@
 import { createClient } from '~/config/client';
 import { getMqttOptions } from '~/config/options';
+import { defaultMqttOptions } from '~/config/constants';
 import { onConnectCallback } from '~/functions/onConnect';
 import { onConnectionLostCallback } from '~/functions/onConnectionLost';
 import { onFailureCallback } from '~/functions/onFailure';
@@ -64,7 +65,13 @@ export const connectClient = ({
         userName: MqttOptions.username,
         password: MqttOptions.password,
         useSSL: MqttOptions.useSSL,
-        timeout: (MqttOptions.watchdogTimeout || 30000) / 1000,
+        timeout:
+          (MqttOptions.watchdogTimeout || defaultMqttOptions.watchdogTimeout!) /
+          1000,
+        keepAliveInterval:
+          (MqttOptions.keepAliveInterval ||
+            defaultMqttOptions.keepAliveInterval!) / 1000,
+        cleanSession: MqttOptions.cleanSession,
         uris: [
           `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
           `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
