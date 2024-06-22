@@ -42,7 +42,7 @@ export const defaultMqttOptions: MqttOptions = {
   clientId: `ClientId-${Math.random() * 9999}`,
   mainTopic: 'vue-paho-mqtt-test',
   enableMainTopic: true,
-  watchdogTimeout: 2000,
+  watchdogTimeout: 30000,
   reconnectTimeout: 5000,
   keepAliveInterval: 60000,
   cleanSession: true,

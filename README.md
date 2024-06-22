@@ -6,7 +6,7 @@
 <p align="center">
     <a href="https://www.npmjs.com/package/vue-paho-mqtt">
       <img src="https://img.shields.io/npm/v/vue-paho-mqtt?style=for-the-badge" alt="npm version">
-    </a>        
+    </a>
     <a href="https://github.com/kaandesu/vue-paho-mqtt/actions/workflows/build.yml">
       <img src="https://img.shields.io/github/actions/workflow/status/kaandesu/vue-paho-mqtt/build.yml?style=for-the-badge" alt="build status">
     </a>
@@ -18,10 +18,10 @@
     </a>
     <a href="https://github.com/kaandesu/vue-paho-mqtt/pulls">
       <img src="https://img.shields.io/github/issues-pr/kaandesu/vue-paho-mqtt?style=for-the-badge" alt="pr">
-    </a>    
+    </a>
     <a href="https://github.com/kaandesu/vue-paho-mqtt/commits/master" alt="Commit Activity">
       <img src="https://img.shields.io/github/commit-activity/m/kaandesu/vue-paho-mqtt?style=for-the-badge" />
-    </a>    
+    </a>
 </p>
 
 The `vue-paho-mqtt` plugin provides a convenient way to use the [Eclipse Paho MQTT JavaScript client](https://www.eclipse.org/paho/clients/js/) with Vue 3.
@@ -196,7 +196,7 @@ You can configure the MQTT client by passing an object with the following option
 
 - `enableMainTopic` (`boolean`, default: `true`) - Enables usage of the main topic.
 
-- `watchdogTimeout` (`number`, default: `2000`) - The time in milliseconds to wait for a connection to the broker before timing out.
+- `watchdogTimeout` (`number`, default: `30000`) - The time in milliseconds to wait for a connection to the broker before timing out.
 
 - `reconnectTimeout` (`number`, default: `5000`) - The time in milliseconds to wait before attempting to reconnect to the broker after a disconnection.
 
@@ -342,7 +342,7 @@ const result = await $mqtt.connect();
 | `onConnectionLost` |    disconnected or connection lost connection     |            responseObject: {errorCode: number}            |
 | `onMessageArrived` | message arrived from one of the subscribed topics | message: {payloadString: string;destinationName: string;} |
 
-#### Custom Callback Usage example:
+#### Custom Callback Usage example
 
 ```ts
 $mqtt.connect({
@@ -994,8 +994,8 @@ This project is created and actively maintained by [kaandesu](https://github.com
 
 | Maintainer                              | E-Mail                                     | Twitter                                       |
 | --------------------------------------- | ------------------------------------------ | --------------------------------------------- |
-| [kaandesu](https://github.com/kaandesu) | kaandesu00@gmail.com                       | -                                             |
-| [EgeOnder](https://github.com/EgeOnder) | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) |
+| [kaandesu](https://github.com/kaandesu) | <kaandesu00@gmail.com>                       | -                                             |
+| [EgeOnder](https://github.com/EgeOnder) | <40398628+EgeOnder@users.noreply.github.com> | [@EgeOnder23](https://twitter.com/EgeOnder23) |
 
 ## Changelog
 
