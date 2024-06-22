@@ -200,6 +200,10 @@ You can configure the MQTT client by passing an object with the following option
 
 - `reconnectTimeout` (`number`, default: `5000`) - The time in milliseconds to wait before attempting to reconnect to the broker after a disconnection.
 
+- `keepAliveInterval` (`number`, default: `60000`) - The server disconnects this client if there is no activity for this number of milliseconds.
+
+- `cleanSession` (`boolean`, default: `true`) - Whether to delete the server persistent state on a new connection.
+
 ---
 
 ### MQTT Quality of Service (QoS) and Retention Options for Publish
