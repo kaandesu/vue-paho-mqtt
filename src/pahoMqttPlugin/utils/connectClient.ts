@@ -65,6 +65,8 @@ export const connectClient = ({
         password: MqttOptions.password,
         useSSL: MqttOptions.useSSL,
         timeout: (MqttOptions.watchdogTimeout || 30000) / 1000,
+        keepAliveInterval: (MqttOptions.keepAliveInterval || 60000) / 1000,
+        cleanSession: MqttOptions.cleanSession,
         uris: [
           `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
           `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,

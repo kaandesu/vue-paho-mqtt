@@ -44,4 +44,6 @@ export const defaultMqttOptions: MqttOptions = {
   enableMainTopic: true,
   watchdogTimeout: 2000,
   reconnectTimeout: 5000,
+  keepAliveInterval: 60000,
+  cleanSession: true,
 };
