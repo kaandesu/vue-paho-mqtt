@@ -72,10 +72,15 @@ export const connectClient = ({
           (MqttOptions.keepAliveInterval ||
             defaultMqttOptions.keepAliveInterval!) / 1000,
         cleanSession: MqttOptions.cleanSession,
-        uris: [
-          `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
-          `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
-        ],
+        uris:
+          MqttOptions.useSSL === false
+            ? [
+                `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
+              ]
+            : [
+                `wss://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
+                `ws://${MqttOptions.host}:${MqttOptions.port}${MqttOptions.path}`,
+              ],
         onSuccess: () => {
           resolve(true);
           onConnectCallback();
