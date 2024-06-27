@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.6.4
+
+### Patch Changes
+
+- 1baa97c: No WSS attempt when `useSSL` is `false`.
+
 ## 0.6.3
 
 ### Patch Changes
