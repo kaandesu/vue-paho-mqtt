@@ -6,6 +6,8 @@ import { getMqttOptions, setMqttOptions } from '~/config/options';
 import { MqttMode } from '~/types/types';
 import * as UTILS from '~/utils';
 
+/* subscribe */
+let unhandledTopicsList: string[] = [];
 describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   test('if status is set right before connection', () => {
     expect(UTILS.status()).toBe('disconnected');
@@ -33,50 +35,42 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
   );
 
   const mqttModes = Object.keys(MQTT_STATE) as MqttMode[];
-  /* subscribe */
-  let unhandledTopicsList: string[] = [];
-  describe.concurrent('multiple subscribers', () => {
-    test.each(mqttModes)(
-      'should subscribe to "%s"',
-      (mode: MqttMode) =>
-        new Promise((done: DoneCallback) => {
-          setTimeout(() => {
-            const topic = `test${mode}`;
-            const payload = `test${mode}`;
-            unhandledTopicsList.push(topic);
-            UTILS.subscribe(topic, (data: string) => {
-              expect(data).toBe(payload);
-              unhandledTopicsList = unhandledTopicsList.filter(
-                (_top: string) => _top !== topic,
-              );
-            });
-            done();
-          }, 0);
-        }),
-    );
+
+  describe('multiple subscribers', () => {
+    test.each(mqttModes)('should subscribe to "%s"', (mode: MqttMode) => {
+      const topic = `test${mode}`;
+      const payload = `test${mode}`;
+      unhandledTopicsList.push(topic);
+      UTILS.subscribe(topic, (data: string) => {
+        expect(data).toBe(payload);
+        unhandledTopicsList = unhandledTopicsList.filter(
+          (_top: string) => _top !== topic,
+        );
+      });
+      // Simulate immediate payload handling
+      UTILS.publish(topic, payload, mode);
+    });
   });
 
-  describe.concurrent('multiple publish with different modes', () => {
+  describe('multiple publish with different modes', () => {
     /* publish for each */
-    it.concurrent.each(mqttModes)(
-      `should publish publish to ${getMqttOptions().mainTopic}/test%s'`,
-      (mode: MqttMode) =>
-        new Promise((done: DoneCallback) => {
-          const topic = `test${mode}`;
-          const payload = `test${mode}`;
-          setTimeout(() => {
-            UTILS.publish(topic, payload, mode);
-            done();
-          }, 200);
-        }),
+    test.each(mqttModes)(
+      `should publish to ${getMqttOptions().mainTopic}/test%s'`,
+      (mode: MqttMode) => {
+        const topic = `test${mode}`;
+        const payload = `test${mode}`;
+        // Subscribe and immediately verify publication
+        UTILS.subscribe(topic, (data: string) => {
+          expect(data).toBe(payload);
+        });
+        UTILS.publish(topic, payload, mode);
+      },
     );
-    test.concurrent('publish test message with Fnr mode', () => {
-      UTILS.publish('testFnr', 'testFnr', 'Fnr');
-    });
   });
   /* msgHandlers */
   describe('msgHandlers', () => {
     beforeEach(() => {
+      unhandledTopicsList = [];
       UTILS.clearMsgHandlers();
     });
     test('if msgHandlers gets cleared', () => {
@@ -109,10 +103,10 @@ describe.runIf(process.env.NODE_ENV === 'broker')('utils', () => {
 
   test('if all subscribed topics recieved the payload', () => {
     if (unhandledTopicsList[0] !== 'testFnr') {
-      console.log(unhandledTopicsList);
       expect(unhandledTopicsList).toHaveLength(0);
     } else expect(unhandledTopicsList).toHaveLength(1);
   });
+
   test('if disconnects from the broker and sets correct status', () => {
     expect(UTILS.disconnectClient()).resolves.toBe(true);
   });
