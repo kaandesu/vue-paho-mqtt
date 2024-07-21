@@ -1,5 +1,11 @@
 # vue-paho-mqtt
 
+## 0.6.5
+
+### Patch Changes
+
+- 2892c11: fixed caught failure on connection lost callback
+
 ## 0.6.4
 
 ### Patch Changes
