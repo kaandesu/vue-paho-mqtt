@@ -3,18 +3,26 @@
     <div class="wrapper">
       <section class="mqtt-fields">
         <div class="field-view">
-          <div data-step="1" data-intro="Step 1: Connect or disconnect to the MQTT broker! 🔗 ">
-            <button class="mqtt-button connect" @click="$mqtt.connect()">
+          <div
+            data-step="1"
+            data-intro="Step 1: Connect or disconnect to the MQTT broker! 🔗 "
+          >
+            <button class="mqtt-button connect" @click="handleClick()">
               CONNECT
             </button>
             <button class="mqtt-button disconnect" @click="$mqtt.disconnect()">
               DISCONNECT
             </button>
-            <span>MQTT status: <label> {{ $mqtt.status() }} </label></span>
+            <span
+              >MQTT status: <label> {{ $mqtt.status() }} </label></span
+            >
           </div>
           <div class="hr" />
-          <div class="settings" data-step="2"
-            data-intro="Step 2: Configure & update the client settings! <i>(changes will apply on reconnect)</i> ⚙️">
+          <div
+            class="settings"
+            data-step="2"
+            data-intro="Step 2: Configure & update the client settings! <i>(changes will apply on reconnect)</i> ⚙️"
+          >
             <span class="field-row">
               <span>Host:</span>
               <input placeholder="enter mqtt host" v-model="host" />
@@ -30,7 +38,11 @@
             <span class="field-row">
               <span>Use SSL:</span>
               <select class="optionField" v-model="useSSL">
-                <option :key="index" v-for="(option, index) in sslOptions" :value="option">
+                <option
+                  :key="index"
+                  v-for="(option, index) in sslOptions"
+                  :value="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -41,7 +53,11 @@
             </span>
             <span class="field-row">
               <span>Password:</span>
-              <input placeholder="enter mqtt password" v-model="password" type="password"/>
+              <input
+                placeholder="enter mqtt password"
+                v-model="password"
+                type="password"
+              />
             </span>
             <span class="field-row">
               <span>Main Topic:</span>
@@ -56,14 +72,19 @@
             </button>
           </div>
           <div class="hr" />
-          <div class="settings" data-step="4"
-            data-intro="Step 4: Enter the topic, payload,and select the QoS mode and click publish! 📦">
-            <div style="
+          <div
+            class="settings"
+            data-step="4"
+            data-intro="Step 4: Enter the topic, payload,and select the QoS mode and click publish! 📦"
+          >
+            <div
+              style="
                 font-weight: bold;
                 font-size: 20px;
                 margin-bottom: -15px;
                 margin-top: -15px;
-              ">
+              "
+            >
               Publish Data
             </div>
             <span>
@@ -73,12 +94,19 @@
             <span class="field-row">
               <span>Publish Mode: </span>
               <select style="margin: -15px 0" v-model="pubMode">
-                <option v-bind:key="option.value" v-for="option in options" v-bind:value="option.value">
+                <option
+                  v-bind:key="option.value"
+                  v-for="option in options"
+                  v-bind:value="option.value"
+                >
                   {{ option.text }}
                 </option>
               </select>
             </span>
-            <button class="pub" @click="$mqtt.publish(pubTopic, pubData, pubMode as MqttMode)">
+            <button
+              class="pub"
+              @click="$mqtt.publish(pubTopic, pubData, pubMode as MqttMode)"
+            >
               Publish
             </button>
           </div>
@@ -86,26 +114,46 @@
           <button class="unsub" @click="unsubAll()">Unsubscribe All</button>
           <div class="hr" />
           <span class="field-row">
-            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" height="25" alt="github" />
-            <a href="https://github.com/kaandesu/vue-paho-mqtt/" target="_blank" rel="noopener noreferrer"
-              style="font-size: 15px; font-weight: bold"><i>kaandesu/vue-paho-mqtt</i></a>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              height="25"
+              alt="github"
+            />
+            <a
+              href="https://github.com/kaandesu/vue-paho-mqtt/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="font-size: 15px; font-weight: bold"
+              ><i>kaandesu/vue-paho-mqtt</i></a
+            >
             <button class="help" @click="startIntro()">?</button>
           </span>
         </div>
       </section>
-      <section class="subview" data-step="3"
-        data-intro="Step 3: Enter a topic you want to subscribe to, and click subscribe! You can subscribe multiple topics at once! <i>On the bottom of the card you can see the data arrived!</i> 👀">
+      <section
+        class="subview"
+        data-step="3"
+        data-intro="Step 3: Enter a topic you want to subscribe to, and click subscribe! You can subscribe multiple topics at once! <i>On the bottom of the card you can see the data arrived!</i> 👀"
+      >
         <div v-for="(card, index) in subList" :key="index" class="sub-card">
           <input placeholder="enter topic name" v-model="card.topic" />
           <div class="button-section">
             <div class="row">
-              <button :disabled="card.topic == ''" @click="subscribe(card.topic, index)" class="btn">
+              <button
+                :disabled="card.topic == ''"
+                @click="subscribe(card.topic, index)"
+                class="btn"
+              >
                 Subscribe
               </button>
-              <button :disabled="card.topic == ''" @click="
-                $mqtt.unsubscribe(card.topic);
-              card.subData = '---';
-              " class="btn">
+              <button
+                :disabled="card.topic == ''"
+                @click="
+                  $mqtt.unsubscribe(card.topic);
+                  card.subData = '---';
+                "
+                class="btn"
+              >
                 Unsubscribe
               </button>
             </div>
@@ -115,8 +163,12 @@
       </section>
     </div>
     <div class="title">
-      <img :class="$mqtt.status() === 'connected' ? '' : 'img-red'" src="/assets/logo.png" height="100"
-        alt="Vue-Paho-Mqtt-Logo" />
+      <img
+        :class="$mqtt.status() === 'connected' ? '' : 'img-red'"
+        src="/assets/logo.png"
+        height="100"
+        alt="Vue-Paho-Mqtt-Logo"
+      />
       <h3>Vue Paho Mqtt Plugin - Live Demo</h3>
     </div>
   </main>
@@ -162,6 +214,14 @@ const subscribe = (topic: string, index: number) => {
     console.log(data);
     if (typeof data === 'string') subList.value[index].subData = data;
   });
+};
+
+const handleClick = async () => {
+  try {
+    await $mqtt.connect();
+  } catch (e) {
+    console.error('test error:', e);
+  }
 };
 
 const updateAll = () => {
@@ -316,7 +376,7 @@ onMounted(() => {
   /* Firefox */
 }
 
-span>label {
+span > label {
   font-size: 17px;
   font-weight: bold;
 }
