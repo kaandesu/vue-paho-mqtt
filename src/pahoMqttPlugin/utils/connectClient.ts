@@ -87,7 +87,7 @@ export const connectClient = ({
           if (onConnect) onConnect();
         },
         onFailure: async () => {
-          reject();
+          reject('mqtt connection failed');
           await onFailureCallback();
           if (onFailure) onFailure();
         },
